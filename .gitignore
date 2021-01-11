@@ -1,0 +1,5 @@
+.gradle/
+.idea/
+build/
+gradle/
+src/main/java/fr/kokhaviel/bot/Config.java
