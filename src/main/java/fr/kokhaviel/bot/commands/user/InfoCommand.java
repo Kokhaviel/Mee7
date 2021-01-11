@@ -50,7 +50,7 @@ public class InfoCommand extends ListenerAdapter {
 				userInfoEmbed.setTitle(target.getUser().getName() + " User Info")
 						.setColor(Color.CYAN)
 						.setThumbnail(target.getUser().getAvatarUrl())
-						.setAuthor("User Info", event.getJDA().getSelfUser().getAvatarUrl());
+						.setAuthor("User Info", null, event.getJDA().getSelfUser().getAvatarUrl());
 						
 				userInfoEmbed.addField("ID : ", target.getId(), false);
 				

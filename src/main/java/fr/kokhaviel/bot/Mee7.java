@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.security.auth.login.LoginException;
 
+import fr.kokhaviel.bot.commands.server.RoleInfoCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -57,6 +58,7 @@ public class Mee7 {
 					.addEventListeners(new AfkCommand(), new AfkVerify())
 					.addEventListeners(new AvatarCommand(), new InfoCommand())
 					.addEventListeners(new RandomCommand(), new SayCommand(), new EightBallCommand())
+					.addEventListeners(new RoleInfoCommand())
 					.setActivity(Activity.watching("la doc avant de poser une question..."))
 					.build();
 		} catch (LoginException le) {
