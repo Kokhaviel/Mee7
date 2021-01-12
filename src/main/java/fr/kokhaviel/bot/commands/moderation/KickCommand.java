@@ -45,32 +45,41 @@ public class KickCommand extends ListenerAdapter {
 				
 			} else {
 				
-				if(guild == null) channel.sendMessage("You must execute this command on server !").queue();
-				
-				if(!author.hasPermission(Permission.KICK_MEMBERS)) channel.sendMessage("You dont have the permission to kick member !").queue();
-				
-				if(mentionedMembers.isEmpty()) channel.sendMessage("You must mention the member you want to kick !").queue();
+				if(guild == null) {
 
+					channel.sendMessage("You must execute this command on server !").queue(
+							delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+
+				}
 				
-				guild.kick(mentionedMembers.get(0), args[2]).queue(
-						sucess -> {channel.sendMessage("Successfully Kicked " + args[1]).queue(
-								delete -> {delete.delete().queueAfter(5, TimeUnit.SECONDS);});}, 
-						error -> {channel.sendMessage("Unable To Kick " + args[1]).queue(
-								delete -> {delete.delete().queueAfter(5, TimeUnit.SECONDS);});}
-						
-				);
+				else if(!author.hasPermission(Permission.KICK_MEMBERS)) {
+
+					channel.sendMessage("You dont have the permission to kick member !").queue(
+							delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+
+				}
 				
-				event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
+				else if(mentionedMembers.isEmpty()) {
+
+					channel.sendMessage("You must mention the member you want to kick !").queue(
+							delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+
+				}
+
+				else {
+
+					guild.kick(mentionedMembers.get(0), args[2]).queue(
+							sucess -> {channel.sendMessage("Successfully Kicked " + args[1]).queue(
+									delete -> {delete.delete().queueAfter(5, TimeUnit.SECONDS);});},
+							error -> {channel.sendMessage("Unable To Kick " + args[1]).queue(
+									delete -> {delete.delete().queueAfter(5, TimeUnit.SECONDS);});}
+
+					);
+
+					event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
+
+				}
 			}
-			
-			
-			
-			
-			
-			
-			
-			
-
 		}
 	}
 

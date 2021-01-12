@@ -26,11 +26,21 @@ public class UnbanCommand extends ListenerAdapter {
 	
 		if(args[0].equalsIgnoreCase(Config.PREFIX + "unban")) {
 			
-			if(guild == null) channel.sendMessage("You must execute this command on server !").queue();
+			if(guild == null) {
+
+				channel.sendMessage("You must execute this command on server !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+
+			}
 			
-			if(!author.hasPermission(Permission.BAN_MEMBERS)) channel.sendMessage("You dont have the permission to unban member !").queue();
+			else if(!author.hasPermission(Permission.BAN_MEMBERS)) {
+
+				channel.sendMessage("You dont have the permission to unban member !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+
+			}
 			
-			if(args.length < 2) {
+			else if(args.length < 2) {
 				
 				event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
 				
@@ -44,17 +54,25 @@ public class UnbanCommand extends ListenerAdapter {
 				event.getChannel().sendMessage("Too Arguments : Please Use " + Config.PREFIX + "unban <User ID>").queue(
 						delete -> {delete.delete().queueAfter(5, TimeUnit.SECONDS);});
 				
-			}
-			
-			guild.unban(args[1]).queue(
-					success -> {channel.sendMessage("Successfully Unban " + args[1]).queue(
-							delete -> {delete.delete().queueAfter(5, TimeUnit.SECONDS);});}, 
-					error -> {channel.sendMessage("Unable To Unban " + args[1]).queue(
-							delete -> {delete.delete().queueAfter(5, TimeUnit.SECONDS);});}
-			);
-			
-			event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
+			} else {
 
+				guild.unban(args[1]).queue(
+						success -> {
+							channel.sendMessage("Successfully Unban " + args[1]).queue(
+									delete -> {
+										delete.delete().queueAfter(5, TimeUnit.SECONDS);
+									});
+						},
+						error -> {
+							channel.sendMessage("Unable To Unban " + args[1]).queue(
+									delete -> {
+										delete.delete().queueAfter(5, TimeUnit.SECONDS);
+									});
+						}
+				);
+
+				event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
+			}
 			
 		}
 		
