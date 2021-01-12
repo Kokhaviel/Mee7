@@ -48,6 +48,28 @@ public class HelpCommand extends ListenerAdapter {
 				
 				
 				if(args.length == 2) {
+
+					if(args[1].equalsIgnoreCase("server")) {
+
+						EmbedBuilder serverEmbed = new EmbedBuilder();
+
+						serverEmbed.setTitle("Help Server Commands")
+								.setColor(Color.RED)
+								.setAuthor("Help", null, event.getJDA().getSelfUser().getAvatarUrl())
+								.setDescription("Display all server commands")
+
+							.addField("Role Info Command : ", Config.PREFIX + "roleinfo <@Role>", false)
+							.addField("Server Info Command : ", Config.PREFIX + "serverinfo",false);
+
+						event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
+
+						event.getChannel().sendMessage(event.getAuthor().getAsMention() + ", an help message will be send to your DM !").queue();
+
+						if(!user.hasPrivateChannel()) user.openPrivateChannel().complete();
+
+						((UserImpl) user).getPrivateChannel().sendMessage(serverEmbed.build()).queue();
+
+					}
 					
 					if(args[1].equalsIgnoreCase("util")) {
 						
