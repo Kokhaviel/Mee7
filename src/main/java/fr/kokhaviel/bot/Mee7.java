@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.security.auth.login.LoginException;
 
+import fr.kokhaviel.bot.commands.moderation.*;
 import fr.kokhaviel.bot.commands.server.RoleInfoCommand;
 import fr.kokhaviel.bot.commands.server.ServerInfoCommand;
 import net.dv8tion.jda.api.JDA;
@@ -14,10 +15,6 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import fr.kokhaviel.bot.commands.fun.EightBallCommand;
 import fr.kokhaviel.bot.commands.fun.RandomCommand;
 import fr.kokhaviel.bot.commands.fun.SayCommand;
-import fr.kokhaviel.bot.commands.moderation.BanCommand;
-import fr.kokhaviel.bot.commands.moderation.ClearCommand;
-import fr.kokhaviel.bot.commands.moderation.KickCommand;
-import fr.kokhaviel.bot.commands.moderation.UnbanCommand;
 import fr.kokhaviel.bot.commands.user.AvatarCommand;
 import fr.kokhaviel.bot.commands.user.InfoCommand;
 import fr.kokhaviel.bot.commands.user.afk.AfkCommand;
@@ -53,7 +50,7 @@ public class Mee7 {
 							GatewayIntent.GUILD_WEBHOOKS)
 					.addEventListeners(new Logs())
 					.addEventListeners(new AutoModerator())
-					.addEventListeners(new BanCommand(), new UnbanCommand(), new KickCommand(), new ClearCommand())
+					.addEventListeners(new BanCommand(), new UnbanCommand(), new KickCommand(), new ClearCommand(), new MuteCommand(), new UnmuteCommand())
 					.addEventListeners(new PingCommand(), new RebootCommand(), new RepoCommand(), new ShutdownCommand())
 					.addEventListeners(new HelpCommand(), new AboutCommand())
 					.addEventListeners(new AfkCommand(), new AfkVerify())
@@ -71,8 +68,7 @@ public class Mee7 {
 	
 	
 	public static void main(String[] args) {
-		
+
 		new Mee7();
-		
 	}
 }

@@ -156,7 +156,9 @@ public class HelpCommand extends ListenerAdapter {
 							.addField("Ban Command : ", Config.PREFIX + "ban <@User>", false)
 							.addField("Unban Command : ", Config.PREFIX + "unban <User ID>", false)
 							.addField("Kick Command : ", Config.PREFIX + "kick <@User>", false)
-							.addField("ClearCommand : ", Config.PREFIX + "clear <NumberMessageToDel>", false);
+							.addField("Clear Command : ", Config.PREFIX + "clear <NumberMessageToDel>", false)
+							.addField("Mute Command : ", Config.PREFIX + "mute <@User>", false)
+							.addField("Unmute Command", Config.PREFIX + "unmute <@User>", false);
 						
 						
 						event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
