@@ -30,9 +30,9 @@ public class HelpCommand extends ListenerAdapter {
 				helpEmbed.setAuthor("Help", null, event.getJDA().getSelfUser().getAvatarUrl());
 				helpEmbed.setDescription("Display all help commands");
 				
-				helpEmbed.addField("Util Commands : ", "!help util", false);
-				helpEmbed.addField("User Commands : ", "!help user", false);
-				helpEmbed.addField("Moderation Commands : ", "!help moderation", false);
+				helpEmbed.addField("Util Commands : ", Config.PREFIX + "help util", false);
+				helpEmbed.addField("User Commands : ", Config.PREFIX + "help user", false);
+				helpEmbed.addField("Moderation Commands : ", Config.PREFIX + "help moderation", false);
 				
 				event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
 				
@@ -58,12 +58,12 @@ public class HelpCommand extends ListenerAdapter {
 								.setAuthor("Help", null, event.getJDA().getSelfUser().getAvatarUrl())
 								.setDescription("Display all util commands")
 								
-							.addField("Help Command : ", "!help <category>", false)
-							.addField("About Command : ", "!about", false)
-							.addField("Ping Command : ", "!ping", false)
-							.addField("Reboot Command : ", "!reboot (Owner Only)", false)
-							.addField("Repo Command : ", "!repo", false)
-							.addField("Shutdown Command : ", "!shutdown (Owner Only)", false);
+							.addField("Help Command : ", Config.PREFIX + "help <category>", false)
+							.addField("About Command : ", Config.PREFIX + "about", false)
+							.addField("Ping Command : ", Config.PREFIX + "ping", false)
+							.addField("Reboot Command : ", Config.PREFIX + "reboot (Owner Only)", false)
+							.addField("Repo Command : ", Config.PREFIX + "repo", false)
+							.addField("Shutdown Command : ", Config.PREFIX + "shutdown (Owner Only)", false);
 						
 						event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
 
@@ -84,9 +84,9 @@ public class HelpCommand extends ListenerAdapter {
 								.setAuthor("Help", null, event.getJDA().getSelfUser().getAvatarUrl())
 								.setDescription("Display all fun commands")
 						
-							.addField("Random Command : ", "!random <Number1> <Number2>", false)
-							.addField("Say Command : ", "!say <Something To Say>", false)
-							.addField("8Ball Command : ", "!8ball <Question?>", false);
+							.addField("Random Command : ", Config.PREFIX + "random <Number1> <Number2>", false)
+							.addField("Say Command : ", Config.PREFIX + "say <Something To Say>", false)
+							.addField("8Ball Command : ", Config.PREFIX + "8ball <Question?>", false);
 							
 						event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
 
@@ -107,9 +107,9 @@ public class HelpCommand extends ListenerAdapter {
 								.setAuthor("Help", null, event.getJDA().getSelfUser().getAvatarUrl())
 								.setDescription("Display all user commands")
 						
-							.addField("Avatar Command : ", "!avatar <User ID>", false)
-							.addField("User Info Command : ", "!userinfo <User ID>", false)
-							.addField("AFK Command : ", "!afk", false);
+							.addField("Avatar Command : ", Config.PREFIX + "avatar <User ID>", false)
+							.addField("User Info Command : ", Config.PREFIX + "userinfo <User ID>", false)
+							.addField("AFK Command : ", Config.PREFIX + "afk", false);
 							
 						event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
 
@@ -131,10 +131,10 @@ public class HelpCommand extends ListenerAdapter {
 								.setAuthor("Help", null, event.getJDA().getSelfUser().getAvatarUrl())
 								.setDescription("Display all moderation commands")
 							
-							.addField("Ban Command : ", "!ban <@User>", false)
-							.addField("Unban Command : ", "!unban <User ID>", false)
-							.addField("Kick Command : ", "!kick <@User>", false)
-							.addField("ClearCommand : ", "!clear <NumberMessageToDel>", false);
+							.addField("Ban Command : ", Config.PREFIX + "ban <@User>", false)
+							.addField("Unban Command : ", Config.PREFIX + "unban <User ID>", false)
+							.addField("Kick Command : ", Config.PREFIX + "kick <@User>", false)
+							.addField("ClearCommand : ", Config.PREFIX + "clear <NumberMessageToDel>", false);
 						
 						
 						event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
