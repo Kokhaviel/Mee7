@@ -25,35 +25,33 @@ public class JoinCommand extends ListenerAdapter {
 
         final String[] args = message.getContentRaw().split("\\s+");
 
-        if(args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "join"))
+        if (args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "join"))
 
-        if(voiceState.inVoiceChannel()) {
+            if (voiceState.inVoiceChannel()) {
 
-            message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
-            channel.sendMessage("I'm Already Connected To A Voice Channel !").queue(
-                    delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
-
-        } else if(!memberVoiceState.inVoiceChannel()) {
-
-            message.delete().queueAfter(2, TimeUnit.SECONDS);
-
-            channel.sendMessage("You Need To Be In A Voice Channel For This Command Works !").queue(
-                    delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
-        } else {
-
-            message.delete().queueAfter(2, TimeUnit.SECONDS);
-
-            audioManager.openAudioConnection(memberChannel);
-
-            channel.sendMessage("Successfully Connected To " + memberChannel.getName()).queue(
-                    delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
-        }
+                channel.sendMessage("I'm Already Connected To A Voice Channel !").queue(
+                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
 
+            } else if (!memberVoiceState.inVoiceChannel()) {
+
+                message.delete().queueAfter(2, TimeUnit.SECONDS);
+
+                channel.sendMessage("You Need To Be In A Voice Channel For This Command Works !").queue(
+                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+
+            } else {
+
+                message.delete().queueAfter(2, TimeUnit.SECONDS);
+
+                audioManager.openAudioConnection(memberChannel);
+
+                channel.sendMessage("Successfully Connected To " + memberChannel.getName()).queue(
+                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+
+            }
 
 
     }
