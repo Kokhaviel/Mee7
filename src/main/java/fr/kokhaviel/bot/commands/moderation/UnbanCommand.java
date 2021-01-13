@@ -46,32 +46,22 @@ public class UnbanCommand extends ListenerAdapter {
 				event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
 				
 				event.getChannel().sendMessage("Missing Arguments : Please Use " + Config.PREFIX + "unban <User ID>").queue(
-						delete -> {delete.delete().queueAfter(5, TimeUnit.SECONDS);});
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 			
 			} else if(args.length > 2) {
 				
 				event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
 				
 				event.getChannel().sendMessage("Too Arguments : Please Use " + Config.PREFIX + "unban <User ID>").queue(
-						delete -> {delete.delete().queueAfter(5, TimeUnit.SECONDS);});
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				
 			} else {
 
-				User target = event.getJDA().getUserById(args[1]);
-
-				guild.unban(target).queue(
-						success -> {
-							channel.sendMessage("Successfully Unban " + target.getAsTag()).queue(
-									delete -> {
-										delete.delete().queueAfter(5, TimeUnit.SECONDS);
-									});
-						},
-						error -> {
-							channel.sendMessage("Unable To Unban " + target.getAsTag()).queue(
-									delete -> {
-										delete.delete().queueAfter(5, TimeUnit.SECONDS);
-									});
-						}
+				guild.unban(args[1]).queue(
+						success -> channel.sendMessage("Successfully Unban !").queue(
+								delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)),
+						error -> channel.sendMessage("Unable To Unban").queue(
+								delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS))
 				);
 
 				event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
