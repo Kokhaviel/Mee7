@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -56,15 +57,17 @@ public class UnbanCommand extends ListenerAdapter {
 				
 			} else {
 
-				guild.unban(args[1]).queue(
+				User target = event.getJDA().getUserById(args[1]);
+
+				guild.unban(target).queue(
 						success -> {
-							channel.sendMessage("Successfully Unban " + args[1]).queue(
+							channel.sendMessage("Successfully Unban " + target.getAsTag()).queue(
 									delete -> {
 										delete.delete().queueAfter(5, TimeUnit.SECONDS);
 									});
 						},
 						error -> {
-							channel.sendMessage("Unable To Unban " + args[1]).queue(
+							channel.sendMessage("Unable To Unban " + target.getAsTag()).queue(
 									delete -> {
 										delete.delete().queueAfter(5, TimeUnit.SECONDS);
 									});

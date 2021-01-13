@@ -158,7 +158,8 @@ public class HelpCommand extends ListenerAdapter {
 							.addField("Kick Command : ", Config.PREFIX + "kick <@User>", false)
 							.addField("Clear Command : ", Config.PREFIX + "clear <NumberMessageToDel>", false)
 							.addField("Mute Command : ", Config.PREFIX + "mute <@User>", false)
-							.addField("Unmute Command", Config.PREFIX + "unmute <@User>", false);
+							.addField("Unmute Command : ", Config.PREFIX + "unmute <@User>", false)
+							.addField("MassKick Command : ", Config.PREFIX + "masskick <All @User>", false);
 						
 						
 						event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);

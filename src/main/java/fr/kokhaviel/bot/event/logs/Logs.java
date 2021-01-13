@@ -2,6 +2,7 @@ package fr.kokhaviel.bot.event.logs;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -1081,18 +1082,26 @@ public class Logs extends ListenerAdapter {
 		System.out.println("Activity Started : " + event.getUser().getAsTag() + " : " + event.getNewActivity().getName());
 		
 		List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("activities", true);
-		TextChannel logsChannel = textChannels.get(0);
-		
-		EmbedBuilder activityStartEmbed = new EmbedBuilder();
-		
-		activityStartEmbed.setTitle("Activity Started")
-				.setColor(Color.GREEN)
-				.setThumbnail(event.getUser().getAvatarUrl())
-				.setFooter("Developped by " + Config.DEVELOPER_TAG +"\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
-				
-			.addField(event.getUser().getName(), event.getUser().getAsTag() + " : " + event.getNewActivity().getName(), false);
-		
-		logsChannel.sendMessage(activityStartEmbed.build()).queue();		
+
+		if(textChannels.isEmpty()) {
+
+			event.getGuild().getSystemChannel().sendMessage("You need to create a text channel named \"activities\"").queue(
+					delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+
+		} else {
+			TextChannel logsChannel = textChannels.get(0);
+
+			EmbedBuilder activityStartEmbed = new EmbedBuilder();
+
+			activityStartEmbed.setTitle("Activity Started")
+					.setColor(Color.GREEN)
+					.setThumbnail(event.getUser().getAvatarUrl())
+					.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+
+					.addField(event.getUser().getName(), event.getUser().getAsTag() + " : " + event.getNewActivity().getName(), false);
+
+			logsChannel.sendMessage(activityStartEmbed.build()).queue();
+		}
 	}
 		
 	@Override
@@ -1101,18 +1110,28 @@ public class Logs extends ListenerAdapter {
 		System.out.println("Activity Ended : " + event.getUser().getAsTag() + " : " + event.getOldActivity().getName());
 		
 		List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("activities", true);
-		TextChannel logsChannel = textChannels.get(0);
-		
-		EmbedBuilder activityEndEmbed = new EmbedBuilder();
-		
-		activityEndEmbed.setTitle("Activity Ended")
-				.setColor(Color.RED)
-				.setThumbnail(event.getUser().getAvatarUrl())
-				.setFooter("Developped by " + Config.DEVELOPER_TAG +"\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
-				
-			.addField(event.getUser().getName(), event.getUser().getAsTag() + " : " + event.getOldActivity().getName(), false);
-		
-		logsChannel.sendMessage(activityEndEmbed.build()).queue();		
+
+		if(textChannels.isEmpty()) {
+
+			event.getGuild().getSystemChannel().sendMessage("You need to create a text channel named \"activities\"").queue(
+					delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+
+		} else {
+
+			TextChannel logsChannel = textChannels.get(0);
+
+			EmbedBuilder activityEndEmbed = new EmbedBuilder();
+
+			activityEndEmbed.setTitle("Activity Ended")
+					.setColor(Color.RED)
+					.setThumbnail(event.getUser().getAvatarUrl())
+					.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+
+					.addField(event.getUser().getName(), event.getUser().getAsTag() + " : " + event.getOldActivity().getName(), false);
+
+			logsChannel.sendMessage(activityEndEmbed.build()).queue();
+
+		}
 	}
 		
 	@Override

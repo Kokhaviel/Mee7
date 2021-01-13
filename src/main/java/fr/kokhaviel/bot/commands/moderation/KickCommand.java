@@ -68,10 +68,12 @@ public class KickCommand extends ListenerAdapter {
 
 				else {
 
-					guild.kick(mentionedMembers.get(0), args[2]).queue(
-							sucess -> {channel.sendMessage("Successfully Kicked " + args[1]).queue(
+					Member target = mentionedMembers.get(0);
+
+					guild.kick(target, args[2]).queue(
+							sucess -> {channel.sendMessage("Successfully Kicked " + target.getUser().getAsTag()).queue(
 									delete -> {delete.delete().queueAfter(5, TimeUnit.SECONDS);});},
-							error -> {channel.sendMessage("Unable To Kick " + args[1]).queue(
+							error -> {channel.sendMessage("Unable To Kick " + target.getUser().getAsTag()).queue(
 									delete -> {delete.delete().queueAfter(5, TimeUnit.SECONDS);});}
 
 					);

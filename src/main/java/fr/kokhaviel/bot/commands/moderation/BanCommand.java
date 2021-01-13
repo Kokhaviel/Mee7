@@ -63,9 +63,9 @@ public class BanCommand extends ListenerAdapter {
 
 					 else {
 						guild.ban(target, 3, args[2]).queue(
-								succes -> channel.sendMessage("Successfully Banned " + target.getId() + " !").queue(
+								succes -> channel.sendMessage("Successfully Banned " + target.getUser().getAsTag() + " !").queue(
 										delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)),
-								error -> channel.sendMessage("Unable To Ban " + target.getId() + " !").queue(
+								error -> channel.sendMessage("Unable To Ban " + target.getUser().getAsTag() + " !").queue(
 										delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS))
 						);
 
