@@ -63,7 +63,7 @@ public class Mee7 {
 					.addEventListeners(new RandomCommand(), new SayCommand(), new EightBallCommand())
 					.addEventListeners(new RoleInfoCommand(), new ServerInfoCommand())
 					.addEventListeners(new MassKickCommand(), new MassBanCommand())
-					.addEventListeners(new JoinCommand(), new PlayCommand(), new StopCommand(), new SkipCommand(), new NowPlayingCommand())
+					.addEventListeners(new JoinCommand(), new PlayCommand(), new StopCommand(), new SkipCommand(), new NowPlayingCommand(), new QueueCommand())
 					.setActivity(Activity.watching("la doc avant de poser une question..."))
 					.build();
 		} catch (LoginException le) {
