@@ -18,14 +18,15 @@ public class JoinCommand extends ListenerAdapter {
         final Member selfMember = event.getGuild().getSelfMember();
         final GuildVoiceState voiceState = selfMember.getVoiceState();
         final Member member = event.getMember();
-        final GuildVoiceState memberVoiceState = member.getVoiceState();
         final AudioManager audioManager = event.getGuild().getAudioManager();
-        final VoiceChannel memberChannel = memberVoiceState.getChannel();
         final Message message = event.getMessage();
 
         final String[] args = message.getContentRaw().split("\\s+");
 
         if (args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "join")) {
+
+            final GuildVoiceState memberVoiceState = member.getVoiceState();
+            final VoiceChannel memberChannel = memberVoiceState.getChannel();
 
             message.delete().queue();
 

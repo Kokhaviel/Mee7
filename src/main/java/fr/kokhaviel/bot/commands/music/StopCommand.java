@@ -21,11 +21,12 @@ public class StopCommand extends ListenerAdapter {
         final TextChannel channel = (TextChannel) event.getChannel();
         final Member member = event.getMember();
         final Guild guild = event.getGuild();
-        final GuildVoiceState voiceState = member.getVoiceState();
         final Member selfMember = guild.getSelfMember();
-        final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
 
         if(args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "stop")) {
+
+            final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
+            final GuildVoiceState voiceState = member.getVoiceState();
 
             message.delete().queue();
 

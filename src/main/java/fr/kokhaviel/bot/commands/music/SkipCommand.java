@@ -1,6 +1,7 @@
 package fr.kokhaviel.bot.commands.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.music.GuildMusicManager;
 import fr.kokhaviel.bot.music.PlayerManager;
@@ -22,11 +23,12 @@ public class SkipCommand extends ListenerAdapter {
         final TextChannel channel = (TextChannel) event.getChannel();
         final Member member = event.getMember();
         final Guild guild = event.getGuild();
-        final GuildVoiceState voiceState = member.getVoiceState();
         final Member selfMember = guild.getSelfMember();
-        final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
 
         if(args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "skip")) {
+
+            final GuildVoiceState voiceState = member.getVoiceState();
+            final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
 
             message.delete().queue();
 
@@ -49,8 +51,9 @@ public class SkipCommand extends ListenerAdapter {
 
                 final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
                 final AudioPlayer audioPlayer = musicManager.audioPlayer;
+                final AudioTrack playingTrack = audioPlayer.getPlayingTrack();
 
-                if(audioPlayer.getPlayingTrack() == null) {
+                if(playingTrack == null) {
 
                     channel.sendMessage("THere is no track playing currently !").queue(
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));

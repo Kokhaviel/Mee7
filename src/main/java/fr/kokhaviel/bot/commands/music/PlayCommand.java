@@ -20,11 +20,12 @@ public class PlayCommand extends ListenerAdapter {
         final String[] args = message.getContentRaw().split("\\s+");
         final TextChannel channel = (TextChannel) event.getChannel();
         final Member selfMember = event.getGuild().getSelfMember();
-        final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
         final Member member = event.getMember();
-        final GuildVoiceState voiceState = member.getVoiceState();
 
         if (args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "play")) {
+
+            final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
+            final GuildVoiceState voiceState = member.getVoiceState();
 
             message.delete().queue();
 
