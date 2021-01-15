@@ -6,6 +6,10 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class PlayCommand extends ListenerAdapter {
@@ -21,13 +25,18 @@ public class PlayCommand extends ListenerAdapter {
         final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
         final Member member = event.getMember();
         final GuildVoiceState voiceState = member.getVoiceState();
-
+        final List<String> linkArgs = Arrays.asList(args).subList(0, 0);
 
         if(args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "play")) {
 
             message.delete().queue();
 
-            if(!selfVoiceState.inVoiceChannel()) {
+            if(args.length < 2) {
+
+                channel.sendMessage("Please Use : " + Config.MUSIC_PREFIX + "play <Youtube Link>").queue(
+                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+
+            } else if(!selfVoiceState.inVoiceChannel()) {
 
                 channel.sendMessage("I need to be in a voice channel to this command works !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -39,9 +48,31 @@ public class PlayCommand extends ListenerAdapter {
 
             } else {
 
-                PlayerManager.getInstance().loadAndPlay(channel, "https://www.youtube.com/watch?v=-SeVN2u5Axc");
+                String link = args[1];
+
+                if(!isUrl(link)) {
+
+                    link = "ytsearch : " + link;
+
+                }
+
+                PlayerManager.getInstance().loadAndPlay(channel, link);
             }
+        }
+    }
+
+    private boolean isUrl(String url) {
+
+        try {
+
+            new URI(url);
+            return true;
+
+        } catch (URISyntaxException use) {
+
+            return false;
 
         }
+
     }
 }

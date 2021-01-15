@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -63,7 +64,21 @@ public class PlayerManager {
 
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
+                final List<AudioTrack> tracks = playlist.getTracks();
 
+                channel.sendMessage("Adding to queue : '")
+                        .append(String.valueOf(tracks.size()))
+                        .append("' tracks from playlist ")
+                        .append(playlist.getName())
+                        .queue(
+                                delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+                        );
+
+                for (AudioTrack track : tracks ) {
+
+                    musicManager.scheduler.queue(track);
+
+                }
             }
 
             @Override
