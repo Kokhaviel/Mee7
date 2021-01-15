@@ -23,6 +23,7 @@ public class PlayCommand extends ListenerAdapter {
         final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
         final Member member = event.getMember();
         final GuildVoiceState voiceState = member.getVoiceState();
+
         if (args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "play")) {
 
             message.delete().queue();
