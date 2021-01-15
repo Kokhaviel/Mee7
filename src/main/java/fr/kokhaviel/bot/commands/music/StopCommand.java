@@ -1,35 +1,37 @@
 package fr.kokhaviel.bot.commands.music;
 
 import fr.kokhaviel.bot.Config;
+import fr.kokhaviel.bot.music.GuildMusicManager;
 import fr.kokhaviel.bot.music.PlayerManager;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
 
-public class PlayCommand extends ListenerAdapter {
+@SuppressWarnings("ConstantConditions")
+public class StopCommand extends ListenerAdapter {
 
-    @SuppressWarnings("ConstantConditions")
     @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
         final Message message = event.getMessage();
         final String[] args = message.getContentRaw().split("\\s+");
         final TextChannel channel = (TextChannel) event.getChannel();
-        final Member selfMember = event.getGuild().getSelfMember();
-        final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
         final Member member = event.getMember();
+        final Guild guild = event.getGuild();
         final GuildVoiceState voiceState = member.getVoiceState();
-        if (args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "play")) {
+        final Member selfMember = guild.getSelfMember();
+        final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
+
+        if(args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "stop")) {
 
             message.delete().queue();
 
-            if (args.length < 2) {
+            if(!voiceState.inVoiceChannel()) {
 
-                channel.sendMessage("Please Use : " + Config.MUSIC_PREFIX + "play <Youtube Link>").queue(
+                channel.sendMessage("You need to be in a voice channel to this command works").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else if (!selfVoiceState.inVoiceChannel()) {
@@ -44,31 +46,18 @@ public class PlayCommand extends ListenerAdapter {
 
             } else {
 
-                String link = args[1];
+                final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
 
-                if (!isUrl(link)) {
+                musicManager.scheduler.player.stopTrack();
+                musicManager.scheduler.queue.clear();
 
-                    link = "ytsearch : " + link;
+                channel.sendMessage("The player has been stopped and the queue has been clear !").queue(
+                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
-                }
-
-                PlayerManager.getInstance().loadAndPlay(channel, link);
             }
-        }
-    }
-
-    private boolean isUrl(String url) {
-
-        try {
-
-            new URI(url);
-            return true;
-
-        } catch (URISyntaxException use) {
-
-            return false;
 
         }
+
 
     }
 }

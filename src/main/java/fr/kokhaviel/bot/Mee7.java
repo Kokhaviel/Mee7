@@ -8,6 +8,7 @@ import javax.security.auth.login.LoginException;
 import fr.kokhaviel.bot.commands.moderation.*;
 import fr.kokhaviel.bot.commands.music.JoinCommand;
 import fr.kokhaviel.bot.commands.music.PlayCommand;
+import fr.kokhaviel.bot.commands.music.StopCommand;
 import fr.kokhaviel.bot.commands.server.RoleInfoCommand;
 import fr.kokhaviel.bot.commands.server.ServerInfoCommand;
 import net.dv8tion.jda.api.JDA;
@@ -64,7 +65,7 @@ public class Mee7 {
 					.addEventListeners(new RandomCommand(), new SayCommand(), new EightBallCommand())
 					.addEventListeners(new RoleInfoCommand(), new ServerInfoCommand())
 					.addEventListeners(new MassKickCommand(), new MassBanCommand())
-					.addEventListeners(new JoinCommand(), new PlayCommand())
+					.addEventListeners(new JoinCommand(), new PlayCommand(), new StopCommand())
 					.setActivity(Activity.watching("la doc avant de poser une question..."))
 					.build();
 		} catch (LoginException le) {
