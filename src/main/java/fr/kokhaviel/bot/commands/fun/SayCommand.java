@@ -27,7 +27,7 @@ public class SayCommand extends ListenerAdapter {
 
             if (args.length < 2) {
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queue();
 
                 channel.sendMessage("Missing Arguments : Please Speficy At Least One Word To Say !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -41,7 +41,7 @@ public class SayCommand extends ListenerAdapter {
                     sayBuilder.append(arg).append(" ");
                 }
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queue();
 
                 channel.sendMessage(sayBuilder).queue();
 

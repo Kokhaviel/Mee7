@@ -22,14 +22,14 @@ public class MuteCommand extends ListenerAdapter {
 
             if (args.length < 2) {
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queue();
 
                 channel.sendMessage("Missing Arguments : Please Use " + Config.PREFIX + "mute <@User>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else if (args.length > 2) {
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queue();
 
                 channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "mute <@User>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -44,8 +44,9 @@ public class MuteCommand extends ListenerAdapter {
 
                 Role role;
 
+                event.getMessage().delete().queue();
+
                 if (roles.isEmpty()) {
-                    message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                     channel.sendMessage("I Don't Found a Role Named \"Muted\" ... ").queue(
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -54,8 +55,6 @@ public class MuteCommand extends ListenerAdapter {
 
 
                     role = roles.get(0);
-
-                    message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                     guild.addRoleToMember(target.getId(), role).queue();
 

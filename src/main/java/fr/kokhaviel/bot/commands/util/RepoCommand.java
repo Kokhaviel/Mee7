@@ -23,6 +23,8 @@ public class RepoCommand extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "repo")) {
 
+            message.delete().queue();
+
             EmbedBuilder repoEmbed = new EmbedBuilder();
 
             repoEmbed.setTitle("Repository Links");
@@ -37,8 +39,6 @@ public class RepoCommand extends ListenerAdapter {
             repoEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nCommand Requested by : " + message.getAuthor(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
             channel.sendMessage(repoEmbed.build()).queue();
-
-            message.delete().queueAfter(2, TimeUnit.SECONDS);
 
         }
 

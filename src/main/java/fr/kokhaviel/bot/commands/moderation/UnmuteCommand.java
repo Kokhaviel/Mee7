@@ -20,16 +20,14 @@ public class UnmuteCommand extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "unmute")) {
 
-            if (args.length < 2) {
+            message.delete().queue();
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+            if (args.length < 2) {
 
                 channel.sendMessage("Missing Arguments : Please Use " + Config.PREFIX + "unmute <@User>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else if (args.length > 2) {
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                 channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "unmute <@User>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -45,7 +43,6 @@ public class UnmuteCommand extends ListenerAdapter {
                 Role role;
 
                 if (roles.isEmpty()) {
-                    message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                     channel.sendMessage("I Don't Found a Role Named \"Muted\" ... ").queue(
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -53,8 +50,6 @@ public class UnmuteCommand extends ListenerAdapter {
                 } else {
 
                     role = roles.get(0);
-
-                    message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                     guild.removeRoleFromMember(target.getId(), role).queue();
 

@@ -28,6 +28,8 @@ public class AboutCommand extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "about")) {
 
+            message.delete().queue();
+
             User user = member.getUser();
 
             EmbedBuilder aboutEmbed = new EmbedBuilder();
@@ -42,8 +44,6 @@ public class AboutCommand extends ListenerAdapter {
                     .addField("Prefix : ", Config.PREFIX, false)
                     .addField("Help : ", Config.PREFIX + "help", false)
                     .addField("Library : ", "[JDA](https://github.com/DV8FromTheWorld/JDA)", false);
-
-            message.delete().queueAfter(2, TimeUnit.SECONDS);
 
             channel.sendMessage(author.getAsMention() + ", a message will be send to your DM !").queue();
 

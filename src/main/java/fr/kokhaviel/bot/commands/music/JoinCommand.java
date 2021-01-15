@@ -25,11 +25,11 @@ public class JoinCommand extends ListenerAdapter {
 
         final String[] args = message.getContentRaw().split("\\s+");
 
-        if (args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "join"))
+        if (args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "join")) {
+
+            message.delete().queue();
 
             if (voiceState.inVoiceChannel()) {
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                 channel.sendMessage("I'm Already Connected To A Voice Channel !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -37,14 +37,10 @@ public class JoinCommand extends ListenerAdapter {
 
             } else if (!memberVoiceState.inVoiceChannel()) {
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
-
                 channel.sendMessage("You Need To Be In A Voice Channel For This Command Works !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else {
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                 audioManager.openAudioConnection(memberChannel);
 
@@ -52,7 +48,7 @@ public class JoinCommand extends ListenerAdapter {
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             }
-
+        }
 
     }
 }

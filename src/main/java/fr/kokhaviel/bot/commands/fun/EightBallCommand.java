@@ -48,7 +48,7 @@ public class EightBallCommand extends ListenerAdapter {
 
             if (args.length < 2) {
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queue();
 
                 channel.sendMessage("Missing Argument : Please Use " + Config.PREFIX + "8ball <Question?>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -56,6 +56,8 @@ public class EightBallCommand extends ListenerAdapter {
             } else {
 
                 int ballRandom = new Random().nextInt(20);
+
+                message.delete().queue();
 
                 channel.sendMessage(answer.get(ballRandom)).queue();
             }

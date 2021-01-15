@@ -27,14 +27,14 @@ public class RandomCommand extends ListenerAdapter {
 
             if (args.length < 3) {
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queue();
 
                 channel.sendMessage("Missing Arguments : Please Use " + Config.PREFIX + "random <Int1> <Int2>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else if (args.length > 3) {
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queue();
 
                 channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "random <Int1> <Int2>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -43,7 +43,7 @@ public class RandomCommand extends ListenerAdapter {
 
                 channel.sendMessage("Giving you a number between " + first + " and " + second + " : " + new Random().ints(first, second).findFirst().getAsInt()).queue();
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queue();
 
             }
 

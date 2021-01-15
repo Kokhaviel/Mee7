@@ -28,6 +28,8 @@ public class HelpCommand extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "help")) {
 
+            message.delete().queue();
+
             User user = member.getUser();
 
             if (args.length == 1) {
@@ -42,8 +44,6 @@ public class HelpCommand extends ListenerAdapter {
                 helpEmbed.addField("Util Commands : ", Config.PREFIX + "help util", false);
                 helpEmbed.addField("User Commands : ", Config.PREFIX + "help user", false);
                 helpEmbed.addField("Moderation Commands : ", Config.PREFIX + "help moderation", false);
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                 channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
 
@@ -69,8 +69,6 @@ public class HelpCommand extends ListenerAdapter {
                             .addField("Role Info Command : ", Config.PREFIX + "roleinfo <@Role>", false)
                             .addField("Server Info Command : ", Config.PREFIX + "serverinfo", false);
 
-                    message.delete().queueAfter(2, TimeUnit.SECONDS);
-
                     channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
 
                     if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
@@ -95,8 +93,6 @@ public class HelpCommand extends ListenerAdapter {
                             .addField("Repo Command : ", Config.PREFIX + "repo", false)
                             .addField("Shutdown Command : ", Config.PREFIX + "shutdown (Owner Only)", false);
 
-                    message.delete().queueAfter(2, TimeUnit.SECONDS);
-
                     channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
 
                     if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
@@ -118,8 +114,6 @@ public class HelpCommand extends ListenerAdapter {
                             .addField("Say Command : ", Config.PREFIX + "say <Something To Say>", false)
                             .addField("8Ball Command : ", Config.PREFIX + "8ball <Question?>", false);
 
-                    message.delete().queueAfter(2, TimeUnit.SECONDS);
-
                     channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
 
                     if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
@@ -140,8 +134,6 @@ public class HelpCommand extends ListenerAdapter {
                             .addField("Avatar Command : ", Config.PREFIX + "avatar <User ID>", false)
                             .addField("User Info Command : ", Config.PREFIX + "userinfo <User ID>", false)
                             .addField("AFK Command : ", Config.PREFIX + "afk", false);
-
-                    message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                     channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
 
@@ -170,8 +162,6 @@ public class HelpCommand extends ListenerAdapter {
                             .addField("MassKick Command : ", Config.PREFIX + "masskick <All @User>", false)
                             .addField("MassBan Command", Config.PREFIX + "massban <All @User>", false);
 
-
-                    message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                     channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
 

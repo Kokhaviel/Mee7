@@ -25,7 +25,7 @@ public class MassKickCommand extends ListenerAdapter {
 
             if (args.length < 2) {
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queue();
 
                 channel.sendMessage("Missing Arguments : You must mention at least one member to kick !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -36,7 +36,7 @@ public class MassKickCommand extends ListenerAdapter {
 
                 String reason = args[args.length - 1];
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queue();
 
                 for (Member member : mentionedMembers) {
 

@@ -22,6 +22,8 @@ public class UnbanCommand extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "unban")) {
 
+            message.delete().queue();
+
             if (guild == null) {
 
                 channel.sendMessage("You must execute this command on server !").queue(
@@ -34,14 +36,10 @@ public class UnbanCommand extends ListenerAdapter {
 
             } else if (args.length < 2) {
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
-
                 channel.sendMessage("Missing Arguments : Please Use " + Config.PREFIX + "unban <User ID>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else if (args.length > 2) {
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                 channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "unban <User ID>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -54,12 +52,7 @@ public class UnbanCommand extends ListenerAdapter {
                         error -> channel.sendMessage("Unable To Unban").queue(
                                 delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS))
                 );
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
             }
-
         }
-
-
     }
 }

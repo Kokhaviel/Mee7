@@ -20,7 +20,7 @@ import fr.kokhaviel.bot.commands.fun.SayCommand;
 import fr.kokhaviel.bot.commands.user.AvatarCommand;
 import fr.kokhaviel.bot.commands.user.InfoCommand;
 import fr.kokhaviel.bot.commands.user.afk.AfkCommand;
-import fr.kokhaviel.bot.commands.user.afk.AfkVerify;
+import fr.kokhaviel.bot.event.afk.AfkVerify;
 import fr.kokhaviel.bot.commands.util.AboutCommand;
 import fr.kokhaviel.bot.commands.util.HelpCommand;
 import fr.kokhaviel.bot.commands.util.PingCommand;

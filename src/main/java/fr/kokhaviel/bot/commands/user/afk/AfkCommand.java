@@ -23,12 +23,11 @@ public class AfkCommand extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "afk")) {
 
+            message.delete().queue();
 
             if (!Mee7.afkIDs.contains(member.getId())) {
 
                 Mee7.afkIDs.add(member.getId());
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                 channel.sendMessage("Successfully Set Your AFK !").queue(delete -> delete.delete().queueAfter(2, TimeUnit.SECONDS));
 
@@ -36,8 +35,6 @@ public class AfkCommand extends ListenerAdapter {
             } else {
 
                 Mee7.afkIDs.remove(member.getId());
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                 channel.sendMessage("Successfully Removed Your AKF !").queue(delete -> delete.delete().queueAfter(2, TimeUnit.SECONDS));
 

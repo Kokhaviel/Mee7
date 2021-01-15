@@ -22,7 +22,7 @@ public class ShutdownCommand extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "shutdown") && author.getId().equals(Config.OWNER_ID)) {
 
-            message.delete().queueAfter(2, TimeUnit.SECONDS);
+            message.delete().queue();
 
             jda.shutdown();
 

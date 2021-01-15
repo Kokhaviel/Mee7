@@ -25,11 +25,11 @@ public class ServerInfoCommand extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "serverinfo")) {
 
+            message.delete().queue();
+
             Guild guild = event.getGuild();
 
             if (args.length > 1) {
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                 channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "serverinfo").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -53,8 +53,6 @@ public class ServerInfoCommand extends ListenerAdapter {
                 serverinfoEmbed.addField("Boost Tier : ", guild.getBoostTier().name(), false);
                 if (guild.getSystemChannel() != null)
                     serverinfoEmbed.addField("System Channel : ", guild.getSystemChannel().getAsMention(), false);
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                 channel.sendMessage(serverinfoEmbed.build()).queue();
 

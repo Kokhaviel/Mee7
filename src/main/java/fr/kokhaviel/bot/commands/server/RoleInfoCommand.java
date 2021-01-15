@@ -28,16 +28,14 @@ public class RoleInfoCommand extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "roleinfo")) {
 
-            if (args.length < 2) {
+            message.delete().queue();
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+            if (args.length < 2) {
 
                 channel.sendMessage("Missing Arguments : Please Use " + Config.PREFIX + "roleinfo <@Role> !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else if (args.length > 2) {
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                 channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "roleinfo <@Role> !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));

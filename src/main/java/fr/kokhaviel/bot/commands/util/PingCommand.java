@@ -23,10 +23,10 @@ public class PingCommand extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "ping")) {
 
+            message.delete().queue();
+
             channel.sendMessage("Pong").queue(
                     reponse -> reponse.editMessageFormat("Pong : %d ms", System.currentTimeMillis() - time).queue());
-
-            message.delete().queueAfter(2, TimeUnit.SECONDS);
 
         }
 

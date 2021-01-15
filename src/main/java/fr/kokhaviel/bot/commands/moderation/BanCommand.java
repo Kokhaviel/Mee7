@@ -27,24 +27,26 @@ public class BanCommand extends ListenerAdapter {
 
             if (args.length < 3) {
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queue();
 
                 channel.sendMessage("Missing Arguments : Please Use " + Config.PREFIX + "ban <@User> <Reason>").queue(
-                        delete -> delete.delete().queueAfter(2, TimeUnit.SECONDS));
+                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
 
             } else if (args.length > 3) {
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queue();
 
                 channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "ban <@User> <Reason>").queue(
-                        delete -> delete.delete().queueAfter(2, TimeUnit.SECONDS));
+                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else {
 
                 List<Member> mentionedMembers = message.getMentionedMembers();
 
                 Member target = mentionedMembers.get(0);
+
+                message.delete().queue();
 
                 if (guild == null) channel.sendMessage("You must execute this command on server !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -69,9 +71,6 @@ public class BanCommand extends ListenerAdapter {
 
                     }
                 }
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
-
             }
         }
     }

@@ -26,17 +26,14 @@ public class AvatarCommand extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "avatar")) {
 
+            message.delete().queue();
 
             if (args.length < 2) {
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                 channel.sendMessage("Missing Arguments : Please Use !avatar <User ID> !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else if (args.length > 2) {
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                 channel.sendMessage("Too Arguments : Please Use !avatar <User ID> !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -53,8 +50,6 @@ public class AvatarCommand extends ListenerAdapter {
                 avatarEmbed.setThumbnail(target.getUser().getAvatarUrl());
 
                 channel.sendMessage(avatarEmbed.build()).queue();
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
             }
 

@@ -25,9 +25,9 @@ public class PlayCommand extends ListenerAdapter {
 
         if(args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "play")) {
 
-            if(!selfVoiceState.inVoiceChannel()) {
+            message.delete().queue();
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+            if(!selfVoiceState.inVoiceChannel()) {
 
                 channel.sendMessage("I need to be in a voice channel to this command works !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));

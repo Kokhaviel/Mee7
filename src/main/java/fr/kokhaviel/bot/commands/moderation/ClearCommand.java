@@ -27,21 +27,21 @@ public class ClearCommand extends ListenerAdapter {
 
             if (args.length < 2) {
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queue();
 
                 channel.sendMessage("Missing Arguments : Please Use " + Config.PREFIX + "clear <Int>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else if (args.length > 2) {
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queue();
 
                 channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "clear <Int>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else if (!member.hasPermission(Permission.MESSAGE_MANAGE)) {
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
+                message.delete().queue();
 
                 channel.sendMessage("Missing Permission : You Cannot Manage Messages !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));

@@ -24,19 +24,16 @@ public class InfoCommand extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "userinfo")) {
 
+            message.delete().queue();
 
             TextChannel channel = (TextChannel) event.getChannel();
 
             if (args.length < 2) {
 
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
-
                 channel.sendMessage("Missing Argument : Please Use " + Config.PREFIX + "userinfo <@User> !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else if (args.length > 2) {
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                 channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "userinfo <@User> !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -64,8 +61,6 @@ public class InfoCommand extends ListenerAdapter {
                 userInfoEmbed.addField("Account Created on ", target.getTimeCreated().toString(), false);
                 userInfoEmbed.addField("Status", target.getOnlineStatus().getKey(), false);
                 userInfoEmbed.addField("Activities : ", target.getActivities().toString(), false);
-
-                message.delete().queueAfter(2, TimeUnit.SECONDS);
 
                 channel.sendMessage(userInfoEmbed.build()).queue();
 

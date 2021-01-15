@@ -1,4 +1,4 @@
-package fr.kokhaviel.bot.commands.user.afk;
+package fr.kokhaviel.bot.event.afk;
 
 import java.awt.Color;
 import java.util.List;
