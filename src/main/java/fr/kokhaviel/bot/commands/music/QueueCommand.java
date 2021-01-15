@@ -61,13 +61,13 @@ public class QueueCommand extends ListenerAdapter {
                     final String title = track.getInfo().title;
                     final String author = track.getInfo().author;
 
-                    queueEmbed.addField(title, author, false);
+                    queueEmbed.addField(title + " `[" + timeFormat(track.getDuration()) + "]`", author, false);
 
                 }
 
                 if(trackList.size() > trackCount) {
 
-                    queueEmbed.addField("And More ", "...", false);
+                    queueEmbed.addField("And " + String.valueOf(trackList.size() - trackCount) +" More ...", "", false);
 
                 }
 
@@ -76,4 +76,14 @@ public class QueueCommand extends ListenerAdapter {
             }
         }
     }
+
+    private String timeFormat(long timeMillis) {
+
+        final long hours = timeMillis / TimeUnit.HOURS.toMillis(1);
+        final long minutes = timeMillis / TimeUnit.MINUTES.toMillis(1);
+        final long seconds = timeMillis % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1);
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+
 }
