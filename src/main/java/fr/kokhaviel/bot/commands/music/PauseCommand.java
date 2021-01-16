@@ -1,6 +1,5 @@
 package fr.kokhaviel.bot.commands.music;
 
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.music.GuildMusicManager;
 import fr.kokhaviel.bot.music.PlayerManager;
@@ -9,7 +8,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("ConstantConditions")
@@ -32,7 +30,6 @@ public class PauseCommand extends ListenerAdapter {
             final GuildVoiceState voiceState = member.getVoiceState();
             final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
             final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
-            final BlockingQueue<AudioTrack> queue = musicManager.scheduler.queue;
 
 
             message.delete().queue();
