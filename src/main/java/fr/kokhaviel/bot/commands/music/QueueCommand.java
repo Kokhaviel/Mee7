@@ -28,12 +28,13 @@ public class QueueCommand extends ListenerAdapter {
         final TextChannel channel = (TextChannel) event.getChannel();
         final String iconUrl = event.getGuild().getIconUrl();
         final String[] args = message.getContentRaw().split("\\s+");
-        final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
-        final BlockingQueue<AudioTrack> queue = musicManager.scheduler.queue;
 
 
 
         if(args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "queue")) {
+
+            final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
+            final BlockingQueue<AudioTrack> queue = musicManager.scheduler.queue;
 
             event.getMessage().delete().queue();
 
