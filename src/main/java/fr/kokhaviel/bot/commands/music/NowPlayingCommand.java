@@ -61,10 +61,24 @@ public class NowPlayingCommand extends ListenerAdapter {
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
                 } else {
 
-                    channel.sendMessage("Now Playing '" + trackInfo.title + "' by '" + trackInfo.author + "' !").queue(
-                            delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+                    channel.sendMessage("Now Playing '" + trackInfo.title + "' by '" + trackInfo.author + "' !").queue();
+
+                    channel.sendMessageFormat(
+                            "Current Track Time Elapsed : `[%s]`\nCurrent Track Time Left : `[%s]`",
+                            timeFormat(playingTrack.getPosition()),
+                            timeFormat(playingTrack.getDuration() - playingTrack.getPosition())
+                    ).queue();
                 }
             }
         }
+    }
+
+    private String timeFormat(long timeMillis) {
+
+        final long hours = timeMillis / TimeUnit.HOURS.toMillis(1);
+        final long minutes = timeMillis / TimeUnit.MINUTES.toMillis(1);
+        final long seconds = timeMillis % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1);
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 }
