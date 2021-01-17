@@ -1,8 +1,5 @@
 package fr.kokhaviel.bot.commands.util;
 
-import java.awt.Color;
-import java.util.concurrent.TimeUnit;
-
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
@@ -13,6 +10,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.internal.entities.UserImpl;
+
+import java.awt.*;
 
 public class HelpCommand extends ListenerAdapter {
 
@@ -29,7 +28,6 @@ public class HelpCommand extends ListenerAdapter {
         if (args[0].equalsIgnoreCase(Config.PREFIX + "help")) {
 
             message.delete().queue();
-
             User user = member.getUser();
 
             if (args.length == 1) {
@@ -169,14 +167,36 @@ public class HelpCommand extends ListenerAdapter {
 
                     ((UserImpl) user).getPrivateChannel().sendMessage(modEmbed.build()).queue();
 
+                } else if (args[1].equalsIgnoreCase("music")) {
+
+                    EmbedBuilder musicEmbed = new EmbedBuilder();
+
+                    musicEmbed.setTitle("Help Music Commands")
+                            .setColor(Color.GREEN)
+                            .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
+                            .setDescription("Display all music commands")
+
+                            .addField("Join Command : ", Config.MUSIC_PREFIX + "join", false)
+                            .addField("Leave Command : ", Config.MUSIC_PREFIX + "leave", false)
+                            .addField("NowPlaying Command : ", Config.MUSIC_PREFIX + "nowplaying", false)
+                            .addField("Pause Command : ", Config.MUSIC_PREFIX + "pause", false)
+                            .addField("Play Command : ", Config.MUSIC_PREFIX + "play <Link>", false)
+                            .addField("Queue Command : ", Config.MUSIC_PREFIX + "queue", false)
+                            .addField("Repeat Command : ", Config.MUSIC_PREFIX + "repeat", false)
+                            .addField("Skip Command", Config.MUSIC_PREFIX + "skip", false)
+                            .addField("Stop Command", Config.MUSIC_PREFIX + "stop", false)
+                            .addField("Volume Command", Config.MUSIC_PREFIX + "volume", false);
+
+
+                    channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
+
+                    if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
+
+                    ((UserImpl) user).getPrivateChannel().sendMessage(musicEmbed.build()).queue();
+
+
                 }
-
-
             }
-
         }
-
     }
-
-
 }

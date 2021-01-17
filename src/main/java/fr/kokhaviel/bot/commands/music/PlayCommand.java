@@ -50,7 +50,7 @@ public class PlayCommand extends ListenerAdapter {
 
                 if (!isUrl(link)) {
 
-                    link = "ytsearch : " + link;
+                    link = "ytsearch:" + link;
 
                 }
 
