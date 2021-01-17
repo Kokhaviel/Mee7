@@ -55,7 +55,8 @@ public class Mee7 {
 					.enableCache(CacheFlag.VOICE_STATE)
 					.addEventListeners(new Logs())
 					.addEventListeners(new AutoModerator())
-					.addEventListeners(new BanCommand(), new UnbanCommand(), new KickCommand(), new ClearCommand(), new MuteCommand(), new UnmuteCommand())
+					.addEventListeners(new BanCommand(), new UnbanCommand(), new KickCommand(), new ClearCommand(),
+							new MuteCommand(), new UnmuteCommand())
 					.addEventListeners(new PingCommand(), new RebootCommand(), new RepoCommand(), new ShutdownCommand())
 					.addEventListeners(new HelpCommand(), new AboutCommand())
 					.addEventListeners(new AfkCommand(), new AfkVerify())
@@ -64,7 +65,8 @@ public class Mee7 {
 					.addEventListeners(new RoleInfoCommand(), new ServerInfoCommand())
 					.addEventListeners(new MassKickCommand(), new MassBanCommand())
 					.addEventListeners(new JoinCommand(), new PlayCommand(), new StopCommand(), new SkipCommand(),
-							new NowPlayingCommand(), new QueueCommand(),new RepeatCommand(), new LeaveCommand(), new PauseCommand())
+							new NowPlayingCommand(), new QueueCommand(),new RepeatCommand(), new LeaveCommand(),
+							new PauseCommand(), new VolumeCommand())
 					.setActivity(Activity.watching("la doc avant de poser une question..."))
 					.build();
 		} catch (LoginException le) {
