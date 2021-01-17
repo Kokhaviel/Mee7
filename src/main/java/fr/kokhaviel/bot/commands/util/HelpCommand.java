@@ -41,7 +41,10 @@ public class HelpCommand extends ListenerAdapter {
 
                 helpEmbed.addField("Util Commands : ", Config.PREFIX + "help util", false);
                 helpEmbed.addField("User Commands : ", Config.PREFIX + "help user", false);
+                helpEmbed.addField("Server Commands : ", Config.PREFIX + "help server", false);
                 helpEmbed.addField("Moderation Commands : ", Config.PREFIX + "help moderation", false);
+                helpEmbed.addField("Fun Commands : ", Config.PREFIX + "help fun", false);
+                helpEmbed.addField("Music Commands : ", Config.PREFIX + "help music", false);
 
                 channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
 
