@@ -71,6 +71,7 @@ public class Mee7 {
                     .addEventListeners(new RebootCommand())
                     .addEventListeners(new RepeatCommand())
                     .addEventListeners(new RepoCommand())
+                    .addEventListeners(new ReverseCommand())
                     .addEventListeners(new RoleInfoCommand())
                     .addEventListeners(new SayCommand())
                     .addEventListeners(new ServerInfoCommand())
