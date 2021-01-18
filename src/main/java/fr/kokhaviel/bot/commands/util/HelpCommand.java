@@ -118,7 +118,8 @@ public class HelpCommand extends ListenerAdapter {
                             .addField("Random Command : ", Config.PREFIX + "random <Number1> <Number2>", false)
                             .addField("Say Command : ", Config.PREFIX + "say <Something To Say>", false)
                             .addField("8Ball Command : ", Config.PREFIX + "8ball <Question?>", false)
-                            .addField("Reverse Command : ", Config.PREFIX + "reverse <Text>", false);
+                            .addField("Reverse Command : ", Config.PREFIX + "reverse <Text>", false)
+                            .addField("DameDane Command", Config.PREFIX + "damedane", false);
 
                     channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
 
