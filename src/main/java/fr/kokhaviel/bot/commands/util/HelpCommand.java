@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.internal.entities.UserImpl;
 
 import java.awt.*;
+import java.util.Random;
 
 public class HelpCommand extends ListenerAdapter {
 
@@ -28,14 +29,17 @@ public class HelpCommand extends ListenerAdapter {
         if (args[0].equalsIgnoreCase(Config.PREFIX + "help")) {
 
             message.delete().queue();
-            User user = member.getUser();
+            final User user = member.getUser();
+            final int rd1 = new Random().nextInt(255);
+            final int rd2 = new Random().nextInt(255);
+            final int rd3 = new Random().nextInt(255);
 
             if (args.length == 1) {
 
                 EmbedBuilder helpEmbed = new EmbedBuilder();
 
                 helpEmbed.setTitle("Help Menu");
-                helpEmbed.setColor(Color.CYAN);
+                helpEmbed.setColor(new Color(rd1, rd2, rd3));
                 helpEmbed.setAuthor("Help", null, jda.getSelfUser().getAvatarUrl());
                 helpEmbed.setDescription("Display all help commands");
 
@@ -63,7 +67,7 @@ public class HelpCommand extends ListenerAdapter {
                     EmbedBuilder serverEmbed = new EmbedBuilder();
 
                     serverEmbed.setTitle("Help Server Commands")
-                            .setColor(Color.RED)
+                            .setColor(new Color(rd1, rd2, rd3))
                             .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                             .setDescription("Display all server commands")
 
@@ -83,7 +87,7 @@ public class HelpCommand extends ListenerAdapter {
                     EmbedBuilder utilEmbed = new EmbedBuilder();
 
                     utilEmbed.setTitle("Help Util Commands")
-                            .setColor(Color.GREEN)
+                            .setColor(new Color(rd1, rd2, rd3))
                             .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                             .setDescription("Display all util commands")
 
@@ -107,7 +111,7 @@ public class HelpCommand extends ListenerAdapter {
                     EmbedBuilder funEmbed = new EmbedBuilder();
 
                     funEmbed.setTitle("Help Fun Commands")
-                            .setColor(Color.BLUE)
+                            .setColor(new Color(rd1, rd2, rd3))
                             .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                             .setDescription("Display all fun commands")
 
@@ -129,7 +133,7 @@ public class HelpCommand extends ListenerAdapter {
                     EmbedBuilder userEmbed = new EmbedBuilder();
 
                     userEmbed.setTitle("Help User Commands")
-                            .setColor(Color.MAGENTA)
+                            .setColor(new Color(rd1, rd2, rd3))
                             .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                             .setDescription("Display all user commands")
 
@@ -151,7 +155,7 @@ public class HelpCommand extends ListenerAdapter {
                     EmbedBuilder modEmbed = new EmbedBuilder();
 
                     modEmbed.setTitle("Help Moderation Commands")
-                            .setColor(Color.ORANGE)
+                            .setColor(new Color(rd1, rd2, rd3))
                             .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                             .setDescription("Display all moderation commands")
 
@@ -176,7 +180,7 @@ public class HelpCommand extends ListenerAdapter {
                     EmbedBuilder musicEmbed = new EmbedBuilder();
 
                     musicEmbed.setTitle("Help Music Commands")
-                            .setColor(Color.GREEN)
+                            .setColor(new Color(rd1, rd2, rd3))
                             .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                             .setDescription("Display all music commands")
 
