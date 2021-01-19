@@ -2,6 +2,7 @@ package fr.kokhaviel.bot;
 
 import fr.kokhaviel.bot.commands.fun.*;
 import fr.kokhaviel.bot.commands.hypixel.games.QuakeCraftStatsCommand;
+import fr.kokhaviel.bot.commands.hypixel.games.WallsStatsCommand;
 import fr.kokhaviel.bot.commands.moderation.*;
 import fr.kokhaviel.bot.commands.music.*;
 import fr.kokhaviel.bot.commands.server.RoleInfoCommand;
@@ -90,6 +91,7 @@ public class Mee7 {
                     .addEventListeners(new UnbanCommand())
                     .addEventListeners(new UnmuteCommand())
                     .addEventListeners(new VolumeCommand())
+                    .addEventListeners(new WallsStatsCommand())
 
                     .setActivity(Activity.watching("la doc avant de poser une question..."))
 

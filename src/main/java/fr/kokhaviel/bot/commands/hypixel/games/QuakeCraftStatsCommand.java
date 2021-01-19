@@ -27,8 +27,6 @@ public class QuakeCraftStatsCommand extends ListenerAdapter {
 
         if(args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "quakecraft")) {
 
-
-
             if(args.length == 1) {
                 channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "quakecraft <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
@@ -40,18 +38,16 @@ public class QuakeCraftStatsCommand extends ListenerAdapter {
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
                 } else {
 
-                    Player player = sloth.getPlayer(args[1]);
+                    message.delete().queue();
 
+                    final Player player = sloth.getPlayer(args[1]);
                     final Quake quake = player.getStats().getQuake();
-
-
 
                     EmbedBuilder quakecraftEmbed = new EmbedBuilder();
                     quakecraftEmbed.setAuthor("QuakeCraft Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
                     quakecraftEmbed.setColor(Color.MAGENTA);
                     quakecraftEmbed.setTitle(player.getUsername() + " Stats");
                     quakecraftEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
-                    //quakecraftEmbed.setThumbnail();
 
                     quakecraftEmbed.addField("Coins : ", String.valueOf(quake.getCoins()), true);
                     quakecraftEmbed.addField("Dash Cooldown : ",quake.getDashCooldown() + "s", true);
@@ -84,8 +80,6 @@ public class QuakeCraftStatsCommand extends ListenerAdapter {
 
 
                     channel.sendMessage(quakecraftEmbed.build()).queue();
-
-                    player.getStats().getQuake().getCosmetics().getBarrels().forEach(System.out::println);
 
                 }
             }
