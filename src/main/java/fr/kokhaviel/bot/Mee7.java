@@ -1,6 +1,7 @@
 package fr.kokhaviel.bot;
 
 import fr.kokhaviel.bot.commands.fun.*;
+import fr.kokhaviel.bot.commands.hypixel.games.PaintballStatsCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.QuakeCraftStatsCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.WallsStatsCommand;
 import fr.kokhaviel.bot.commands.moderation.*;
@@ -71,6 +72,7 @@ public class Mee7 {
                     .addEventListeners(new MassBanCommand())
                     .addEventListeners(new MuteCommand())
                     .addEventListeners(new NowPlayingCommand())
+                    .addEventListeners(new PaintballStatsCommand())
                     .addEventListeners(new PauseCommand())
                     .addEventListeners(new PingCommand())
                     .addEventListeners(new PlayCommand())

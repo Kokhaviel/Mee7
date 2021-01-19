@@ -45,7 +45,7 @@ public class WallsStatsCommand extends ListenerAdapter {
 
                     EmbedBuilder wallsEmbed = new EmbedBuilder();
                     wallsEmbed.setAuthor("Walls Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-                    wallsEmbed.setColor(new Color(156, 97, 65));
+                    wallsEmbed.setColor(Color.YELLOW);
                     wallsEmbed.setTitle(player.getUsername() + " Stats");
                     wallsEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
@@ -63,7 +63,7 @@ public class WallsStatsCommand extends ListenerAdapter {
 
                     EmbedBuilder wallsPerksEmbed = new EmbedBuilder();
                     wallsPerksEmbed.setAuthor("Walls Perks", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-                    wallsPerksEmbed.setColor(new Color(156, 97, 65));
+                    wallsPerksEmbed.setColor(Color.YELLOW);
                     wallsPerksEmbed.setTitle(player.getUsername() + " Stats");
                     wallsPerksEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
