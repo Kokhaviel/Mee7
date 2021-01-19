@@ -1,28 +1,34 @@
 package fr.kokhaviel.bot;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.security.auth.login.LoginException;
-
+import fr.kokhaviel.bot.commands.fun.*;
+import fr.kokhaviel.bot.commands.hypixel.games.QuakeCraftStatsCommand;
 import fr.kokhaviel.bot.commands.moderation.*;
 import fr.kokhaviel.bot.commands.music.*;
-import fr.kokhaviel.bot.commands.server.*;
-import net.dv8tion.jda.api.*;
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.requests.GatewayIntent;
-import fr.kokhaviel.bot.commands.fun.*;
-import fr.kokhaviel.bot.commands.user.*;
+import fr.kokhaviel.bot.commands.server.RoleInfoCommand;
+import fr.kokhaviel.bot.commands.server.ServerInfoCommand;
+import fr.kokhaviel.bot.commands.user.AvatarCommand;
+import fr.kokhaviel.bot.commands.user.InfoCommand;
 import fr.kokhaviel.bot.commands.user.afk.AfkCommand;
-import fr.kokhaviel.bot.event.afk.AfkVerify;
 import fr.kokhaviel.bot.commands.util.*;
+import fr.kokhaviel.bot.event.afk.AfkVerify;
 import fr.kokhaviel.bot.event.logs.Logs;
 import fr.kokhaviel.bot.event.moderation.AutoModerator;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import zone.nora.slothpixel.Slothpixel;
+
+import javax.security.auth.login.LoginException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Mee7 {
 
     public static List<String> afkIDs = new ArrayList<>();
+
+    public static Slothpixel sloth = new Slothpixel();
 
     public static JDA jda;
 
@@ -67,6 +73,7 @@ public class Mee7 {
                     .addEventListeners(new PauseCommand())
                     .addEventListeners(new PingCommand())
                     .addEventListeners(new PlayCommand())
+                    .addEventListeners(new QuakeCraftStatsCommand())
                     .addEventListeners(new QueueCommand())
                     .addEventListeners(new RandomCommand())
                     .addEventListeners(new RebootCommand())
