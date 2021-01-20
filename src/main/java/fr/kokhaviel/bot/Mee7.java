@@ -1,6 +1,9 @@
 package fr.kokhaviel.bot;
 
 import fr.kokhaviel.bot.commands.fun.*;
+import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitLevelCommand;
+import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitStatsCommand;
+import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzStatsCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.PaintballStatsCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.QuakeCraftStatsCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.WallsStatsCommand;
@@ -59,6 +62,9 @@ public class Mee7 {
                     .addEventListeners(new AutoModerator())
                     .addEventListeners(new AvatarCommand())
                     .addEventListeners(new BanCommand())
+                    .addEventListeners(new BlitzKitLevelCommand())
+                    .addEventListeners(new BlitzKitStatsCommand())
+                    .addEventListeners(new BlitzStatsCommand())
                     .addEventListeners(new ClearCommand())
                     .addEventListeners(new DameDaneCommand())
                     .addEventListeners(new EightBallCommand())
