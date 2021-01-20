@@ -1,6 +1,7 @@
 package fr.kokhaviel.bot;
 
 import fr.kokhaviel.bot.commands.fun.*;
+import fr.kokhaviel.bot.commands.hypixel.games.TntGamesStatsCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitLevelCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitStatsCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzStatsCommand;
@@ -96,6 +97,7 @@ public class Mee7 {
                     .addEventListeners(new SkipCommand())
                     .addEventListeners(new StopCommand())
 //                  .addEventListeners(new ThatPersonDoesNotExistCommand())
+                    .addEventListeners(new TntGamesStatsCommand())
                     .addEventListeners(new UnbanCommand())
                     .addEventListeners(new UnmuteCommand())
                     .addEventListeners(new VolumeCommand())
