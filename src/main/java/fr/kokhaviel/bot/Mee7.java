@@ -1,13 +1,10 @@
 package fr.kokhaviel.bot;
 
 import fr.kokhaviel.bot.commands.fun.*;
-import fr.kokhaviel.bot.commands.hypixel.games.TntGamesStatsCommand;
+import fr.kokhaviel.bot.commands.hypixel.games.*;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitLevelCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitStatsCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzStatsCommand;
-import fr.kokhaviel.bot.commands.hypixel.games.PaintballStatsCommand;
-import fr.kokhaviel.bot.commands.hypixel.games.QuakeCraftStatsCommand;
-import fr.kokhaviel.bot.commands.hypixel.games.WallsStatsCommand;
 import fr.kokhaviel.bot.commands.moderation.*;
 import fr.kokhaviel.bot.commands.music.*;
 import fr.kokhaviel.bot.commands.server.RoleInfoCommand;
@@ -100,6 +97,7 @@ public class Mee7 {
                     .addEventListeners(new TntGamesStatsCommand())
                     .addEventListeners(new UnbanCommand())
                     .addEventListeners(new UnmuteCommand())
+                    .addEventListeners(new VampireZStatsCommand())
                     .addEventListeners(new VolumeCommand())
                     .addEventListeners(new WallsStatsCommand())
 

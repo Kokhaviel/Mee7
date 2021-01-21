@@ -246,7 +246,8 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Blitz Stats : ", Config.HYPIXEL_PREFIX + "blitz <Player>", false)
                 .addField("Blitz Kit Stats : ", Config.HYPIXEL_PREFIX + "blitzstats kitstats <Player>", false)
                 .addField("Blitz Kit Level : ", Config.HYPIXEL_PREFIX + "blitzstats kitlevel <Player>", false)
-                .addField("Tnt Games Stats : ", Config.HYPIXEL_PREFIX + "tnt <Player>", false);
+                .addField("Tnt Games Stats : ", Config.HYPIXEL_PREFIX + "tnt <Player>", false)
+                .addField("VampirZ Stats : ", Config.HYPIXEL_PREFIX + "vampirez <Player>", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
 
