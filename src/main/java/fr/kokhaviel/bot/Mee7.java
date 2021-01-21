@@ -74,6 +74,7 @@ public class Mee7 {
                     .addEventListeners(new Logs())
                     .addEventListeners(new MassKickCommand())
                     .addEventListeners(new MassBanCommand())
+                    .addEventListeners(new MegaWallsStatsCommand())
                     .addEventListeners(new MuteCommand())
                     .addEventListeners(new NowPlayingCommand())
                     .addEventListeners(new PaintballStatsCommand())
