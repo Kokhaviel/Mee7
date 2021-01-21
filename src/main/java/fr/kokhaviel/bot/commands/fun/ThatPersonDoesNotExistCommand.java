@@ -11,6 +11,8 @@ import java.io.File;
 
 public class ThatPersonDoesNotExistCommand extends ListenerAdapter {
 
+    //DOESN'T WORK FOR THE MOMENT
+
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
