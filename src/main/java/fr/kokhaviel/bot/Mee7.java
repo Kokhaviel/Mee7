@@ -99,6 +99,7 @@ public class Mee7 {
 //                  .addEventListeners(new ThatPersonDoesNotExistCommand())
                     .addEventListeners(new TntGamesStatsCommand())
                     .addEventListeners(new UnbanCommand())
+                    .addEventListeners(new UHCStatsCommand())
                     .addEventListeners(new UnmuteCommand())
                     .addEventListeners(new VampireZStatsCommand())
                     .addEventListeners(new VolumeCommand())
