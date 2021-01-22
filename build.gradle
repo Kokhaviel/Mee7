@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'java-library'
+    id 'application'
 }
 
 group 'fr.kokhaviel'
@@ -22,3 +24,9 @@ dependencies {
     implementation 'com.github.mew:Slothpixel-JVM:master-SNAPSHOT'
 
 }
+
+application {
+    mainClassName = 'fr.kokhaviel.bot.Mee7'
+}
+
+
