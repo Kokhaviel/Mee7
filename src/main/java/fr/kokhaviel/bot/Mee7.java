@@ -58,6 +58,7 @@ public class Mee7 {
                     .addEventListeners(new AfkCommand())
                     .addEventListeners(new AfkVerify())
                     .addEventListeners(new ArcadeStatsCommand())
+                    .addEventListeners(new ArenaStatsCommand())
                     .addEventListeners(new AutoModerator())
                     .addEventListeners(new AvatarCommand())
                     .addEventListeners(new BanCommand())
