@@ -32,28 +32,30 @@ public class AboutCommand extends ListenerAdapter {
 
             User user = member.getUser();
 
-            EmbedBuilder aboutEmbed = new EmbedBuilder();
-
-            aboutEmbed.setTitle("About Menu")
-                    .setColor(Color.GREEN)
-                    .setAuthor("Mee7 : A Simple Java Discord Bot ")
-                    .setThumbnail(jda.getSelfUser().getAvatarUrl())
-
-                    .addField("Developer : ", "Kokhaviel.java#0001", false)
-                    .addField("Github : ", "[Github Repository](https://github.com/Kokhaviel/Mee7)", false)
-                    .addField("Prefix : ", Config.PREFIX, false)
-                    .addField("Help : ", Config.PREFIX + "help", false)
-                    .addField("Library : ", "[JDA](https://github.com/DV8FromTheWorld/JDA)", false);
-
             channel.sendMessage(author.getAsMention() + ", a message will be send to your DM !").queue();
 
             if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
 
-            ((UserImpl) user).getPrivateChannel().sendMessage(aboutEmbed.build()).queue();
-
+            ((UserImpl) user).getPrivateChannel().sendMessage(getAbout(jda).build()).queue();
 
         }
-
     }
 
+    private EmbedBuilder getAbout(JDA jda) {
+
+        EmbedBuilder aboutEmbed = new EmbedBuilder();
+
+        aboutEmbed.setTitle("About Menu")
+                .setColor(Color.GREEN)
+                .setAuthor("Mee7 : A Simple Java Discord Bot ")
+                .setThumbnail(jda.getSelfUser().getAvatarUrl())
+
+                .addField("Developer : ", "Kokhaviel.java#0001", false)
+                .addField("Github : ", "[Github Repository](https://github.com/Kokhaviel/Mee7)", false)
+                .addField("Prefix : ", Config.PREFIX, false)
+                .addField("Help : ", Config.PREFIX + "help", false)
+                .addField("Libraries : ", "[JDA](https://github.com/DV8FromTheWorld/JDA), [LavaPlayer](https://github.com/sedmelluq/lavaplayer), [Slothpixel](https://docs.slothpixel.me/) ", false);
+
+        return aboutEmbed;
+    }
 }

@@ -43,33 +43,32 @@ public class InfoCommand extends ListenerAdapter {
 
 
                 List<Member> mentionedMembers = message.getMentionedMembers();
-
                 Member target = mentionedMembers.get(0);
 
-                EmbedBuilder userInfoEmbed = new EmbedBuilder();
-
-                userInfoEmbed.setTitle(target.getUser().getName() + " User Info")
-                        .setColor(Color.CYAN)
-                        .setThumbnail(target.getUser().getAvatarUrl())
-                        .setAuthor("User Info", null, jda.getSelfUser().getAvatarUrl());
-
-                userInfoEmbed.addField("ID : ", target.getId(), false);
-
-                if (target.getNickname() != null) userInfoEmbed.addField("Nickname : ", target.getNickname(), false);
-
-                userInfoEmbed.addField("Joined on ", target.getTimeJoined().toString(), false);
-                userInfoEmbed.addField("Account Created on ", target.getTimeCreated().toString(), false);
-                userInfoEmbed.addField("Status", target.getOnlineStatus().getKey(), false);
-                userInfoEmbed.addField("Activities : ", target.getActivities().toString(), false);
-
-                channel.sendMessage(userInfoEmbed.build()).queue();
-
+                channel.sendMessage(getUserInfo(jda, target).build()).queue();
             }
-
-
         }
+    }
 
+    private EmbedBuilder getUserInfo(JDA jda, Member target) {
 
+        EmbedBuilder userInfoEmbed = new EmbedBuilder();
+
+        userInfoEmbed.setTitle(target.getUser().getName() + " User Info")
+                .setColor(Color.CYAN)
+                .setThumbnail(target.getUser().getAvatarUrl())
+                .setAuthor("User Info", null, jda.getSelfUser().getAvatarUrl());
+
+        userInfoEmbed.addField("ID : ", target.getId(), false);
+
+        if (target.getNickname() != null) userInfoEmbed.addField("Nickname : ", target.getNickname(), false);
+
+        userInfoEmbed.addField("Joined on ", target.getTimeJoined().toString(), false);
+        userInfoEmbed.addField("Account Created on ", target.getTimeCreated().toString(), false);
+        userInfoEmbed.addField("Status", target.getOnlineStatus().getKey(), false);
+        userInfoEmbed.addField("Activities : ", target.getActivities().toString(), false);
+
+        return userInfoEmbed;
     }
 
 }

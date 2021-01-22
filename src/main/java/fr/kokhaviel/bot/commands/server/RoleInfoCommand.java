@@ -43,26 +43,31 @@ public class RoleInfoCommand extends ListenerAdapter {
             } else {
 
                 List<Role> roleMentioned = message.getMentionedRoles();
-
                 Role target = roleMentioned.get(0);
 
-                EmbedBuilder roleinfoEmbed = new EmbedBuilder();
-
-                roleinfoEmbed.setTitle(target.getName() + " Role Info")
-                        .setColor(Color.CYAN)
-                        .setThumbnail(guild.getIconUrl())
-                        .setAuthor("User Info", null, jda.getSelfUser().getAvatarUrl());
-
-                roleinfoEmbed.addField("ID : ", target.getId(), false);
-                roleinfoEmbed.addField("Time Create : ", String.valueOf(target.getTimeCreated()), false);
-                roleinfoEmbed.addField("Color", target.getColor().toString().replace("java.awt.Color", ""), false);
-                roleinfoEmbed.addField("Hoist : ", String.valueOf(target.isHoisted()), false);
-                roleinfoEmbed.addField("Mentionnable", String.valueOf(target.isMentionable()), false);
-
-                channel.sendMessage(roleinfoEmbed.build()).queue();
+                channel.sendMessage(getRoleInfo(guild, jda, target).build()).queue();
 
             }
         }
 
     }
+
+    private EmbedBuilder getRoleInfo(Guild guild, JDA jda, Role target) {
+
+        EmbedBuilder roleinfoEmbed = new EmbedBuilder();
+
+        roleinfoEmbed.setTitle(target.getName() + " Role Info")
+                .setColor(Color.CYAN)
+                .setThumbnail(guild.getIconUrl())
+                .setAuthor("User Info", null, jda.getSelfUser().getAvatarUrl());
+
+        roleinfoEmbed.addField("ID : ", target.getId(), false);
+        roleinfoEmbed.addField("Time Create : ", String.valueOf(target.getTimeCreated()), false);
+        roleinfoEmbed.addField("Color", target.getColor().toString().replace("java.awt.Color", ""), false);
+        roleinfoEmbed.addField("Hoist : ", String.valueOf(target.isHoisted()), false);
+        roleinfoEmbed.addField("Mentionnable", String.valueOf(target.isMentionable()), false);
+
+        return roleinfoEmbed;
+    }
+
 }

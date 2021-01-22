@@ -42,20 +42,23 @@ public class AvatarCommand extends ListenerAdapter {
 
                 Member target = guild.getMemberById(args[1]);
 
-                EmbedBuilder avatarEmbed = new EmbedBuilder();
-
-                avatarEmbed.setTitle("Avatar of " + target.getUser().getAsTag());
-                avatarEmbed.setColor(Color.YELLOW);
-                avatarEmbed.setAuthor("Avatar");
-                avatarEmbed.setThumbnail(target.getUser().getAvatarUrl());
-
-                channel.sendMessage(avatarEmbed.build()).queue();
-
+                channel.sendMessage(getAvatar(target).build()).queue();
             }
 
         }
 
 
+    }
+
+    private EmbedBuilder getAvatar(Member target) {
+
+        EmbedBuilder avatarEmbed = new EmbedBuilder();
+        avatarEmbed.setTitle("Avatar of " + target.getUser().getAsTag());
+        avatarEmbed.setColor(Color.YELLOW);
+        avatarEmbed.setAuthor("Avatar");
+        avatarEmbed.setThumbnail(target.getUser().getAvatarUrl());
+
+        return avatarEmbed;
     }
 
 }

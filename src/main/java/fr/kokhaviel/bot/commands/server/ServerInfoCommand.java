@@ -35,31 +35,32 @@ public class ServerInfoCommand extends ListenerAdapter {
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else {
-
-                EmbedBuilder serverinfoEmbed = new EmbedBuilder();
-
-                serverinfoEmbed.setTitle(guild.getName() + " Server Info")
-                        .setColor(Color.CYAN)
-                        .setThumbnail(guild.getIconUrl())
-                        .setAuthor("Server Info", null, jda.getSelfUser().getAvatarUrl());
-
-                serverinfoEmbed.addField("Name : ", guild.getName(), false);
-                serverinfoEmbed.addField("Owner : ", guild.getOwner().getUser().getAsTag(), false);
-                if (guild.getIconUrl() != null) serverinfoEmbed.addField("Icon : ", guild.getIconUrl(), false);
-                if (guild.getBannerUrl() != null) serverinfoEmbed.addField("Banner : ", guild.getBannerUrl(), false);
-                serverinfoEmbed.addField("Region : ", guild.getRegion().getName(), false);
-                if (guild.getDescription() != null)
-                    serverinfoEmbed.addField("Description : ", guild.getDescription(), false);
-                serverinfoEmbed.addField("Boost Tier : ", guild.getBoostTier().name(), false);
-                if (guild.getSystemChannel() != null)
-                    serverinfoEmbed.addField("System Channel : ", guild.getSystemChannel().getAsMention(), false);
-
-                channel.sendMessage(serverinfoEmbed.build()).queue();
-
+                channel.sendMessage(getServerInfo(guild, jda).build()).queue();
             }
-
         }
-
-
     }
+
+    private EmbedBuilder getServerInfo(Guild guild, JDA jda) {
+
+        EmbedBuilder serverinfoEmbed = new EmbedBuilder();
+
+        serverinfoEmbed.setTitle(guild.getName() + " Server Info")
+                .setColor(Color.CYAN)
+                .setThumbnail(guild.getIconUrl())
+                .setAuthor("Server Info", null, jda.getSelfUser().getAvatarUrl());
+
+        serverinfoEmbed.addField("Name : ", guild.getName(), false);
+        serverinfoEmbed.addField("Owner : ", guild.getOwner().getUser().getAsTag(), false);
+        if (guild.getIconUrl() != null) serverinfoEmbed.addField("Icon : ", guild.getIconUrl(), false);
+        if (guild.getBannerUrl() != null) serverinfoEmbed.addField("Banner : ", guild.getBannerUrl(), false);
+        serverinfoEmbed.addField("Region : ", guild.getRegion().getName(), false);
+        if (guild.getDescription() != null)
+            serverinfoEmbed.addField("Description : ", guild.getDescription(), false);
+        serverinfoEmbed.addField("Boost Tier : ", guild.getBoostTier().name(), false);
+        if (guild.getSystemChannel() != null)
+            serverinfoEmbed.addField("System Channel : ", guild.getSystemChannel().getAsMention(), false);
+
+        return serverinfoEmbed;
+    }
+
 }

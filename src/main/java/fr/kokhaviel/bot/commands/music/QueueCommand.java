@@ -30,8 +30,7 @@ public class QueueCommand extends ListenerAdapter {
         final String[] args = message.getContentRaw().split("\\s+");
 
 
-
-        if(args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "queue")) {
+        if (args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "queue")) {
 
             final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
             final BlockingQueue<AudioTrack> queue = musicManager.scheduler.queue;
@@ -41,39 +40,12 @@ public class QueueCommand extends ListenerAdapter {
             final int trackCount = Math.min(queue.size(), 10);
             final List<AudioTrack> trackList = new ArrayList<>(queue);
 
-            if(queue.isEmpty()) {
+            if (queue.isEmpty()) {
 
                 channel.sendMessage("Queue is currently empty !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
             } else {
-
-                EmbedBuilder queueEmbed = new EmbedBuilder();
-
-                queueEmbed.setTitle("Current Queue :");
-                queueEmbed.setColor(Color.ORANGE);
-                queueEmbed.setAuthor("Queue Command", null, iconUrl);
-                queueEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
-
-
-
-                for (int i = 0; i < trackCount; i++) {
-
-                    final AudioTrack track = trackList.get(i);
-                    final String title = track.getInfo().title;
-                    final String author = track.getInfo().author;
-
-                    queueEmbed.addField(title + " `[" + timeFormat(track.getDuration()) + "]`", author, false);
-
-                }
-
-                if(trackList.size() > trackCount) {
-
-                    queueEmbed.addField("And " + String.valueOf(trackList.size() - trackCount) +" More ...", "", false);
-
-                }
-
-            channel.sendMessage(queueEmbed.build()).queue();
-
+                channel.sendMessage(getMusicQueue(event, iconUrl, trackCount, trackList).build()).queue();
             }
         }
     }
@@ -85,6 +57,35 @@ public class QueueCommand extends ListenerAdapter {
         final long seconds = timeMillis % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1);
 
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+
+    private EmbedBuilder getMusicQueue(MessageReceivedEvent event, String iconUrl, int trackCount, List<AudioTrack> trackList) {
+
+        EmbedBuilder queueEmbed = new EmbedBuilder();
+
+        queueEmbed.setTitle("Current Queue :");
+        queueEmbed.setColor(Color.ORANGE);
+        queueEmbed.setAuthor("Queue Command", null, iconUrl);
+        queueEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+
+
+        for (int i = 0; i < trackCount; i++) {
+
+            final AudioTrack track = trackList.get(i);
+            final String title = track.getInfo().title;
+            final String author = track.getInfo().author;
+
+            queueEmbed.addField(title + " `[" + timeFormat(track.getDuration()) + "]`", author, false);
+
+        }
+
+        if (trackList.size() > trackCount) {
+
+            queueEmbed.addField("And " + String.valueOf(trackList.size() - trackCount) + " More ...", "", false);
+
+        }
+
+        return queueEmbed;
     }
 
 }
