@@ -58,7 +58,7 @@ public class ArcadeStatsCommand extends ListenerAdapter {
         arcadeEmbed.setAuthor("Arcade Stats (1)", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arcadeEmbed.setColor(Color.GREEN);
         arcadeEmbed.setTitle(player.getUsername() + " Stats");
-        arcadeEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        arcadeEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         arcadeEmbed.addField("Coins : ", String.valueOf(arcade.getCoins()), true);
         arcadeEmbed.addField("Kills : ", String.valueOf(arcade.getKills()), true);
@@ -67,7 +67,7 @@ public class ArcadeStatsCommand extends ListenerAdapter {
         arcadeEmbed.addBlankField(false);
         arcadeEmbed.addField("Blocking Dead Wins : ", String.valueOf(arcade.getModes().getBlockingDead().getWins()), true);
         arcadeEmbed.addField("Blocking Dead Kills : ", String.valueOf(arcade.getModes().getBlockingDead().getZombieKills()), true);
-        arcadeEmbed.addField("Blockind Dead Headshots : ", String.valueOf(arcade.getModes().getBlockingDead().getHeadshots()), true);
+        arcadeEmbed.addField("Blocking Dead Headshots : ", String.valueOf(arcade.getModes().getBlockingDead().getHeadshots()), true);
 
         arcadeEmbed.addBlankField(false);
         arcadeEmbed.addField("Dragon Wars Wins : ", String.valueOf(arcade.getModes().getDragonWars().getWins()), true);
@@ -99,7 +99,7 @@ public class ArcadeStatsCommand extends ListenerAdapter {
         arcadeEmbed.setAuthor("Arcade Stats (2)", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arcadeEmbed.setColor(Color.GREEN);
         arcadeEmbed.setTitle(player.getUsername() + " Stats");
-        arcadeEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        arcadeEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         arcadeEmbed.addField("Party Games 1st Place : ", String.valueOf(arcade.getModes().getPartyGames().getWins_1()), true);
         arcadeEmbed.addField("Party Games 2nd Place : ", String.valueOf(arcade.getModes().getPartyGames().getWins_2()), true);
@@ -139,12 +139,12 @@ public class ArcadeStatsCommand extends ListenerAdapter {
         arcadeEmbed.setAuthor("Arcade Stats (3)", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arcadeEmbed.setColor(Color.GREEN);
         arcadeEmbed.setTitle(player.getUsername() + " Stats");
-        arcadeEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        arcadeEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        arcadeEmbed.addField("Holl in the Wall Wins : ", String.valueOf(arcade.getModes().getHoleInTheWall().getWins()), true);
-        arcadeEmbed.addField("Holl in the Wall Rounds : ", String.valueOf(arcade.getModes().getHoleInTheWall().getRounds()), true);
-        arcadeEmbed.addField("Holl in the Wall HS Qualif : ", String.valueOf(arcade.getModes().getHoleInTheWall().getHighestScoreQualification()), true);
-        arcadeEmbed.addField("Holl in the Wall HS Finals : ", String.valueOf(arcade.getModes().getHoleInTheWall().getHighestScoreFinals()), true);
+        arcadeEmbed.addField("Hole in the Wall Wins : ", String.valueOf(arcade.getModes().getHoleInTheWall().getWins()), true);
+        arcadeEmbed.addField("Hole in the Wall Rounds : ", String.valueOf(arcade.getModes().getHoleInTheWall().getRounds()), true);
+        arcadeEmbed.addField("Hole in the Wall HS Qualification : ", String.valueOf(arcade.getModes().getHoleInTheWall().getHighestScoreQualification()), true);
+        arcadeEmbed.addField("Hole in the Wall HS Finals : ", String.valueOf(arcade.getModes().getHoleInTheWall().getHighestScoreFinals()), true);
 
         arcadeEmbed.addBlankField(false);
         arcadeEmbed.addField("Zombies Wins : ", String.valueOf(arcade.getModes().getZombies().getWins()), true);

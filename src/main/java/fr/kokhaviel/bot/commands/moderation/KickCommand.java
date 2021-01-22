@@ -46,14 +46,10 @@ public class KickCommand extends ListenerAdapter {
 
                 message.delete().queue();
 
-                if (guild == null) {
+                assert author != null;
+                if (!author.hasPermission(Permission.KICK_MEMBERS)) {
 
-                    channel.sendMessage("You must execute this command on server !").queue(
-                            delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
-                } else if (!author.hasPermission(Permission.KICK_MEMBERS)) {
-
-                    channel.sendMessage("You dont have the permission to kick member !").queue(
+                    channel.sendMessage("You don't have the permission to kick member !").queue(
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
                 } else if (mentionedMembers.isEmpty()) {
@@ -66,7 +62,7 @@ public class KickCommand extends ListenerAdapter {
                     Member target = mentionedMembers.get(0);
 
                     guild.kick(target, args[2]).queue(
-                            sucess -> channel.sendMessage("Successfully Kicked " + target.getUser().getAsTag()).queue(
+                            success -> channel.sendMessage("Successfully Kicked " + target.getUser().getAsTag()).queue(
                                     delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)),
                             error -> channel.sendMessage("Unable To Kick " + target.getUser().getAsTag()).queue(
                                     delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS))

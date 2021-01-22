@@ -1,7 +1,5 @@
 package fr.kokhaviel.bot.commands.util;
 
-import java.util.concurrent.TimeUnit;
-
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;

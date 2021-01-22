@@ -59,7 +59,7 @@ public class UHCStatsCommand extends ListenerAdapter {
         uhcEmbed.setAuthor("UHC Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         uhcEmbed.setColor(Color.YELLOW);
         uhcEmbed.setTitle(player.getUsername() + " Stats");
-        uhcEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        uhcEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         uhcEmbed.addField("Coins : ", String.valueOf(uhc.getCoins()), true);
         uhcEmbed.addField("Wins : ", String.valueOf(uhc.getWins()), true);
@@ -81,7 +81,7 @@ public class UHCStatsCommand extends ListenerAdapter {
         uhcEmbed.setAuthor("UHC Solo Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         uhcEmbed.setColor(Color.YELLOW);
         uhcEmbed.setTitle(player.getUsername() + " Stats");
-        uhcEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        uhcEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         uhcEmbed.addField("Solo Wins : ", String.valueOf(uhc.getGamemodes().getSolo().getWins()), true);
         uhcEmbed.addField("Solo Kills : ", String.valueOf(uhc.getGamemodes().getSolo().getKills()), true);
@@ -106,11 +106,11 @@ public class UHCStatsCommand extends ListenerAdapter {
         uhcEmbed.setAuthor("UHC Perks Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         uhcEmbed.setColor(Color.YELLOW);
         uhcEmbed.setTitle(player.getUsername() + " Stats");
-        uhcEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        uhcEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         uhcEmbed.addField("Alchemy Perk : ", String.valueOf(uhc.getPerks().getAlchemy().getPerkAlchemyLineA()), true);
         uhcEmbed.addField("Apprentice Perk : ", String.valueOf(uhc.getPerks().getApprentice().getPerkApprenticeLineA()), true);
-        uhcEmbed.addField("Armorsmith Perk : ", String.valueOf(uhc.getPerks().getArmorsmith().getPerkArmorsmithLineA()), true);
+        uhcEmbed.addField("ArmorSmith Perk : ", String.valueOf(uhc.getPerks().getArmorsmith().getPerkArmorsmithLineA()), true);
         uhcEmbed.addField("BloodCraft Perk : ", String.valueOf(uhc.getPerks().getBloodcraft().getPerkBloodcraftLineA()), true);
         uhcEmbed.addField("Cooking Perk : ", String.valueOf(uhc.getPerks().getCooking().getPerkCookingLineA()), true);
         uhcEmbed.addField("Enchanting Perk : ", String.valueOf(uhc.getPerks().getEnchanting().getPerkEnchantingLineA()), true);

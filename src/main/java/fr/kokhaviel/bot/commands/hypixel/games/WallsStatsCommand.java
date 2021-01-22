@@ -59,7 +59,7 @@ public class WallsStatsCommand extends ListenerAdapter {
         wallsEmbed.setAuthor("Walls Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         wallsEmbed.setColor(Color.YELLOW);
         wallsEmbed.setTitle(player.getUsername() + " Stats");
-        wallsEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        wallsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         wallsEmbed.addField("Coins : ", String.valueOf(walls.getCoins()), true);
 
@@ -71,7 +71,7 @@ public class WallsStatsCommand extends ListenerAdapter {
         wallsEmbed.addField("Wins :", String.valueOf(walls.getWins()), true);
         wallsEmbed.addField("Losses : ", String.valueOf(walls.getLosses()), true);
         wallsEmbed.addField("WinLoss : ", String.valueOf(walls.getWinLoss()), true);
-        wallsEmbed.addField("Win Percentetage : ", String.valueOf(walls.getWinPercentage()), true);
+        wallsEmbed.addField("Win Percentage : ", String.valueOf(walls.getWinPercentage()), true);
 
         return wallsEmbed;
     }
@@ -82,14 +82,14 @@ public class WallsStatsCommand extends ListenerAdapter {
         wallsPerksEmbed.setAuthor("Walls Perks", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         wallsPerksEmbed.setColor(Color.YELLOW);
         wallsPerksEmbed.setTitle(player.getUsername() + " Stats");
-        wallsPerksEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        wallsPerksEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         wallsPerksEmbed.addField("Boss Kills Perk : ", String.valueOf(walls.getPerks().getBossSkills()), true);
         wallsPerksEmbed.addField("Boss Digger Perk : ", String.valueOf(walls.getPerks().getBossDigger()), true);
         wallsPerksEmbed.addField("Boss Guardian Perk : ", String.valueOf(walls.getPerks().getBossGuardian()), true);
-        wallsPerksEmbed.addField("Scotman Perk : ", String.valueOf(walls.getPerks().getScotsman()), true);
+        wallsPerksEmbed.addField("Scotsman Perk : ", String.valueOf(walls.getPerks().getScotsman()), true);
         wallsPerksEmbed.addField("Insane Farmer Perk : ", String.valueOf(walls.getPerks().getInsaneFarmer()), true);
-        wallsPerksEmbed.addField("Thats Hot Perk : ", String.valueOf(walls.getPerks().getThatsHot()), true);
+        wallsPerksEmbed.addField("That's Hot Perk : ", String.valueOf(walls.getPerks().getThatsHot()), true);
         wallsPerksEmbed.addField("Gold Rush Perk : ", String.valueOf(walls.getPerks().getGoldRush()), true);
         wallsPerksEmbed.addField("Leather Worker Perk : ", String.valueOf(walls.getPerks().getLeatherWorker()), true);
         wallsPerksEmbed.addField("Soup Drinker Perk : ", String.valueOf(walls.getPerks().getSoupDrinker()), true);
@@ -99,7 +99,7 @@ public class WallsStatsCommand extends ListenerAdapter {
         wallsPerksEmbed.addField("Skybase King Perk : ", String.valueOf(walls.getPerks().getSkybaseKing()), true);
         wallsPerksEmbed.addField("Burn Baby Burn Perk : ", String.valueOf(walls.getPerks().getBurnBabyBurn()), true);
         wallsPerksEmbed.addField("Very Fortunate Perk : ", String.valueOf(walls.getPerks().getVeryFortunate()), true);
-        wallsPerksEmbed.addField("Get To The Choppar Perk : ", String.valueOf(walls.getPerks().getGetToTheChoppa()), true);
+        wallsPerksEmbed.addField("Get To The Choppa Perk : ", String.valueOf(walls.getPerks().getGetToTheChoppa()), true);
         wallsPerksEmbed.addField("Champion Perk : ", String.valueOf(walls.getPerks().getChampion()), true);
 
         return wallsPerksEmbed;

@@ -42,6 +42,7 @@ public class AvatarCommand extends ListenerAdapter {
 
                 Member target = guild.getMemberById(args[1]);
 
+                assert target != null;
                 channel.sendMessage(getAvatar(target).build()).queue();
             }
 

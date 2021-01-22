@@ -39,23 +39,26 @@ public class ClearCommand extends ListenerAdapter {
                 channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "clear <Int>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
-            } else if (!member.hasPermission(Permission.MESSAGE_MANAGE)) {
-
-                message.delete().queue();
-
-                channel.sendMessage("Missing Permission : You Cannot Manage Messages !").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
+                assert member != null;
+                if (!member.hasPermission(Permission.MESSAGE_MANAGE)) {
 
-                int numToDelete = Integer.parseInt(args[1]);
+                    message.delete().queue();
 
-                List<Message> toDelete = channel.getHistory().retrievePast(numToDelete).complete();
+                    channel.sendMessage("Missing Permission : You Cannot Manage Messages !").queue(
+                            delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
-                textChannel.deleteMessages(toDelete).queue(
-                        success -> channel.sendMessage("Successfully Delete " + numToDelete + " Messages !").queue(
-                                delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)));
+                } else {
 
+                    int numToDelete = Integer.parseInt(args[1]);
+
+                    List<Message> toDelete = channel.getHistory().retrievePast(numToDelete).complete();
+
+                    textChannel.deleteMessages(toDelete).queue(
+                            success -> channel.sendMessage("Successfully Delete " + numToDelete + " Messages !").queue(
+                                    delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)));
+
+                }
             }
 
         }

@@ -58,7 +58,7 @@ public class MegaWallsStatsCommand extends ListenerAdapter {
         megaWallsEmbed.setAuthor("Mega Walls Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         megaWallsEmbed.setColor(new Color(111, 78, 104));
         megaWallsEmbed.setTitle(player.getUsername() + " Stats");
-        megaWallsEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        megaWallsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         megaWallsEmbed.addField("Coins : ", String.valueOf(megawalls.getCoins()), true);
 

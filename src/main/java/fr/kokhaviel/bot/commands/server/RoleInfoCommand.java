@@ -65,7 +65,7 @@ public class RoleInfoCommand extends ListenerAdapter {
         roleinfoEmbed.addField("Time Create : ", String.valueOf(target.getTimeCreated()), false);
         roleinfoEmbed.addField("Color", target.getColor().toString().replace("java.awt.Color", ""), false);
         roleinfoEmbed.addField("Hoist : ", String.valueOf(target.isHoisted()), false);
-        roleinfoEmbed.addField("Mentionnable", String.valueOf(target.isMentionable()), false);
+        roleinfoEmbed.addField("Mentionable", String.valueOf(target.isMentionable()), false);
 
         return roleinfoEmbed;
     }

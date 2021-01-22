@@ -1,8 +1,5 @@
 package fr.kokhaviel.bot.commands.util;
 
-import java.awt.Color;
-import java.util.concurrent.TimeUnit;
-
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
@@ -10,6 +7,8 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import java.awt.*;
 
 public class RepoCommand extends ListenerAdapter {
 
@@ -36,7 +35,7 @@ public class RepoCommand extends ListenerAdapter {
             repoEmbed.addField("Git : ", "git clone https://github.com/Kokhaviel/Mee7.git", false);
             repoEmbed.addField("SSH : ", "git@github.com:Kokhaviel/Mee7.git", false);
 
-            repoEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nCommand Requested by : " + message.getAuthor(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+            repoEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nCommand Requested by : " + message.getAuthor(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
             channel.sendMessage(repoEmbed.build()).queue();
 

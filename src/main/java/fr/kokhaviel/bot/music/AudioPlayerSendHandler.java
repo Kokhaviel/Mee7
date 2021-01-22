@@ -7,13 +7,13 @@ import net.dv8tion.jda.api.audio.AudioSendHandler;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
-public class AudioPlayerSendHadler implements AudioSendHandler {
+public class AudioPlayerSendHandler implements AudioSendHandler {
 
     final AudioPlayer audioPlayer;
     final ByteBuffer buffer;
     final MutableAudioFrame frame;
 
-    public AudioPlayerSendHadler(AudioPlayer audioPlayer) {
+    public AudioPlayerSendHandler(AudioPlayer audioPlayer) {
         this.audioPlayer = audioPlayer;
         this.buffer = ByteBuffer.allocate(1024);
         this.frame = new MutableAudioFrame();

@@ -59,7 +59,7 @@ public class ArenaStatsCommand extends ListenerAdapter {
         arenaEmbed.setAuthor("Arena Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arenaEmbed.setColor(Color.ORANGE);
         arenaEmbed.setTitle(player.getUsername() + " Stats");
-        arenaEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        arenaEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         arenaEmbed.addField("Coins : ", String.valueOf(arena.getCoins()), true);
         arenaEmbed.addField("Coins Spent : ", String.valueOf(arena.getCoinsSpent()), true);
@@ -96,7 +96,7 @@ public class ArenaStatsCommand extends ListenerAdapter {
         arenaEmbed.setAuthor("1v1 Arena Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arenaEmbed.setColor(Color.ORANGE);
         arenaEmbed.setTitle(player.getUsername() + " Stats");
-        arenaEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        arenaEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         arenaEmbed.addField("1v1 Wins : ", String.valueOf(arena.getGamemodes().getOneVOne().getWins()), true);
         arenaEmbed.addField("1v1 Losses : ", String.valueOf(arena.getGamemodes().getOneVOne().getLosses()), true);
@@ -121,7 +121,7 @@ public class ArenaStatsCommand extends ListenerAdapter {
         arenaEmbed.setAuthor("2v2 Arena Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arenaEmbed.setColor(Color.ORANGE);
         arenaEmbed.setTitle(player.getUsername() + " Stats");
-        arenaEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        arenaEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         arenaEmbed.addField("2v2 Wins : ", String.valueOf(arena.getGamemodes().getTwoVTwo().getWins()), true);
         arenaEmbed.addField("2v2 Losses : ", String.valueOf(arena.getGamemodes().getTwoVTwo().getLosses()), true);
@@ -145,7 +145,7 @@ public class ArenaStatsCommand extends ListenerAdapter {
         arenaEmbed.setAuthor("4v4 Arena Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arenaEmbed.setColor(Color.ORANGE);
         arenaEmbed.setTitle(player.getUsername() + " Stats");
-        arenaEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        arenaEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         arenaEmbed.addField("4v4 Wins : ", String.valueOf(arena.getGamemodes().getFourVFour().getWins()), true);
         arenaEmbed.addField("4v4 Losses : ", String.valueOf(arena.getGamemodes().getFourVFour().getLosses()), true);

@@ -56,7 +56,7 @@ public class QuakeCraftStatsCommand extends ListenerAdapter {
         quakecraftEmbed.setAuthor("QuakeCraft Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         quakecraftEmbed.setColor(Color.MAGENTA);
         quakecraftEmbed.setTitle(player.getUsername() + " Stats");
-        quakecraftEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        quakecraftEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         quakecraftEmbed.addField("Coins : ", String.valueOf(quake.getCoins()), true);
         quakecraftEmbed.addField("Dash Cooldown : ",quake.getDashCooldown() + "s", true);
@@ -69,7 +69,7 @@ public class QuakeCraftStatsCommand extends ListenerAdapter {
         quakecraftEmbed.addField("Solo Headshots : ", String.valueOf(quake.getGamemodes().getSolo().getHeadshots()), true);
         quakecraftEmbed.addField("KDR : ", String.valueOf(quake.getGamemodes().getSolo().getKd()), true);
         quakecraftEmbed.addField("Shots Fired : ", String.valueOf(quake.getGamemodes().getSolo().getShotsFired()), true);
-        quakecraftEmbed.addField("Higest KillStreak : ", String.valueOf(quake.getHighestKillstreak()),true);
+        quakecraftEmbed.addField("Highest KillStreak : ", String.valueOf(quake.getHighestKillstreak()),true);
 
         quakecraftEmbed.addBlankField(false);
         quakecraftEmbed.addField("Teams Deaths : ", String.valueOf(quake.getGamemodes().getTeams().getDeaths()), true);

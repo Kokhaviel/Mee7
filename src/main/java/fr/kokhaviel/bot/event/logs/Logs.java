@@ -52,6 +52,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class Logs extends ListenerAdapter {
@@ -63,7 +64,7 @@ public class Logs extends ListenerAdapter {
 
     @Override
     public void onShutdown(@NotNull ShutdownEvent event) {
-        System.out.println("Bot Successfully Disconncetd !");
+        System.out.println("Bot Successfully Disconnected !");
     }
 
     @Override
@@ -76,10 +77,10 @@ public class Logs extends ListenerAdapter {
 
         EmbedBuilder exceptionEmbed = new EmbedBuilder();
 
-        exceptionEmbed.setTitle("An Exception Occured")
+        exceptionEmbed.setTitle("An Exception Occurred")
                 .setColor(Color.RED)
                 .setThumbnail(event.getJDA().getSelfUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + ((GuildChannel) event).getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + ((GuildChannel) event).getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Exception : ", event.getClass().getSimpleName() + "\n" + event.getCause(), false);
 
@@ -106,16 +107,16 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
-        EmbedBuilder catCreEmebed = new EmbedBuilder();
+        EmbedBuilder catCreEmbed = new EmbedBuilder();
 
-        catCreEmebed.setTitle("Category Created")
+        catCreEmbed.setTitle("Category Created")
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Category Created :", event.getCategory().getName() + "\nID : " + event.getId(), true);
 
-        logsChannel.sendMessage(catCreEmebed.build()).queue();
+        logsChannel.sendMessage(catCreEmbed.build()).queue();
 
     }
 
@@ -132,7 +133,7 @@ public class Logs extends ListenerAdapter {
         catDelEmbed.setTitle("Category Delete")
                 .setColor(Color.RED)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Category Deleted : ", event.getCategory().getName() + "\nID : " + event.getId(), false);
 
@@ -152,7 +153,7 @@ public class Logs extends ListenerAdapter {
         catNameUpdateEmbed.setTitle("Category Name update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Category updated : ", event.getOldName() + " -> " + event.getNewName() + "\nID : " + event.getCategory().getId(), false);
 
@@ -172,7 +173,7 @@ public class Logs extends ListenerAdapter {
         emoteAddEmbed.setTitle("Emote Add")
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getEmote().getImageUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Emote Added : ", event.getEmote().getName() + "\n(ID : " + event.getEmote().getId() + ")", false);
 
@@ -192,7 +193,7 @@ public class Logs extends ListenerAdapter {
         emoteRmEmbed.setTitle("Emote Removed")
                 .setColor(Color.RED)
                 .setThumbnail(event.getEmote().getImageUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Emote Removed : ", event.getEmote().getName() + "\n(ID : " + event.getEmote().getId() + ")", false);
 
@@ -212,7 +213,7 @@ public class Logs extends ListenerAdapter {
         emoteUpdateNameEmbed.setTitle("Emote Name Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getEmote().getImageUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Emote Updated : ", event.getOldName() + " -> " + event.getNewName() + "\n(ID : " + event.getEmote().getId(), false);
 
@@ -232,7 +233,7 @@ public class Logs extends ListenerAdapter {
         emoteRolesEmbed.setTitle("Emote Roles Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Roles : ", event.getOldRoles() + " -> " + event.getNewRoles(), false);
 
@@ -253,7 +254,7 @@ public class Logs extends ListenerAdapter {
         banEmbed.setTitle("User Ban")
                 .setColor(Color.RED)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("User Banned : ", event.getUser().getAsTag() + "\n(Member ID : " + event.getUser().getId() + ")", false);
 
@@ -273,7 +274,7 @@ public class Logs extends ListenerAdapter {
         inviteCreEmbed.setTitle("Invite Create")
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Invite Created : ", event.getUrl(), false);
 
@@ -294,7 +295,7 @@ public class Logs extends ListenerAdapter {
         inviteDelEmbed.setTitle("Invite Delete")
                 .setColor(Color.RED)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Invite Deleted : ", event.getUrl(), false);
 
@@ -315,7 +316,7 @@ public class Logs extends ListenerAdapter {
         joinEmbed.setTitle("User Join")
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("User Joined : ", event.getUser().getAsTag() + "\n(Member ID : " + event.getUser().getId() + ")", false);
 
@@ -335,9 +336,9 @@ public class Logs extends ListenerAdapter {
         leaveEmbed.setTitle("User Leave")
                 .setColor(Color.RED)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
-                .addField("User Leaved : ", event.getUser().getAsTag() + "\n(Member ID : " + event.getUser().getId() + ")", false);
+                .addField("User Left : ", event.getUser().getAsTag() + "\n(Member ID : " + event.getUser().getId() + ")", false);
 
         logsChannel.sendMessage(leaveEmbed.build()).queue();
     }
@@ -355,7 +356,7 @@ public class Logs extends ListenerAdapter {
         roleAddEmbed.setTitle("Role Add")
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Role Added : ", event.getRoles() + "\nTo " + event.getUser().getAsTag(), false);
 
@@ -376,7 +377,7 @@ public class Logs extends ListenerAdapter {
         roleRemEmbed.setTitle("Role Remove")
                 .setColor(Color.RED)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Role Removed : ", event.getRoles() + "\nTo " + event.getUser().getAsTag(), false);
 
@@ -396,7 +397,7 @@ public class Logs extends ListenerAdapter {
         boostTimeUpdateEmbed.setTitle("Boost Time Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Boost Time : ", event.getOldTimeBoosted() + " -> " + event.getNewTimeBoosted() + "\nBy : " + event.getUser().getAsTag(), false);
 
@@ -417,7 +418,7 @@ public class Logs extends ListenerAdapter {
         nicknameUpdateEmbed.setTitle("NickName Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Nickname Updated", event.getUser().getAsTag() + "\n" + event.getOldNickname() + " -> " + event.getNewNickname(), false);
 
@@ -437,7 +438,7 @@ public class Logs extends ListenerAdapter {
 //		messageDeleteEmbed.setTitle("Message Delete")
 //				.setColor(Color.RED)
 //				.setThumbnail(event.getGuild().getIconUrl())
-//				.setFooter("Developped by " + Config.DEVELOPER_TAG +"\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+//				.setFooter("Developed by " + Config.DEVELOPER_TAG +"\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 //				
 //			.addField("Message Deleted : ", event.getMessageId() + "\nIn : " + event.getChannel().getAsMention(), false);
 //		
@@ -451,7 +452,7 @@ public class Logs extends ListenerAdapter {
     @Override
     public void onGuildMessageUpdate(GuildMessageUpdateEvent event) {
 
-        System.out.println("Message Updated : " + event.getMessage().getId() + " By " + event.getMember().getUser().getAsTag());
+        System.out.println("Message Updated : " + event.getMessage().getId() + " By " + Objects.requireNonNull(event.getMember()).getUser().getAsTag());
 
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
@@ -461,7 +462,7 @@ public class Logs extends ListenerAdapter {
         messageUpdateEmbed.setTitle("Message Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Message Updated : ", event.getMessage().getId() + " By " + event.getMember().getUser().getAsTag(), false);
 
@@ -481,7 +482,7 @@ public class Logs extends ListenerAdapter {
         unbanEmbed.setTitle("User Unban")
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("User Unbanned : ", event.getUser().getAsTag(), false);
 
@@ -491,7 +492,7 @@ public class Logs extends ListenerAdapter {
     @Override
     public void onGuildUpdateAfkChannel(GuildUpdateAfkChannelEvent event) {
 
-        System.out.println("Afk Channel Updated : " + event.getOldAfkChannel().getName() + " -> " + event.getNewAfkChannel().getName());
+        System.out.println("Afk Channel Updated : " + Objects.requireNonNull(event.getOldAfkChannel()).getName() + " -> " + Objects.requireNonNull(event.getNewAfkChannel()).getName());
 
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
@@ -501,9 +502,9 @@ public class Logs extends ListenerAdapter {
         afkUpdateEmbed.setTitle("AFK Channel Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
-                .addField("AFK CHannel : ", event.getOldAfkChannel().getName() + " -> " + event.getNewAfkChannel().getName(), false);
+                .addField("AFK Channel : ", event.getOldAfkChannel().getName() + " -> " + event.getNewAfkChannel().getName(), false);
 
         logsChannel.sendMessage(afkUpdateEmbed.build()).queue();
     }
@@ -521,7 +522,7 @@ public class Logs extends ListenerAdapter {
         afkTOUpdateEmbed.setTitle("AFK Timeout Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("AFK Timeout : ", event.getOldAfkTimeout() + " -> " + event.getNewAfkTimeout(), false);
 
@@ -541,7 +542,7 @@ public class Logs extends ListenerAdapter {
         bannerUpdateEmbed.setTitle("Banner Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Banner Updated : ", event.getOldBannerUrl() + " -> " + event.getNewBannerUrl(), false);
 
@@ -561,7 +562,7 @@ public class Logs extends ListenerAdapter {
         boostCount.setTitle("Boost Count Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Server Has Now ", event.getNewBoostCount() + " Boost !", false);
 
@@ -581,7 +582,7 @@ public class Logs extends ListenerAdapter {
         boostTierUpdate.setTitle("Boost Tier Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Boost Tier : ", event.getOldBoostTier() + " -> " + event.getNewBoostTier(), false);
 
@@ -601,7 +602,7 @@ public class Logs extends ListenerAdapter {
         descriptionUpdateEmbed.setTitle("Description Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Description Updated : ", event.getOldDescription() + " -> " + event.getNewDescription(), false);
 
@@ -621,7 +622,7 @@ public class Logs extends ListenerAdapter {
         iconUpdateEmbed.setTitle("Icon Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Icon Updated : ", event.getOldIconUrl() + " -> " + event.getNewIconUrl(), false);
 
@@ -641,7 +642,7 @@ public class Logs extends ListenerAdapter {
         nameUpdateEmbed.setTitle("Server Name Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Name Updated : ", event.getOldName() + " -> " + event.getNewName(), false);
 
@@ -651,7 +652,7 @@ public class Logs extends ListenerAdapter {
     @Override
     public void onGuildUpdateOwner(GuildUpdateOwnerEvent event) {
 
-        System.out.println("Owner Updated : " + event.getOldOwner().getUser().getAsTag() + " -> " + event.getNewOwner().getUser().getAsTag());
+        System.out.println("Owner Updated : " + Objects.requireNonNull(event.getOldOwner()).getUser().getAsTag() + " -> " + Objects.requireNonNull(event.getNewOwner()).getUser().getAsTag());
 
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
@@ -661,7 +662,7 @@ public class Logs extends ListenerAdapter {
         ownerUpdateEmbed.setTitle("Owner Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Owner : ", event.getOldOwner().getUser().getAsMention() + " -> " + event.getNewOwner().getUser().getAsMention(), false);
 
@@ -671,7 +672,7 @@ public class Logs extends ListenerAdapter {
     @Override
     public void onGuildUpdateSystemChannel(GuildUpdateSystemChannelEvent event) {
 
-        System.out.println("System Channel Updated : " + event.getOldSystemChannel().getName() + " -> " + event.getNewSystemChannel().getName());
+        System.out.println("System Channel Updated : " + Objects.requireNonNull(event.getOldSystemChannel()).getName() + " -> " + Objects.requireNonNull(event.getNewSystemChannel()).getName());
 
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
@@ -681,7 +682,7 @@ public class Logs extends ListenerAdapter {
         sysChannelEmbed.setTitle("System Channel Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Channel Updated : ", event.getOldSystemChannel().getAsMention() + " -> " + event.getNewSystemChannel().getAsMention(), false);
 
@@ -691,7 +692,7 @@ public class Logs extends ListenerAdapter {
     @Override
     public void onGuildVoiceGuildDeafen(GuildVoiceGuildDeafenEvent event) {
 
-        System.out.println("User Deafened : " + event.getMember().getUser().getAsTag() + "In : " + event.getVoiceState().getChannel().getName());
+        System.out.println("User Deafened : " + event.getMember().getUser().getAsTag() + "In : " + Objects.requireNonNull(event.getVoiceState().getChannel()).getName());
 
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
@@ -703,14 +704,14 @@ public class Logs extends ListenerAdapter {
         deafenEmbed.setTitle("Voice User Deafen")
                 .setColor(Color.RED)
                 .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("User Deafened : ", event.getMember().getUser().getAsTag() + " In : " + event.getVoiceState().getChannel().getName(), false);
 
         undeafenEmbed.setTitle("Voice User Undeafen")
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("User Undeafened : ", event.getMember().getUser().getAsTag() + " In : " + event.getVoiceState().getChannel().getName(), false);
 
@@ -722,7 +723,7 @@ public class Logs extends ListenerAdapter {
     @Override
     public void onGuildVoiceGuildMute(GuildVoiceGuildMuteEvent event) {
 
-        System.out.println("User Muted : " + event.getMember().getUser().getAsTag() + "In : " + event.getVoiceState().getChannel().getName());
+        System.out.println("User Muted : " + event.getMember().getUser().getAsTag() + "In : " + Objects.requireNonNull(event.getVoiceState().getChannel()).getName());
 
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
@@ -734,14 +735,14 @@ public class Logs extends ListenerAdapter {
         muteEmbed.setTitle("Voice User Mute")
                 .setColor(Color.RED)
                 .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("User Muted : ", event.getMember().getUser().getAsTag() + " In : " + event.getVoiceState().getChannel().getName(), false);
 
         unmuteEmbed.setTitle("Voice User Unmute")
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("User Unmuted : ", event.getMember().getUser().getAsTag() + " In : " + event.getVoiceState().getChannel().getName(), false);
 
@@ -763,7 +764,7 @@ public class Logs extends ListenerAdapter {
         moveEmbed.setTitle("Voice User Move")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("User Moved : ", event.getMember().getUser().getAsTag() + "\n" + event.getChannelLeft() + " -> " + event.getChannelJoined(), false);
 
@@ -773,7 +774,7 @@ public class Logs extends ListenerAdapter {
     @Override
     public void onGuildVoiceStream(GuildVoiceStreamEvent event) {
 
-        System.out.println("Stream Started : " + event.getMember().getUser().getAsTag() + "\nIn : " + event.getVoiceState().getChannel().getName());
+        System.out.println("Stream Started : " + event.getMember().getUser().getAsTag() + "\nIn : " + Objects.requireNonNull(event.getVoiceState().getChannel()).getName());
 
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
@@ -785,14 +786,14 @@ public class Logs extends ListenerAdapter {
         streamEmbed.setTitle("Stream Started")
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Stream : ", event.getMember().getUser().getAsTag() + "\nIn : " + event.getVoiceState().getChannel().getName(), false);
 
         streamEndEmbed.setTitle("Stream End")
                 .setColor(Color.RED)
                 .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Stream : ", event.getMember().getUser().getAsTag() + "\nIn : " + event.getVoiceState().getChannel().getName(), false);
 
@@ -813,7 +814,7 @@ public class Logs extends ListenerAdapter {
         roleCreateEmbed.setTitle("Role Create")
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Role Created : ", event.getRole().getName(), false);
 
@@ -835,7 +836,7 @@ public class Logs extends ListenerAdapter {
         roleDelEmbed.setTitle("Role Delete")
                 .setColor(Color.RED)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Role Deleted : ", event.getRole().getName(), false);
 
@@ -855,7 +856,7 @@ public class Logs extends ListenerAdapter {
         roleColorEmbed.setTitle("Role Color Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Role Updated : ", event.getRole().getName() + "\nColor : " + event.getOldColor() + " -> " + event.getNewColor(), false);
 
@@ -875,7 +876,7 @@ public class Logs extends ListenerAdapter {
         roleHoistedEmbed.setTitle("Role Hoist Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Role Updated : ", event.getRole().getName() + "\n" + event.getOldValue() + " -> " + event.getNewValue(), false);
 
@@ -885,17 +886,17 @@ public class Logs extends ListenerAdapter {
     @Override
     public void onRoleUpdateMentionable(RoleUpdateMentionableEvent event) {
 
-        System.out.println("Role Mentionnable Updated : " + event.getRole().getName() + "\n" + event.getOldValue() + " -> " + event.getNewValue());
+        System.out.println("Role Mentionable Updated : " + event.getRole().getName() + "\n" + event.getOldValue() + " -> " + event.getNewValue());
 
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
         EmbedBuilder roleMentionEmbed = new EmbedBuilder();
 
-        roleMentionEmbed.setTitle("Role Mentionnable Update")
+        roleMentionEmbed.setTitle("Role Mentionable Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Role Updated : ", event.getRole().getName() + "\n" + event.getOldValue() + " -> " + event.getNewValue(), false);
 
@@ -915,7 +916,7 @@ public class Logs extends ListenerAdapter {
         roleNameUpdate.setTitle("Role Name Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Role Updated : ", event.getRole().getName() + "\n" + event.getOldName() + " -> " + event.getNewName(), false);
 
@@ -935,7 +936,7 @@ public class Logs extends ListenerAdapter {
         textCreEmbed.setTitle("Text Channel Create")
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Channel Created : ", event.getChannel().getName() + "\n(ID : " + event.getChannel().getId() + ")", false);
 
@@ -955,7 +956,7 @@ public class Logs extends ListenerAdapter {
         textDelEmbed.setTitle("Text Channel Delete")
                 .setColor(Color.RED)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Channel Deleted : ", event.getChannel().getName() + "\n(ID : " + event.getChannel().getId() + ")", false);
 
@@ -975,7 +976,7 @@ public class Logs extends ListenerAdapter {
         textNameUpdateEmbed.setTitle("Text Channel Name Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Channel Updated : ", event.getChannel().getAsMention() + "\n" + event.getOldName() + " -> " + event.getNewName(), false);
 
@@ -995,7 +996,7 @@ public class Logs extends ListenerAdapter {
         textNewsUpdateEmbed.setTitle("Text Channel Update News")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Channel Updated : ", event.getChannel().getName() + "\n" + event.getOldValue() + " -> " + event.getNewValue(), false);
 
@@ -1015,7 +1016,7 @@ public class Logs extends ListenerAdapter {
         textNSFWUpdateEmbed.setTitle("Text Channel NSFW Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Channel Updated : ", event.getChannel().getName() + "\n" + event.getOldValue() + " -> " + event.getNewValue(), false);
 
@@ -1035,7 +1036,7 @@ public class Logs extends ListenerAdapter {
         textSMUpdateEmbed.setTitle("Text Channel SlowMode Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Channel Updated : ", event.getChannel().getName() + "\n" + event.getOldSlowmode() + " s -> " + event.getNewSlowmode() + "s", false);
 
@@ -1050,16 +1051,16 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
-        EmbedBuilder textTopicUpdateEmbe = new EmbedBuilder();
+        EmbedBuilder textTopicUpdateEmbed = new EmbedBuilder();
 
-        textTopicUpdateEmbe.setTitle("Text Channel Topic Update")
+        textTopicUpdateEmbed.setTitle("Text Channel Topic Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Channel Updated : ", event.getChannel().getName() + "\n" + event.getOldTopic() + " -> " + event.getNewTopic(), false);
 
-        logsChannel.sendMessage(textTopicUpdateEmbe.build()).queue();
+        logsChannel.sendMessage(textTopicUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -1071,7 +1072,7 @@ public class Logs extends ListenerAdapter {
 
         if (textChannels.isEmpty()) {
 
-            event.getGuild().getSystemChannel().sendMessage("You need to create a text channel named \"activities\"").queue(
+            Objects.requireNonNull(event.getGuild().getSystemChannel()).sendMessage("You need to create a text channel named \"activities\"").queue(
                     delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
         } else {
@@ -1082,7 +1083,7 @@ public class Logs extends ListenerAdapter {
             activityStartEmbed.setTitle("Activity Started")
                     .setColor(Color.GREEN)
                     .setThumbnail(event.getUser().getAvatarUrl())
-                    .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                    .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                     .addField(event.getUser().getName(), event.getUser().getAsTag() + " : " + event.getNewActivity().getName(), false);
 
@@ -1099,7 +1100,7 @@ public class Logs extends ListenerAdapter {
 
         if (textChannels.isEmpty()) {
 
-            event.getGuild().getSystemChannel().sendMessage("You need to create a text channel named \"activities\"").queue(
+            Objects.requireNonNull(event.getGuild().getSystemChannel()).sendMessage("You need to create a text channel named \"activities\"").queue(
                     delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
         } else {
@@ -1111,7 +1112,7 @@ public class Logs extends ListenerAdapter {
             activityEndEmbed.setTitle("Activity Ended")
                     .setColor(Color.RED)
                     .setThumbnail(event.getUser().getAvatarUrl())
-                    .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                    .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                     .addField(event.getUser().getName(), event.getUser().getAsTag() + " : " + event.getOldActivity().getName(), false);
 
@@ -1133,7 +1134,7 @@ public class Logs extends ListenerAdapter {
         voiceCreEmbed.setTitle("Voice Channel Create")
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Channel Updated : ", event.getChannel().getName() + "(ID : " + event.getChannel().getId() + ")", false);
 
@@ -1153,7 +1154,7 @@ public class Logs extends ListenerAdapter {
         voiceDelEmbed.setTitle("Voice Channel Delete")
                 .setColor(Color.RED)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Channel Updated : ", event.getChannel().getName() + "(ID : " + event.getChannel().getId() + ")", false);
 
@@ -1173,7 +1174,7 @@ public class Logs extends ListenerAdapter {
         voiceBitRateUpdateEmbed.setTitle("Voice Channel Bitrate Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Channel Updated : ", event.getChannel().getName() + "\n" + event.getOldBitrate() + " bps -> " + event.getNewBitrate() + " bps", false);
 
@@ -1193,7 +1194,7 @@ public class Logs extends ListenerAdapter {
         voiceNameUpdateEmbed.setTitle("Voice Channel Name Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Channel Updated : ", event.getChannel().getName() + "\n" + event.getOldName() + " -> " + event.getNewName(), false);
 
@@ -1213,7 +1214,7 @@ public class Logs extends ListenerAdapter {
         voiceUserLimitUpdateEmbed.setTitle("Voice Channel User Limit Update")
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Channel Updated : ", event.getChannel().getName() + "\n" + event.getOldUserLimit() + " user(s) -> " + event.getNewUserLimit() + " user(s)", false);
 

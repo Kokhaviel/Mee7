@@ -66,7 +66,7 @@ public class QueueCommand extends ListenerAdapter {
         queueEmbed.setTitle("Current Queue :");
         queueEmbed.setColor(Color.ORANGE);
         queueEmbed.setAuthor("Queue Command", null, iconUrl);
-        queueEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        queueEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
 
         for (int i = 0; i < trackCount; i++) {
@@ -81,7 +81,7 @@ public class QueueCommand extends ListenerAdapter {
 
         if (trackList.size() > trackCount) {
 
-            queueEmbed.addField("And " + String.valueOf(trackList.size() - trackCount) + " More ...", "", false);
+            queueEmbed.addField("And " + (trackList.size() - trackCount) + " More ...", "", false);
 
         }
 

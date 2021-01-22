@@ -52,7 +52,7 @@ public class RepeatCommand extends ListenerAdapter {
 
                 musicManager.scheduler.repeating = newRepeat;
 
-                channel.sendMessageFormat("Player has been set to **%s**", newRepeat ? "repeating" : "not reapeating").queue(
+                channel.sendMessageFormat("Player has been set to **%s**", newRepeat ? "repeating" : "not repeating").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
             }
         }

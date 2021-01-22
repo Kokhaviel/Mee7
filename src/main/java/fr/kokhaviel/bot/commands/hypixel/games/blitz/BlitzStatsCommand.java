@@ -56,7 +56,7 @@ public class BlitzStatsCommand extends ListenerAdapter {
         blitzEmbed.setAuthor("Blitz Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         blitzEmbed.setColor(new Color(73, 240, 255));
         blitzEmbed.setTitle(player.getUsername() + " Stats");
-        blitzEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        blitzEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         blitzEmbed.addField("Coins : ", String.valueOf(blitz.getCoins()), true);
         blitzEmbed.addField("Games Played : ", String.valueOf(blitz.getGamesPlayed()), true);
@@ -68,7 +68,7 @@ public class BlitzStatsCommand extends ListenerAdapter {
         blitzEmbed.addField("KDR : ", String.valueOf(blitz.getKD()), true);
         blitzEmbed.addField("Wins : ", String.valueOf(blitz.getWins()), true);
         blitzEmbed.addField("Team Wins : ", String.valueOf(blitz.getTeamWins()), true);
-        blitzEmbed.addField("Winloss : ", String.valueOf(blitz.getWinLoss()), true);
+        blitzEmbed.addField("Win Loss : ", String.valueOf(blitz.getWinLoss()), true);
         blitzEmbed.addField("Win percentage : ", String.valueOf(blitz.getWinPercentage()), true);
 
         blitzEmbed.addBlankField(false);

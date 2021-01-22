@@ -25,6 +25,7 @@ public class AfkCommand extends ListenerAdapter {
 
             message.delete().queue();
 
+            assert member != null;
             if (!Mee7.afkIDs.contains(member.getId())) {
 
                 Mee7.afkIDs.add(member.getId());

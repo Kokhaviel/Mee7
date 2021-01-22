@@ -24,14 +24,10 @@ public class UnbanCommand extends ListenerAdapter {
 
             message.delete().queue();
 
-            if (guild == null) {
+            assert author != null;
+            if (!author.hasPermission(Permission.BAN_MEMBERS)) {
 
-                channel.sendMessage("You must execute this command on server !").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
-            } else if (!author.hasPermission(Permission.BAN_MEMBERS)) {
-
-                channel.sendMessage("You dont have the permission to unban member !").queue(
+                channel.sendMessage("You don't have the permission to unban member !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else if (args.length < 2) {

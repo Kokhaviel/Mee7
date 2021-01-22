@@ -35,7 +35,7 @@ public class AutoModerator extends ListenerAdapter {
                 badwordDetect.setTitle("Badword Detected :");
                 badwordDetect.setColor(Color.red);
                 badwordDetect.setThumbnail("https://cdn.discordapp.com/avatars/585419690411819060/4f6dc909ca93e98f8610dce9087ed747.webp?size=128");
-                badwordDetect.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + guild.getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+                badwordDetect.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + guild.getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
                 badwordDetect.addField("Badword : ", arg, false);
 

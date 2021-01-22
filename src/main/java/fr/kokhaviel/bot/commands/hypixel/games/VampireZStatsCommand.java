@@ -54,7 +54,7 @@ public class VampireZStatsCommand extends ListenerAdapter {
         vampirezEmbed.setAuthor("VampireZ Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         vampirezEmbed.setColor(new Color(252, 84, 84));
         vampirezEmbed.setTitle(player.getUsername() + " Stats");
-        vampirezEmbed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        vampirezEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         vampirezEmbed.addField("Coins : ", String.valueOf(vampirez.getCoins()), true);
         vampirezEmbed.addField("Gold Bought : ", String.valueOf(vampirez.getGoldBought()), true);
@@ -64,7 +64,7 @@ public class VampireZStatsCommand extends ListenerAdapter {
         vampirezEmbed.addField("Vampire Deaths : ", String.valueOf(vampirez.getVampireStats().getDeaths()), true);
         vampirezEmbed.addField("Vampire KDR : ", String.valueOf(vampirez.getVampireStats().getKd()), true);
         vampirezEmbed.addField("Vampire Wins : ", String.valueOf(vampirez.getVampireStats().getWins()), true);
-        vampirezEmbed.addField("Zomibie Kills : ", String.valueOf(vampirez.getZombieKills()), true);
+        vampirezEmbed.addField("Zombie Kills : ", String.valueOf(vampirez.getZombieKills()), true);
 
         vampirezEmbed.addBlankField(false);
         vampirezEmbed.addField("Human Kills : ", String.valueOf(vampirez.getHumanStats().getKills()), true);
@@ -75,7 +75,7 @@ public class VampireZStatsCommand extends ListenerAdapter {
         vampirezEmbed.addBlankField(false);
         vampirezEmbed.addField("Explosive Killer : ", String.valueOf(vampirez.getPerks().getExplosiveKiller()), true);
         vampirezEmbed.addField("Fire Proofing : ", String.valueOf(vampirez.getPerks().getFireproofing()), true);
-        vampirezEmbed.addField("Frankeinstein Monster : ", String.valueOf(vampirez.getPerks().getFrankensteinsMonster()), true);
+        vampirezEmbed.addField("Frankenstein Monster : ", String.valueOf(vampirez.getPerks().getFrankensteinsMonster()), true);
         vampirezEmbed.addField("Gold Booster : ", String.valueOf(vampirez.getPerks().getGoldBooster()), true);
         vampirezEmbed.addField("Gold Starter : ", String.valueOf(vampirez.getPerks().getGoldStarter()), true);
         vampirezEmbed.addField("Renfield : ", String.valueOf(vampirez.getPerks().getRenfield()), true);

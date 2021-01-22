@@ -21,10 +21,6 @@ public class RandomCommand extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "random")) {
 
-            int first = Integer.parseInt(args[1]);
-
-            int second = Integer.parseInt(args[2]);
-
             if (args.length < 3) {
 
                 message.delete().queue();
@@ -40,6 +36,10 @@ public class RandomCommand extends ListenerAdapter {
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else {
+
+                int first = Integer.parseInt(args[1]);
+
+                int second = Integer.parseInt(args[2]);
 
                 channel.sendMessage("Giving you a number between " + first + " and " + second + " : " + new Random().ints(first, second).findFirst().getAsInt()).queue();
 

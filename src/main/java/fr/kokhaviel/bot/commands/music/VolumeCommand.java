@@ -1,7 +1,6 @@
 package fr.kokhaviel.bot.commands.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.music.GuildMusicManager;
 import fr.kokhaviel.bot.music.PlayerManager;
@@ -31,7 +30,6 @@ public class VolumeCommand extends ListenerAdapter {
             final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
             final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
             final AudioPlayer audioPlayer = musicManager.audioPlayer;
-            final AudioTrack playingTrack = audioPlayer.getPlayingTrack();
 
             if (args.length == 1) {
 

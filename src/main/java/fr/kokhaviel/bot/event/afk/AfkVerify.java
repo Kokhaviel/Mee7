@@ -33,9 +33,9 @@ public class AfkVerify extends ListenerAdapter {
                         .setDescription("This user is afk ...")
                         .setColor(Color.RED)
                         .setThumbnail(member.getUser().getAvatarUrl())
-                        .setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + guild.getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                        .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + guild.getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
-                        .addField("Member Mentionned : ", member.getUser().getAsTag(), false);
+                        .addField("Member Mentioned : ", member.getUser().getAsTag(), false);
 
                 channel.sendMessage(afkMentionEmbed.build()).queue();
 

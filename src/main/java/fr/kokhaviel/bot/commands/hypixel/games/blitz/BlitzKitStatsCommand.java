@@ -91,7 +91,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Arachnologist Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getArachnologist()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getArachnologist() / 60), true);
@@ -110,7 +110,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Archer Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getArcher()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getArcher() / 60), true);
@@ -128,7 +128,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Armorer Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getArmorer()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getArmorer() / 60), true);
@@ -146,7 +146,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Astronaut Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getAstronaut()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getAstronaut() / 60), true);
@@ -165,7 +165,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Blaze Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getBlaze()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getBlaze() / 60), true);
@@ -184,7 +184,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("CreeperTamer Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getCreepertamer()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getCreepertamer() / 60), true);
@@ -203,7 +203,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Diver Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getDiver()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getDiver() / 60), true);
@@ -222,7 +222,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Farmer Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getFarmer()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getFarmer() / 60), true);
@@ -241,7 +241,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Fisherman Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getFisherman()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getFisherman() / 60), true);
@@ -260,7 +260,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Florist Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getFlorist()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getFlorist() / 60), true);
@@ -279,7 +279,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Golem Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getGolem()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getGolem() / 60), true);
@@ -298,7 +298,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Guardian Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getGuardian()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getGuardian() / 60), true);
@@ -317,7 +317,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("HorseTamer Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getHorsetamer()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getHorsetamer() / 60), true);
@@ -336,7 +336,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Hunter Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getHunter()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getHunter() / 60), true);
@@ -355,7 +355,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Hype Train Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getHypeTrain()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getHypeTrain() / 60), true);
@@ -374,7 +374,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Jockey Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getJockey()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getJockey() / 60), true);
@@ -393,7 +393,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Knight Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getKnight()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getKnight() / 60), true);
@@ -412,7 +412,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Meat Master Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getMeatmaster()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getMeatmaster() / 60), true);
@@ -431,7 +431,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Necromancer Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getNecromancer()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getNecromancer() / 60), true);
@@ -450,7 +450,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Paladin Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getPaladin()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getPaladin() / 60), true);
@@ -469,7 +469,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Pigman Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getPigman()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getPigman() / 60), true);
@@ -488,7 +488,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Rambo Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getRambo()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getRambo() / 60), true);
@@ -507,7 +507,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Random Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getRandom()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getRandom() / 60), true);
@@ -526,7 +526,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Reaper Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getReaper()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getReaper() / 60), true);
@@ -545,7 +545,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("RedDragon Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getReddragon()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getReddragon() / 60), true);
@@ -564,7 +564,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Rogue Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getRogue()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getRogue() / 60), true);
@@ -583,7 +583,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Scout Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getScout()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getScout() / 60), true);
@@ -602,7 +602,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("ShadowKnight Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getShadowKnight()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getShadowKnight() / 60), true);
@@ -621,7 +621,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("SmileySlime Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getSlimeyslime()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getSlimeyslime() / 60), true);
@@ -640,7 +640,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Snowman Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getSnowman()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getSnowman() / 60), true);
@@ -659,7 +659,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Speleologist Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getSpeleologist()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getSpeleologist() / 60), true);
@@ -678,7 +678,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Tim Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getTim()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getTim() / 60), true);
@@ -697,7 +697,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Toxicologist Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getToxicologist()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getToxicologist() / 60), true);
@@ -716,7 +716,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Troll Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getTroll()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getTroll() / 60), true);
@@ -735,7 +735,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Viking Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getViking()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getViking() / 60), true);
@@ -754,7 +754,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("Warlock Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getWarlock()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getWarlock() / 60), true);
@@ -773,7 +773,7 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
         embed.setAuthor("WolfTamer Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         embed.setColor(new Color(73, 240, 255));
         embed.setTitle(player.getUsername() + " Stats");
-        embed.setFooter("Developped by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         embed.addField("Games Played : ", String.valueOf(stats.getGamesPlayed().getWolftamer()), true);
         embed.addField("Time Played : ", String.valueOf(stats.getTimePlayed().getWolftamer() / 60), true);
