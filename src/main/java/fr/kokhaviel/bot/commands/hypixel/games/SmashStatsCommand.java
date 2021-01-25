@@ -8,28 +8,25 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import zone.nora.slothpixel.player.Player;
-import zone.nora.slothpixel.player.stats.warlords.Warlords;
+import zone.nora.slothpixel.player.stats.smash.Smash;
 
 import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 import static fr.kokhaviel.bot.Mee7.sloth;
 
-public class WarlordsStatsCommand extends ListenerAdapter {
-
+public class SmashStatsCommand extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-
 
         final Message message = event.getMessage();
         final String[] args = message.getContentRaw().split("\\s+");
         final TextChannel channel = (TextChannel) event.getChannel();
 
-
-        if (args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "warlords")) {
+        if (args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "smash")) {
 
             if (args.length == 1) {
-                channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "warlords <Player>").queue(
+                channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "smash <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else {
@@ -42,26 +39,27 @@ public class WarlordsStatsCommand extends ListenerAdapter {
                     message.delete().queue();
 
                     final Player player = sloth.getPlayer(args[1]);
-                    final Warlords warlords = player.getStats().getWarlords();
+                    final Smash smash = player.getStats().getSmash();
 
-                    channel.sendMessage(getWarlordsStats(event, player, warlords).build()).queue();
+                    channel.sendMessage(getSmashStats(event, player, smash).build()).queue();
 
                 }
             }
         }
     }
 
-    private EmbedBuilder getWarlordsStats(MessageReceivedEvent event, Player player, Warlords warlords) {
+    private EmbedBuilder getSmashStats(MessageReceivedEvent event, Player player, Smash smash) {
 
-        EmbedBuilder warlordsEmbed = new EmbedBuilder();
-        warlordsEmbed.setAuthor("Warlords Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        warlordsEmbed.setColor(Color.BLACK);
-        warlordsEmbed.setTitle(player.getUsername() + " Stats");
-        warlordsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        EmbedBuilder smashEmbed = new EmbedBuilder();
+        smashEmbed.setAuthor("Smash Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+        smashEmbed.setColor(Color.RED);
+        smashEmbed.setTitle(player.getUsername() + " Stats");
+        smashEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        warlordsEmbed.addField("Coins : ", String.valueOf(warlords.getCoins()), true);
+        smashEmbed.addField("Coins : ", String.valueOf(smash.getCoins()), true);
 
-        return warlordsEmbed;
+        return smashEmbed;
+
     }
 
 }

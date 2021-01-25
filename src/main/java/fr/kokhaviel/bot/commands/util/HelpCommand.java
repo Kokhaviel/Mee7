@@ -253,7 +253,8 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Arena Stats : ", Config.HYPIXEL_PREFIX + "arena <Player>", false)
                 .addField("UHC Stats : ", Config.HYPIXEL_PREFIX + "uhc <Player>", false)
                 .addField("Cops And Crims Stats : ", Config.HYPIXEL_PREFIX + "copsandcrims <Player>", true)
-                .addField("Warlords Stats : ", Config.HYPIXEL_PREFIX + "warlords <Player>", false);
+                .addField("Warlords Stats : ", Config.HYPIXEL_PREFIX + "warlords <Player>", false)
+                .addField("Smash Stats : ", Config.HYPIXEL_PREFIX + "smash <Player>", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
 
