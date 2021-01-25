@@ -100,6 +100,7 @@ public class Mee7 {
                     .addEventListeners(new StopCommand())
 //                  .addEventListeners(new ThatPersonDoesNotExistCommand())
                     .addEventListeners(new TntGamesStatsCommand())
+                    .addEventListeners(new TurboKartStatsCommand())
                     .addEventListeners(new UnbanCommand())
                     .addEventListeners(new UHCStatsCommand())
                     .addEventListeners(new UnmuteCommand())
