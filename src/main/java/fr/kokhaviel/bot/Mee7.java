@@ -105,6 +105,7 @@ public class Mee7 {
                     .addEventListeners(new VampireZStatsCommand())
                     .addEventListeners(new VolumeCommand())
                     .addEventListeners(new WallsStatsCommand())
+                    .addEventListeners(new WarlordsStatsCommand())
 
                     .setActivity(Activity.watching("la doc avant de poser une question..."))
 
