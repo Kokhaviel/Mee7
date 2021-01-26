@@ -99,6 +99,7 @@ public class Mee7 {
                     .addEventListeners(new SkipCommand())
                     .addEventListeners(new SkywarsStatsCommand())
                     .addEventListeners(new SmashStatsCommand())
+                    .addEventListeners(new SpeedUHCStatsCommand())
                     .addEventListeners(new StopCommand())
 //                  .addEventListeners(new ThatPersonDoesNotExistCommand())
                     .addEventListeners(new TntGamesStatsCommand())
