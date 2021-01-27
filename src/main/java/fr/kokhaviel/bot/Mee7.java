@@ -80,6 +80,7 @@ public class Mee7 {
                     .addEventListeners(new MassKickCommand())
                     .addEventListeners(new MassBanCommand())
                     .addEventListeners(new MegaWallsStatsCommand())
+                    .addEventListeners(new MurderMysteryStatsCommand())
                     .addEventListeners(new MuteCommand())
                     .addEventListeners(new NowPlayingCommand())
                     .addEventListeners(new PaintballStatsCommand())

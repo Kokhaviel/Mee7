@@ -235,6 +235,7 @@ public class HelpCommand extends ListenerAdapter {
     private void getHypixelHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
 
         EmbedBuilder hypixelEmbed = new EmbedBuilder();
+        EmbedBuilder hypixel2Embed = new EmbedBuilder();
 
         hypixelEmbed.setTitle("Help Hypixel Commands")
                 .setColor(new Color(rd1, rd2, rd3))
@@ -262,11 +263,21 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Skyclash Stats : ", Config.HYPIXEL_PREFIX + "skyclash <Player>", false)
                 .addField("Bedwars Stats : ", Config.HYPIXEL_PREFIX + "bedwars <Player>", false);
 
+
+        hypixel2Embed.setTitle("Help Hypixel Commands")
+                .setColor(new Color(rd1, rd2, rd3))
+                .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
+                .setDescription("Display all hypixel commands")
+
+                .addField("Murder Mystery Stats : ", Config.HYPIXEL_PREFIX + "murdermystery <Player>", false);
+
+
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
 
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
 
         ((UserImpl) user).getPrivateChannel().sendMessage(hypixelEmbed.build()).queue();
+        ((UserImpl) user).getPrivateChannel().sendMessage(hypixel2Embed.build()).queue();
 
     }
 
