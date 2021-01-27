@@ -269,7 +269,8 @@ public class HelpCommand extends ListenerAdapter {
                 .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                 .setDescription("Display all hypixel commands")
 
-                .addField("Murder Mystery Stats : ", Config.HYPIXEL_PREFIX + "murdermystery <Player>", false);
+                .addField("Murder Mystery Stats : ", Config.HYPIXEL_PREFIX + "murdermystery <Player>", false)
+                .addField("Build Battle Stats : ", Config.HYPIXEL_PREFIX + "buildbattle <Player>", false);
 
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
