@@ -97,6 +97,7 @@ public class Mee7 {
                     .addEventListeners(new ServerInfoCommand())
                     .addEventListeners(new ShutdownCommand())
                     .addEventListeners(new SkipCommand())
+                    .addEventListeners(new SkyClashStatsCommand())
                     .addEventListeners(new SkywarsStatsCommand())
                     .addEventListeners(new SmashStatsCommand())
                     .addEventListeners(new SpeedUHCStatsCommand())

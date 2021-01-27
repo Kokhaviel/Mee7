@@ -8,14 +8,14 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import zone.nora.slothpixel.player.Player;
-import zone.nora.slothpixel.player.stats.skywars.SkyWars;
+import zone.nora.slothpixel.player.stats.skyclash.SkyClash;
 
 import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 import static fr.kokhaviel.bot.Mee7.sloth;
 
-public class SkywarsStatsCommand extends ListenerAdapter {
+public class SkyClashStatsCommand extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -24,10 +24,10 @@ public class SkywarsStatsCommand extends ListenerAdapter {
         final String[] args = message.getContentRaw().split("\\s+");
         final TextChannel channel = (TextChannel) event.getChannel();
 
-        if(args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "skywars")) {
+        if (args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "skyclash")) {
 
-            if(args.length == 1) {
-                channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "skywars <Player>").queue(
+            if (args.length == 1) {
+                channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "skyclash <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else {
@@ -40,25 +40,25 @@ public class SkywarsStatsCommand extends ListenerAdapter {
                     message.delete().queue();
 
                     final Player player = sloth.getPlayer(args[1]);
-                    final SkyWars sw = player.getStats().getSkyWars();
+                    final SkyClash skyclash = player.getStats().getSkyClash();
 
-                    channel.sendMessage(getSwStats(event, player, sw).build()).queue();
+                    channel.sendMessage(getSkyClashStats(event, player, skyclash).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getSwStats(MessageReceivedEvent event, Player player, SkyWars sw) {
+    private EmbedBuilder getSkyClashStats(MessageReceivedEvent event, Player player, SkyClash skyclash) {
 
-        EmbedBuilder swEmbed = new EmbedBuilder();
-        swEmbed.setAuthor("Skywars Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        swEmbed.setColor(Color.GREEN);
-        swEmbed.setTitle(player.getUsername() + " Stats");
-        swEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        EmbedBuilder skyclashEmbed = new EmbedBuilder();
+        skyclashEmbed.setAuthor("Skyclash Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+        skyclashEmbed.setColor(Color.GREEN);
+        skyclashEmbed.setTitle(player.getUsername() + " Stats");
+        skyclashEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        swEmbed.addField("Coins : ", String.valueOf(sw.getCoins()), true);
+        skyclashEmbed.addField("Coins : ", String.valueOf(skyclash.getCoins()), true);
 
-        return swEmbed;
+        return skyclashEmbed;
     }
 
 }
