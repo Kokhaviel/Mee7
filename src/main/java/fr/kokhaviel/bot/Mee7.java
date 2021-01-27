@@ -62,6 +62,7 @@ public class Mee7 {
                     .addEventListeners(new AutoModerator())
                     .addEventListeners(new AvatarCommand())
                     .addEventListeners(new BanCommand())
+                    .addEventListeners(new BedwarsStatsCommand())
                     .addEventListeners(new BlitzKitLevelCommand())
                     .addEventListeners(new BlitzKitStatsCommand())
                     .addEventListeners(new BlitzStatsCommand())

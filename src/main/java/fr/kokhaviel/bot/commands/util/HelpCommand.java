@@ -236,7 +236,7 @@ public class HelpCommand extends ListenerAdapter {
 
         EmbedBuilder hypixelEmbed = new EmbedBuilder();
 
-        hypixelEmbed.setTitle("Help Music Commands")
+        hypixelEmbed.setTitle("Help Hypixel Commands")
                 .setColor(new Color(rd1, rd2, rd3))
                 .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                 .setDescription("Display all hypixel commands")
@@ -259,7 +259,8 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Skywars Stats : ", Config.HYPIXEL_PREFIX + "skywars <Player>", false)
                 .addField("Crazy Walls Stats : ", Config.HYPIXEL_PREFIX + "crazywalls <Player>", false)
                 .addField("Speed UHC Stats : ", Config.HYPIXEL_PREFIX + "speeduhc <Player>", false)
-                .addField("Skyclash Stats : ", Config.HYPIXEL_PREFIX + "skyclash <Player>", false);
+                .addField("Skyclash Stats : ", Config.HYPIXEL_PREFIX + "skyclash <Player>", false)
+                .addField("Bedwars Stats : ", Config.HYPIXEL_PREFIX + "bedwars <Player>", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
 
