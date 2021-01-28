@@ -270,7 +270,8 @@ public class HelpCommand extends ListenerAdapter {
                 .setDescription("Display all hypixel commands")
 
                 .addField("Murder Mystery Stats : ", Config.HYPIXEL_PREFIX + "murdermystery <Player>", false)
-                .addField("Build Battle Stats : ", Config.HYPIXEL_PREFIX + "buildbattle <Player>", false);
+                .addField("Build Battle Stats : ", Config.HYPIXEL_PREFIX + "buildbattle <Player>", false)
+                .addField("Duels Stats : ", Config.HYPIXEL_PREFIX + "duels <Player>", false);
 
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
