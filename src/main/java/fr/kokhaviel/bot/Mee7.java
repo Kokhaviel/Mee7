@@ -71,6 +71,7 @@ public class Mee7 {
                     .addEventListeners(new CopsAndCrimsStatsCommand())
                     .addEventListeners(new CrazyWallsStatsCommand())
                     .addEventListeners(new DameDaneCommand())
+                    .addEventListeners(new DuelsStatsCommand())
                     .addEventListeners(new EightBallCommand())
                     .addEventListeners(new HelpCommand())
                     .addEventListeners(new InfoCommand())

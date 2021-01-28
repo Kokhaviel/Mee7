@@ -30,7 +30,7 @@ public class BuildBattleStatsCommand extends ListenerAdapter {
 
 
             if(args.length == 1) {
-                channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "quakecraft <Player>").queue(
+                channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "buildbattle <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
             } else {
