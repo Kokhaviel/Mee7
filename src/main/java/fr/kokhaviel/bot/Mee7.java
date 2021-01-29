@@ -5,6 +5,7 @@ import fr.kokhaviel.bot.commands.hypixel.games.*;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitLevelCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitStatsCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzStatsCommand;
+import fr.kokhaviel.bot.commands.hypixel.server.BanStatsCommand;
 import fr.kokhaviel.bot.commands.moderation.*;
 import fr.kokhaviel.bot.commands.music.*;
 import fr.kokhaviel.bot.commands.server.RoleInfoCommand;
@@ -62,6 +63,7 @@ public class Mee7 {
                     .addEventListeners(new AutoModerator())
                     .addEventListeners(new AvatarCommand())
                     .addEventListeners(new BanCommand())
+                    .addEventListeners(new BanStatsCommand())
                     .addEventListeners(new BedwarsStatsCommand())
                     .addEventListeners(new BlitzKitLevelCommand())
                     .addEventListeners(new BlitzKitStatsCommand())

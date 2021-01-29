@@ -236,6 +236,7 @@ public class HelpCommand extends ListenerAdapter {
 
         EmbedBuilder hypixelEmbed = new EmbedBuilder();
         EmbedBuilder hypixel2Embed = new EmbedBuilder();
+        EmbedBuilder hypixel3Embed = new EmbedBuilder();
 
         hypixelEmbed.setTitle("Help Hypixel Games Commands")
                 .setColor(new Color(rd1, rd2, rd3))
@@ -273,6 +274,13 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Build Battle Stats : ", Config.HYPIXEL_PREFIX + "buildbattle <Player>", false)
                 .addField("Duels Stats : ", Config.HYPIXEL_PREFIX + "duels <Player>", false);
 
+        hypixel3Embed.setTitle("Help Hypixel Commands")
+                .setColor(new Color(rd1, rd2, rd3))
+                .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
+                .setDescription("Display all hypixel commands")
+
+                .addField("Bans Stats : ", Config.HYPIXEL_PREFIX + "bans", false);
+
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
 
@@ -280,6 +288,7 @@ public class HelpCommand extends ListenerAdapter {
 
         ((UserImpl) user).getPrivateChannel().sendMessage(hypixelEmbed.build()).queue();
         ((UserImpl) user).getPrivateChannel().sendMessage(hypixel2Embed.build()).queue();
+        ((UserImpl) user).getPrivateChannel().sendMessage(hypixel3Embed.build()).queue();
 
     }
 
