@@ -49,7 +49,7 @@ public class BanStatsCommand extends ListenerAdapter {
 
         bansEmbed.addBlankField(false);
         bansEmbed.addField("Daily Staff Bans : ", String.valueOf(bans.getStaff().getDaily()), true);
-        bansEmbed.addField("Total Staff Bans : ", String.valueOf(bans.getStaff().getDaily()), true);
+        bansEmbed.addField("Total Staff Bans : ", String.valueOf(bans.getStaff().getTotal()), true);
 
         return bansEmbed;
     }
