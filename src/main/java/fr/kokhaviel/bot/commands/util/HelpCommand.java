@@ -237,7 +237,7 @@ public class HelpCommand extends ListenerAdapter {
         EmbedBuilder hypixelEmbed = new EmbedBuilder();
         EmbedBuilder hypixel2Embed = new EmbedBuilder();
 
-        hypixelEmbed.setTitle("Help Hypixel Commands")
+        hypixelEmbed.setTitle("Help Hypixel Games Commands")
                 .setColor(new Color(rd1, rd2, rd3))
                 .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                 .setDescription("Display all hypixel commands")
@@ -254,6 +254,14 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Arena Stats : ", Config.HYPIXEL_PREFIX + "arena <Player>", false)
                 .addField("UHC Stats : ", Config.HYPIXEL_PREFIX + "uhc <Player>", false)
                 .addField("Cops And Crims Stats : ", Config.HYPIXEL_PREFIX + "copsandcrims <Player>", true)
+                ;
+
+
+        hypixel2Embed.setTitle("Help Hypixel Games Commands")
+                .setColor(new Color(rd1, rd2, rd3))
+                .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
+                .setDescription("Display all hypixel commands")
+
                 .addField("Warlords Stats : ", Config.HYPIXEL_PREFIX + "warlords <Player>", false)
                 .addField("Smash Stats : ", Config.HYPIXEL_PREFIX + "smash <Player>", false)
                 .addField("Tkr Stats : ", Config.HYPIXEL_PREFIX + "turbokart <Player>", true)
@@ -261,18 +269,10 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Crazy Walls Stats : ", Config.HYPIXEL_PREFIX + "crazywalls <Player>", false)
                 .addField("Speed UHC Stats : ", Config.HYPIXEL_PREFIX + "speeduhc <Player>", false)
                 .addField("Skyclash Stats : ", Config.HYPIXEL_PREFIX + "skyclash <Player>", false)
-                .addField("Bedwars Stats : ", Config.HYPIXEL_PREFIX + "bedwars <Player>", false);
-
-
-        hypixel2Embed.setTitle("Help Hypixel Commands")
-                .setColor(new Color(rd1, rd2, rd3))
-                .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
-                .setDescription("Display all hypixel commands")
-
+                .addField("Bedwars Stats : ", Config.HYPIXEL_PREFIX + "bedwars <Player>", false)
                 .addField("Murder Mystery Stats : ", Config.HYPIXEL_PREFIX + "murdermystery <Player>", false)
                 .addField("Build Battle Stats : ", Config.HYPIXEL_PREFIX + "buildbattle <Player>", false)
-                .addField("Duels Stats : ", Config.HYPIXEL_PREFIX + "duels <Player>", false)
-                ;
+                .addField("Duels Stats : ", Config.HYPIXEL_PREFIX + "duels <Player>", false);
 
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
