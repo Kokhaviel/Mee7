@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2021 Kokhaviel
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package fr.kokhaviel.bot.commands.util;
 
 import java.awt.Color;
@@ -54,6 +71,7 @@ public class AboutCommand extends ListenerAdapter {
                 .addField("Github : ", "[Github Repository](https://github.com/Kokhaviel/Mee7)", false)
                 .addField("Prefix : ", Config.PREFIX, false)
                 .addField("Help : ", Config.PREFIX + "help", false)
+                .addField("License : ", "[GPLv3](https://fsf.org/)", false)
                 .addField("Libraries : ", "[JDA](https://github.com/DV8FromTheWorld/JDA), [LavaPlayer](https://github.com/sedmelluq/lavaplayer), [Slothpixel](https://docs.slothpixel.me/) ", false);
 
         return aboutEmbed;
