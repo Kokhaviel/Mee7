@@ -88,6 +88,7 @@ public class Mee7 {
                     .addEventListeners(new PaintballStatsCommand())
                     .addEventListeners(new PauseCommand())
                     .addEventListeners(new PingCommand())
+                    .addEventListeners(new PitStatsCommand())
                     .addEventListeners(new PlayCommand())
                     .addEventListeners(new QuakeCraftStatsCommand())
                     .addEventListeners(new QueueCommand())
