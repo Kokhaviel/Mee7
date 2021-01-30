@@ -22,6 +22,7 @@ import fr.kokhaviel.bot.commands.hypixel.games.*;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitLevelCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitStatsCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzStatsCommand;
+import fr.kokhaviel.bot.commands.hypixel.player.PlayerStatsCommand;
 import fr.kokhaviel.bot.commands.hypixel.server.BanStatsCommand;
 import fr.kokhaviel.bot.commands.moderation.*;
 import fr.kokhaviel.bot.commands.music.*;
@@ -98,8 +99,8 @@ public class Mee7 {
                     .addEventListeners(new KickCommand())
                     .addEventListeners(new LeaveCommand())
                     .addEventListeners(new Logs())
-                    .addEventListeners(new MassKickCommand())
                     .addEventListeners(new MassBanCommand())
+                    .addEventListeners(new MassKickCommand())
                     .addEventListeners(new MegaWallsStatsCommand())
                     .addEventListeners(new MurderMysteryStatsCommand())
                     .addEventListeners(new MuteCommand())
@@ -109,6 +110,7 @@ public class Mee7 {
                     .addEventListeners(new PingCommand())
                     .addEventListeners(new PitStatsCommand())
                     .addEventListeners(new PlayCommand())
+                    .addEventListeners(new PlayerStatsCommand())
                     .addEventListeners(new QuakeCraftStatsCommand())
                     .addEventListeners(new QueueCommand())
                     .addEventListeners(new RandomCommand())
@@ -129,8 +131,8 @@ public class Mee7 {
 //                  .addEventListeners(new ThatPersonDoesNotExistCommand())
                     .addEventListeners(new TntGamesStatsCommand())
                     .addEventListeners(new TurboKartStatsCommand())
-                    .addEventListeners(new UnbanCommand())
                     .addEventListeners(new UHCStatsCommand())
+                    .addEventListeners(new UnbanCommand())
                     .addEventListeners(new UnmuteCommand())
                     .addEventListeners(new VampireZStatsCommand())
                     .addEventListeners(new VolumeCommand())

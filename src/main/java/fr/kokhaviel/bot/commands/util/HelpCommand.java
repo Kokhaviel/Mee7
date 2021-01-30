@@ -289,14 +289,11 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Bedwars Stats : ", Config.HYPIXEL_PREFIX + "bedwars <Player>", false)
                 .addField("Murder Mystery Stats : ", Config.HYPIXEL_PREFIX + "murdermystery <Player>", false)
                 .addField("Build Battle Stats : ", Config.HYPIXEL_PREFIX + "buildbattle <Player>", false)
-                .addField("Duels Stats : ", Config.HYPIXEL_PREFIX + "duels <Player>", false);
+                .addField("Duels Stats : ", Config.HYPIXEL_PREFIX + "duels <Player>", false)
+                .addBlankField(false)
+                .addField("Bans Stats : ", Config.HYPIXEL_PREFIX + "bans", false)
+                .addField("Player Stats : ", Config.HYPIXEL_PREFIX + "player <Player>", false);
 
-        hypixel3Embed.setTitle("Help Hypixel Commands")
-                .setColor(new Color(rd1, rd2, rd3))
-                .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
-                .setDescription("Display all hypixel commands")
-
-                .addField("Bans Stats : ", Config.HYPIXEL_PREFIX + "bans", false);
 
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
