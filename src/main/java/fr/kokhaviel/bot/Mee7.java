@@ -80,6 +80,7 @@ public class Mee7 {
                     .addEventListeners(new ArenaStatsCommand())
                     .addEventListeners(new AutoModerator())
                     .addEventListeners(new AvatarCommand())
+                    .addEventListeners(new BackwardCommand())
                     .addEventListeners(new BanCommand())
                     .addEventListeners(new BanStatsCommand())
                     .addEventListeners(new BedwarsStatsCommand())

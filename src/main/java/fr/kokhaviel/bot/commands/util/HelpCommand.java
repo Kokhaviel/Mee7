@@ -238,7 +238,8 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Skip Command", Config.MUSIC_PREFIX + "skip", false)
                 .addField("Stop Command", Config.MUSIC_PREFIX + "stop", false)
                 .addField("Volume Command", Config.MUSIC_PREFIX + "volume", false)
-                .addField("Forward Command : ", Config.MUSIC_PREFIX + "forward <Time in sec>", false);
+                .addField("Forward Command : ", Config.MUSIC_PREFIX + "forward <Time in sec>", false)
+                .addField("Backward Command : ", Config.MUSIC_PREFIX + "backward <Time in sec>", false);
 
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
