@@ -93,6 +93,7 @@ public class Mee7 {
                     .addEventListeners(new DameDaneCommand())
                     .addEventListeners(new DuelsStatsCommand())
                     .addEventListeners(new EightBallCommand())
+                    .addEventListeners(new ForwardCommand())
                     .addEventListeners(new HelpCommand())
                     .addEventListeners(new InfoCommand())
                     .addEventListeners(new JoinCommand())
