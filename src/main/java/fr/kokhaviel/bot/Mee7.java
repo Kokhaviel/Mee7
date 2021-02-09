@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot;
 
 import fr.kokhaviel.bot.commands.fun.*;
+import fr.kokhaviel.bot.commands.funcraft.games.HikabrainStatsCommand;
 import fr.kokhaviel.bot.commands.funcraft.games.RushStatsCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.*;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitLevelCommand;
@@ -97,6 +98,7 @@ public class Mee7 {
                     .addEventListeners(new EightBallCommand())
                     .addEventListeners(new ForwardCommand())
                     .addEventListeners(new HelpCommand())
+                    .addEventListeners(new HikabrainStatsCommand())
                     .addEventListeners(new InfoCommand())
                     .addEventListeners(new JoinCommand())
                     .addEventListeners(new KickCommand())

@@ -49,7 +49,7 @@ public class PlayerStatsCommand extends ListenerAdapter {
         final String[] args = message.getContentRaw().split("\\s+");
         final TextChannel channel = (TextChannel) event.getChannel();
 
-        if(args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "player")) {
+        if(args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "stats")) {
 
             if(args.length < 2) {
 
@@ -97,17 +97,17 @@ public class PlayerStatsCommand extends ListenerAdapter {
         funcraftEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         funcraftEmbed.addField("Inscription : ", stats.inscription, true);
-        funcraftEmbed.addField("Last Connection : ", "Owo ... Not working for the moment", false);
+        funcraftEmbed.addField("Last Connection : ", "Owo ... Not working for the moment", true);
         //FIXME : Last Connection
-        funcraftEmbed.addField("Glories : ", String.valueOf(stats.gloires), false);
-        funcraftEmbed.addField("Games : ", stats.parties, false);
-        funcraftEmbed.addField("Points : ", stats.points, false);
-        funcraftEmbed.addField("Victories : ", stats.victoires, false);
-        funcraftEmbed.addField("Defeats : ", stats.defaites, false);
-        funcraftEmbed.addField("Played Time : ", stats.temps_jeu + " minutes", false);
-        funcraftEmbed.addField("Kills : ", stats.kills, false);
-        funcraftEmbed.addField("Deaths : ", stats.morts, false);
-        funcraftEmbed.addField("Ban : ", stats.ban, false);
+        funcraftEmbed.addField("Glories : ", String.valueOf(stats.gloires), true);
+        funcraftEmbed.addField("Games : ", stats.parties, true);
+        funcraftEmbed.addField("Points : ", stats.points, true);
+        funcraftEmbed.addField("Victories : ", stats.victoires, true);
+        funcraftEmbed.addField("Defeats : ", stats.defaites, true);
+        funcraftEmbed.addField("Played Time : ", stats.temps_jeu + " minutes", true);
+        funcraftEmbed.addField("Kills : ", stats.kills, true);
+        funcraftEmbed.addField("Deaths : ", stats.morts, true);
+        funcraftEmbed.addField("Ban : ", stats.ban, true);
 
         return funcraftEmbed;
     }

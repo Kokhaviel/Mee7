@@ -31,19 +31,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-public class RushStatsCommand extends ListenerAdapter {
-
+public class HikabrainStatsCommand extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+
 
         final Message message = event.getMessage();
         final String[] args = message.getContentRaw().split("\\s+");
         final TextChannel channel = (TextChannel) event.getChannel();
 
-        if(args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "rush")) {
+        if (args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "hikabrain")) {
 
-            if(args.length < 2) {
+            if (args.length < 2) {
 
                 message.delete().queue();
 
@@ -57,58 +57,51 @@ public class RushStatsCommand extends ListenerAdapter {
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
                 } else {
 
-                    final String url = "https://lordmorgoth.net/APIs/stats?key=" + Config.FUNCRAFT_API_KEY + "&joueur=" + args[1] + "&mode=rush&periode=always";
+                    final String url = "https://lordmorgoth.net/APIs/stats?key=" + Config.FUNCRAFT_API_KEY + "&joueur=" + args[1] + "&mode=hikabrain&periode=always";
 
                     try {
-
                         message.delete().queue();
                         Gson gson = new Gson();
-                        Rush rush = gson.fromJson(readJson(new URL(url)), Rush.class);
+                        Hikabrain hikabrain = gson.fromJson(readJson(new URL(url)), Hikabrain.class);
 
-                        channel.sendMessage(getRushStats(rush).build()).queue();
-
-
+                        channel.sendMessage(getHikabrainStats(hikabrain).build()).queue();
                     } catch (IOException e) {
-
-                        channel.sendMessage("An exception occurred : File doesn't exist !").queue(
-                                delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
                         e.printStackTrace();
                     }
                 }
             }
+
         }
     }
 
-    private EmbedBuilder getRushStats(Rush rush) {
+    private EmbedBuilder getHikabrainStats(Hikabrain hikabrain) {
 
-        EmbedBuilder rushEmbed = new EmbedBuilder();
-        rushEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        rushEmbed.setColor(Color.RED);
-        rushEmbed.setThumbnail(rush.skin);
-        rushEmbed.setTitle(String.format("%s Rush Stats", rush.pseudo));
-        rushEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        EmbedBuilder hikabrainEmbed = new EmbedBuilder();
+        hikabrainEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+        hikabrainEmbed.setColor(Color.RED);
+        hikabrainEmbed.setThumbnail(hikabrain.skin);
+        hikabrainEmbed.setTitle(String.format("%s Rush Stats", hikabrain.pseudo));
+        hikabrainEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        rushEmbed.addField("Rank : ", rush.rang, true);
+        hikabrainEmbed.addField("Rank : ", hikabrain.rang, true);
 
-        rushEmbed.addBlankField(false);
-        rushEmbed.addField("Points : ", rush.data.points, true);
-        rushEmbed.addField("Games : ", rush.data.parties, true);
-        rushEmbed.addField("Victories : ", rush.data.victoires, true);
-        rushEmbed.addField("Defeats : ", rush.data.defaites, true);
-        rushEmbed.addField("Played Time : ", rush.data.temps_jeu + " minutes", true);
-        rushEmbed.addField("Kills : ", rush.data.kills, true);
-        rushEmbed.addField("Deaths : ", rush.data.morts, true);
-        rushEmbed.addField("Beds Destroyed : ", rush.data.lits_detruits, true);
+        hikabrainEmbed.addBlankField(false);
+        hikabrainEmbed.addField("Points : ", hikabrain.data.points, true);
+        hikabrainEmbed.addField("Games : ", hikabrain.data.parties, true);
+        hikabrainEmbed.addField("Victories : ", hikabrain.data.victoires, true);
+        hikabrainEmbed.addField("Defeats : ", hikabrain.data.defaites, true);
+        hikabrainEmbed.addField("Played Time : ", hikabrain.data.temps_jeu + " minutes", true);
+        hikabrainEmbed.addField("Kills : ", hikabrain.data.kills, true);
+        hikabrainEmbed.addField("Deaths : ", hikabrain.data.morts, true);
 
-        rushEmbed.addBlankField(false);
-        rushEmbed.addField("Winrate : ", rush.stats.winrate + "%", true);
-        rushEmbed.addField("KDR : ", rush.stats.kd, true);
-        rushEmbed.addField("Average Kills / Games : ", rush.stats.kills_game,true);
-        rushEmbed.addField("Average Deaths / Games : ", rush.stats.morts_game, true);
-        rushEmbed.addField("Average Time / Games : ", rush.stats.temps_partie + " s", true);
+        hikabrainEmbed.addBlankField(false);
+        hikabrainEmbed.addField("Winrate : ", hikabrain.stats.winrate + "%", true);
+        hikabrainEmbed.addField("KDR : ", hikabrain.stats.kd, true);
+        hikabrainEmbed.addField("Average Kills / Games : ", hikabrain.stats.kills_game,true);
+        hikabrainEmbed.addField("Average Deaths / Games : ", hikabrain.stats.morts_game, true);
+        hikabrainEmbed.addField("Average Time / Games : ", hikabrain.stats.temps_partie + "s", true);
 
-        return rushEmbed;
+        return hikabrainEmbed;
     }
 
     private static JsonElement readJson(URL jsonURL) {
@@ -126,15 +119,15 @@ public class RushStatsCommand extends ListenerAdapter {
     private static JsonElement readJson(InputStream inputStream) {
 
         JsonElement element = JsonNull.INSTANCE;
-        try(InputStream stream = new BufferedInputStream(inputStream)) {
+        try (InputStream stream = new BufferedInputStream(inputStream)) {
 
             final Reader reader = new BufferedReader(new InputStreamReader(stream));
             final StringBuilder sb = new StringBuilder();
 
             int character;
-            while ((character = reader.read()) != -1) sb.append((char)character);
+            while ((character = reader.read()) != -1) sb.append((char) character);
 
-            element =  JsonParser.parseString(sb.toString());
+            element = JsonParser.parseString(sb.toString());
         } catch (IOException e) {
 
             e.printStackTrace();
@@ -159,7 +152,6 @@ public class RushStatsCommand extends ListenerAdapter {
         String temps_jeu;
         String kills;
         String morts;
-        String lits_detruits;
     }
 
     static class Stats {
@@ -170,7 +162,7 @@ public class RushStatsCommand extends ListenerAdapter {
         String temps_partie;
     }
 
-    static class Rush {
+    static class Hikabrain {
         String pseudo;
         String mode_jeu;
         String rang;
@@ -178,6 +170,4 @@ public class RushStatsCommand extends ListenerAdapter {
         Stats stats;
         String skin;
     }
-
-
 }
