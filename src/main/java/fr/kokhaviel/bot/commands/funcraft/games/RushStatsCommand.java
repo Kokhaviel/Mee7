@@ -15,9 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// Funcraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)
-
-package fr.kokhaviel.bot.commands.funcraft;
+package fr.kokhaviel.bot.commands.funcraft.games;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -35,21 +33,19 @@ import java.awt.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class PlayerStatsCommand extends ListenerAdapter {
+public class RushStatsCommand extends ListenerAdapter {
 
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-
         final Message message = event.getMessage();
         final String[] args = message.getContentRaw().split("\\s+");
         final TextChannel channel = (TextChannel) event.getChannel();
 
-        if(args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "player")) {
+        if(args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "rush")) {
 
             if(args.length < 2) {
 
@@ -65,17 +61,19 @@ public class PlayerStatsCommand extends ListenerAdapter {
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
                 } else {
 
-                    final String url = "https://lordmorgoth.net/APIs/infos?key=" + Config.FUNCRAFT_API_KEY + "&joueur=" + args[1];
+                    final String url = "https://lordmorgoth.net/APIs/stats?key=" + Config.FUNCRAFT_API_KEY + "&joueur=" + args[1] + "&mode=rush&periode=always";
 
                     try {
 
                         message.delete().queue();
                         Gson gson = new Gson();
-                        Stats stats = gson.fromJson(readJson(new URL(url)), Stats.class);
-                        channel.sendMessage(getFuncraftStats(stats).build()).queue();
-                        channel.sendMessage(getPlayerFriends(stats).build()).queue();
+                        Rush rush = gson.fromJson(readJson(new URL(url)), Rush.class);
+
+                        channel.sendMessage(getRushStats(rush).build()).queue();
+
 
                     } catch (IOException e) {
+
                         channel.sendMessage("An exception occurred : File doesn't exist !").queue(
                                 delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
@@ -86,47 +84,34 @@ public class PlayerStatsCommand extends ListenerAdapter {
         }
     }
 
-    private EmbedBuilder getFuncraftStats(Stats stats) {
+    private EmbedBuilder getRushStats(Rush rush) {
 
-        EmbedBuilder funcraftEmbed = new EmbedBuilder();
+        EmbedBuilder rushEmbed = new EmbedBuilder();
+        rushEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+        rushEmbed.setColor(Color.RED);
+        rushEmbed.setTitle(String.format("%s %s Stats", rush.pseudo, rush.mode_jeu));
+        rushEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        funcraftEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        funcraftEmbed.setColor(Color.RED);
-        funcraftEmbed.setThumbnail(stats.skin);
-        funcraftEmbed.setTitle(String.format("[%s] %s Stats", stats.grade, stats.pseudo));
-        funcraftEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        rushEmbed.addField("Rank : ", rush.rang, false);
 
-        funcraftEmbed.addField("Inscription : ", stats.inscription, true);
-        funcraftEmbed.addField("Last Connection : ", "Owo ... Not working for the moment", false);
-        //FIXME : Last Connection
-        funcraftEmbed.addField("Glories : ", String.valueOf(stats.gloires), false);
-        funcraftEmbed.addField("Games : ", stats.parties, false);
-        funcraftEmbed.addField("Points : ", stats.points, false);
-        funcraftEmbed.addField("Victories : ", stats.victoires, false);
-        funcraftEmbed.addField("Defeats : ", stats.defaites, false);
-        funcraftEmbed.addField("Played Time : ", stats.temps_jeu + " minutes", false);
-        funcraftEmbed.addField("Kills : ", stats.kills, false);
-        funcraftEmbed.addField("Deaths : ", stats.morts, false);
-        funcraftEmbed.addField("Ban : ", stats.ban, false);
+        rushEmbed.addBlankField(false);
+        rushEmbed.addField("Points : ", rush.data.points, false);
+        rushEmbed.addField("Games : ", rush.data.parties, false);
+        rushEmbed.addField("Victories : ", rush.data.victoires, false);
+        rushEmbed.addField("Defeats : ", rush.data.defaites, false);
+        rushEmbed.addField("Played Time : ", rush.data.temps_jeu + " minutes", false);
+        rushEmbed.addField("Kills : ", rush.data.kills, false);
+        rushEmbed.addField("Deaths : ", rush.data.morts, false);
+        rushEmbed.addField("Beds Destroyed : ", rush.data.lits_detruits, false);
 
-        return funcraftEmbed;
-    }
+        rushEmbed.addBlankField(false);
+        rushEmbed.addField("Winrate : ", rush.stats.winrate + "%", false);
+        rushEmbed.addField("KDR : ", rush.stats.kd, false);
+        rushEmbed.addField("Average Kills / Games : ", rush.stats.kills_game,false);
+        rushEmbed.addField("Average Deaths / Games : ", rush.stats.morts_game, false);
+        rushEmbed.addField("Average Time / Games : ", rush.stats.temps_partie, false);
 
-    private EmbedBuilder getPlayerFriends(Stats stats) {
-
-        EmbedBuilder friendsEmbed = new EmbedBuilder();
-
-        friendsEmbed.setAuthor("Funcraft Player Friends", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        friendsEmbed.setColor(Color.RED);
-        friendsEmbed.setThumbnail(stats.skin);
-        friendsEmbed.setTitle(String.format("[%s] %s Friends", stats.grade, stats.pseudo));
-        friendsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
-
-        for (Friend friend : stats.amis) {
-            friendsEmbed.addField(friend.nom, "Skin : [" + friend.nom + " Head](" + friend.skin + ")", false);
-        }
-
-        return friendsEmbed;
+        return rushEmbed;
     }
 
     private static JsonElement readJson(URL jsonURL) {
@@ -169,26 +154,32 @@ public class PlayerStatsCommand extends ListenerAdapter {
         return connection.getInputStream();
     }
 
-
-    static class Friend {
-        String nom;
-        String skin;
-    }
-
-    static class Stats {
-        String grade;
-        String pseudo;
-        String skin;
-        String inscription;
-        String gloires;
-        String parties;
+    static class Data {
         String points;
+        String parties;
         String victoires;
         String defaites;
         String temps_jeu;
         String kills;
         String morts;
-        List<Friend> amis;
-        String ban;
+        String lits_detruits;
     }
+
+    static class Stats {
+        String winrate;
+        String kd;
+        String kills_game;
+        String morts_game;
+        String temps_partie;
+    }
+
+    static class Rush {
+        String pseudo;
+        String mode_jeu;
+        String rang;
+        Data data;
+        Stats stats;
+    }
+
+
 }
