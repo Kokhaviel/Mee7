@@ -19,8 +19,7 @@ package fr.kokhaviel.bot.commands.hypixel.games;
 
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -43,35 +42,28 @@ public class ArenaStatsCommand extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "arena")) {
 
-
             if (args.length == 1) {
                 channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "arena <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
-
                 if (!args[1].matches("^\\w{3,16}$")) {
                     channel.sendMessage("You must specify a valid Minecraft username !").queue(
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
                 } else {
 
                     message.delete().queue();
-
                     final Player player = sloth.getPlayer(args[1]);
                     final Arena arena = player.getStats().getArena();
-
                     channel.sendMessage(getArenaStats(event, player, arena).build()).queue();
                     channel.sendMessage(getArena1v1Stats(event, player, arena).build()).queue();
                     channel.sendMessage(getArena2v2Stats(event, player, arena).build()).queue();
                     channel.sendMessage(getArena4v4Stats(event, player, arena).build()).queue();
-
                 }
             }
         }
     }
 
     private EmbedBuilder getArenaStats(MessageReceivedEvent event, Player player, Arena arena) {
-
         EmbedBuilder arenaEmbed = new EmbedBuilder();
         arenaEmbed.setAuthor("Arena Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arenaEmbed.setColor(Color.ORANGE);
@@ -107,7 +99,6 @@ public class ArenaStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getArena1v1Stats(MessageReceivedEvent event, Player player, Arena arena) {
-
         EmbedBuilder arenaEmbed = new EmbedBuilder();
 
         arenaEmbed.setAuthor("1v1 Arena Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -131,8 +122,6 @@ public class ArenaStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getArena2v2Stats(MessageReceivedEvent event, Player player, Arena arena) {
-
-
         EmbedBuilder arenaEmbed = new EmbedBuilder();
 
         arenaEmbed.setAuthor("2v2 Arena Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -156,7 +145,6 @@ public class ArenaStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getArena4v4Stats(MessageReceivedEvent event, Player player, Arena arena) {
-
         EmbedBuilder arenaEmbed = new EmbedBuilder();
 
         arenaEmbed.setAuthor("4v4 Arena Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -178,5 +166,4 @@ public class ArenaStatsCommand extends ListenerAdapter {
 
         return arenaEmbed;
     }
-
 }

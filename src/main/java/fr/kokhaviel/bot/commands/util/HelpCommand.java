@@ -49,12 +49,9 @@ public class HelpCommand extends ListenerAdapter {
             final int rd3 = new Random().nextInt(255);
 
             if(args.length == 1) {
-
                 getHelp(rd1, rd2, rd3, jda, channel, author, user);
-
             } else {
                 switch (args[1]) {
-
                     case "server":
                         getServerHelp(rd1, rd2, rd3, jda, channel, author, user);
                         break;
@@ -85,7 +82,6 @@ public class HelpCommand extends ListenerAdapter {
     }
 
     private void getHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
         EmbedBuilder helpEmbed = new EmbedBuilder();
 
         helpEmbed.setTitle("Help Menu");
@@ -101,14 +97,11 @@ public class HelpCommand extends ListenerAdapter {
         helpEmbed.addField("Music Commands : ", Config.PREFIX + "help music", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(helpEmbed.build()).queue();
     }
 
     private void getServerHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
         EmbedBuilder serverEmbed = new EmbedBuilder();
 
         serverEmbed.setTitle("Help Server Commands")
@@ -120,16 +113,11 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Server Info Command : ", Config.PREFIX + "serverinfo", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(serverEmbed.build()).queue();
-
-
     }
 
     private void getUtilHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
         EmbedBuilder utilEmbed = new EmbedBuilder();
 
         utilEmbed.setTitle("Help Util Commands")
@@ -145,14 +133,11 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Shutdown Command : ", Config.PREFIX + "shutdown (Owner Only)", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(utilEmbed.build()).queue();
     }
 
     private void getFunHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
         EmbedBuilder funEmbed = new EmbedBuilder();
 
         funEmbed.setTitle("Help Fun Commands")
@@ -167,14 +152,11 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("DameDane Command", Config.PREFIX + "damedane", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(funEmbed.build()).queue();
     }
 
     private void getUserHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
         EmbedBuilder userEmbed = new EmbedBuilder();
 
         userEmbed.setTitle("Help User Commands")
@@ -187,14 +169,11 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("AFK Command : ", Config.PREFIX + "afk", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(userEmbed.build()).queue();
     }
 
     private void getModerationHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
         EmbedBuilder modEmbed = new EmbedBuilder();
 
         modEmbed.setTitle("Help Moderation Commands")
@@ -213,14 +192,11 @@ public class HelpCommand extends ListenerAdapter {
 
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(modEmbed.build()).queue();
     }
 
     private void getMusicHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
         EmbedBuilder musicEmbed = new EmbedBuilder();
 
         musicEmbed.setTitle("Help Music Commands")
@@ -241,21 +217,14 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Forward Command : ", Config.MUSIC_PREFIX + "forward <Time in sec>", false)
                 .addField("Backward Command : ", Config.MUSIC_PREFIX + "backward <Time in sec>", false);
 
-
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(musicEmbed.build()).queue();
-
-
     }
 
     private void getHypixelHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
         EmbedBuilder hypixelEmbed = new EmbedBuilder();
         EmbedBuilder hypixel2Embed = new EmbedBuilder();
-        EmbedBuilder hypixel3Embed = new EmbedBuilder();
 
         hypixelEmbed.setTitle("Help Hypixel Games Commands")
                 .setColor(new Color(rd1, rd2, rd3))
@@ -274,7 +243,6 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Arena Stats : ", Config.HYPIXEL_PREFIX + "arena <Player>", false)
                 .addField("UHC Stats : ", Config.HYPIXEL_PREFIX + "uhc <Player>", false)
                 .addField("Cops And Crims Stats : ", Config.HYPIXEL_PREFIX + "copsandcrims <Player>", true);
-
 
         hypixel2Embed.setTitle("Help Hypixel Games Commands")
                 .setColor(new Color(rd1, rd2, rd3))
@@ -297,15 +265,9 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Player Stats : ", Config.HYPIXEL_PREFIX + "player <Player>", false);
 
 
-
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(hypixelEmbed.build()).queue();
         ((UserImpl) user).getPrivateChannel().sendMessage(hypixel2Embed.build()).queue();
-        ((UserImpl) user).getPrivateChannel().sendMessage(hypixel3Embed.build()).queue();
-
     }
-
 }

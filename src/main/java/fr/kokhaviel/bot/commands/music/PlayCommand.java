@@ -43,32 +43,21 @@ public class PlayCommand extends ListenerAdapter {
 
             final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
             final GuildVoiceState voiceState = member.getVoiceState();
-
             message.delete().queue();
 
             if (args.length < 2) {
-
                 channel.sendMessage("Please Use : " + Config.MUSIC_PREFIX + "play <Youtube Link>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else if (!selfVoiceState.inVoiceChannel()) {
-
                 channel.sendMessage("I need to be in a voice channel to this command works !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else if (!voiceState.getChannel().equals(selfVoiceState.getChannel())) {
-
                 channel.sendMessage("You need to be in the same voice channel as me for this command works !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
-
                 String link = args[1];
-
                 if (!isUrl(link)) {
-
-                    link = "ytsearch:" + link;
-
+                    channel.sendMessage("You must use a link to play music !").queue();
                 }
 
                 PlayerManager.getInstance().loadAndPlay(channel, link);
@@ -77,17 +66,11 @@ public class PlayCommand extends ListenerAdapter {
     }
 
     private boolean isUrl(String url) {
-
         try {
-
             new URI(url);
             return true;
-
         } catch (URISyntaxException use) {
-
             return false;
-
         }
-
     }
 }

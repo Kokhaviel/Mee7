@@ -19,8 +19,7 @@ package fr.kokhaviel.bot.commands.hypixel.server;
 
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -43,17 +42,12 @@ public class BanStatsCommand extends ListenerAdapter {
         if (args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "bans")) {
 
             message.delete().queue();
-
-
             Bans bans = sloth.getBans();
-
             channel.sendMessage(getBansStats(event, bans).build()).queue();
-
         }
     }
 
     private EmbedBuilder getBansStats(MessageReceivedEvent event, Bans bans) {
-
         EmbedBuilder bansEmbed = new EmbedBuilder();
         bansEmbed.setAuthor("Hypixel Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         bansEmbed.setColor(Color.RED);
@@ -70,5 +64,4 @@ public class BanStatsCommand extends ListenerAdapter {
 
         return bansEmbed;
     }
-
 }

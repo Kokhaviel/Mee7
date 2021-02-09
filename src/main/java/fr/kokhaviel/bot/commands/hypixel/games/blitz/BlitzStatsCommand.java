@@ -19,8 +19,7 @@ package fr.kokhaviel.bot.commands.hypixel.games.blitz;
 
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -46,28 +45,22 @@ public class BlitzStatsCommand extends ListenerAdapter {
             if (args.length == 1) {
                 channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "blitz <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
-
                 if (!args[1].matches("^\\w{3,16}$")) {
                     channel.sendMessage("You must specify a valid Minecraft username !").queue(
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
                 } else {
 
                     message.delete().queue();
-
                     final Player player = sloth.getPlayer(args[1]);
                     final Blitz blitz = player.getStats().getBlitz();
-
                     channel.sendMessage(getBlitzStats(event, player, blitz).build()).queue();
-
                 }
             }
         }
     }
 
     private EmbedBuilder getBlitzStats(MessageReceivedEvent event, Player player, Blitz blitz) {
-
         EmbedBuilder blitzEmbed = new EmbedBuilder();
 
         blitzEmbed.setAuthor("Blitz Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -100,5 +93,4 @@ public class BlitzStatsCommand extends ListenerAdapter {
 
         return blitzEmbed;
     }
-
 }

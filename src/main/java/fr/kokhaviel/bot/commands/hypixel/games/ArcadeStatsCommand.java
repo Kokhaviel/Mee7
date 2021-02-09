@@ -19,8 +19,7 @@ package fr.kokhaviel.bot.commands.hypixel.games;
 
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +45,6 @@ public class ArcadeStatsCommand extends ListenerAdapter {
             if (args.length == 1) {
                 channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "arcade <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
 
                 if (!args[1].matches("^\\w{3,16}$")) {
@@ -54,23 +52,17 @@ public class ArcadeStatsCommand extends ListenerAdapter {
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
                 } else {
                     message.delete().queue();
-
                     final Player player = sloth.getPlayer(args[1]);
                     final Arcade arcade = player.getStats().getArcade();
-
                     channel.sendMessage(getArcade1Stats(event, player, arcade).build()).queue();
                     channel.sendMessage(getArcade2Stats(event, player, arcade).build()).queue();
                     channel.sendMessage(getArcade3Stats(event, player, arcade).build()).queue();
-
                 }
             }
-
-
         }
     }
 
     private EmbedBuilder getArcade1Stats(MessageReceivedEvent event, Player player, Arcade arcade) {
-
         EmbedBuilder arcadeEmbed = new EmbedBuilder();
         arcadeEmbed.setAuthor("Arcade Stats (1)", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arcadeEmbed.setColor(Color.GREEN);
@@ -105,13 +97,10 @@ public class ArcadeStatsCommand extends ListenerAdapter {
         arcadeEmbed.addField("Mini Walls Wither Kills : ", String.valueOf(arcade.getModes().getMiniWalls().getWitherKills()), true);
         arcadeEmbed.addField("Mini Walls Kit : ", arcade.getModes().getMiniWalls().getKit(), true);
 
-
-
         return arcadeEmbed;
     }
 
     private EmbedBuilder getArcade2Stats(MessageReceivedEvent event, Player player, Arcade arcade) {
-
         EmbedBuilder arcadeEmbed = new EmbedBuilder();
         arcadeEmbed.setAuthor("Arcade Stats (2)", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arcadeEmbed.setColor(Color.GREEN);
@@ -133,7 +122,6 @@ public class ArcadeStatsCommand extends ListenerAdapter {
         arcadeEmbed.addField("Galaxy Wars Kills : ", String.valueOf(arcade.getModes().getGalaxyWars().getKills()), true);
         arcadeEmbed.addField("Galaxy Wars Deaths : ", String.valueOf(arcade.getModes().getGalaxyWars().getDeaths()), true);
         arcadeEmbed.addField("Galaxy Wars Shot Fired : ", String.valueOf(arcade.getModes().getGalaxyWars().getShotsFired()), true);
-
 
         arcadeEmbed.addBlankField(false);
         arcadeEmbed.addField("Farm Hunt Wins : ", String.valueOf(arcade.getModes().getFarmHunt().getWins()), true);
@@ -177,5 +165,4 @@ public class ArcadeStatsCommand extends ListenerAdapter {
 
         return arcadeEmbed;
     }
-
 }

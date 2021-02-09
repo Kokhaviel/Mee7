@@ -20,8 +20,7 @@ package fr.kokhaviel.bot.commands.music;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import fr.kokhaviel.bot.Config;
-import fr.kokhaviel.bot.music.GuildMusicManager;
-import fr.kokhaviel.bot.music.PlayerManager;
+import fr.kokhaviel.bot.music.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -30,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.TimeUnit;
 
 public class BackwardCommand extends ListenerAdapter {
-
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -42,26 +40,16 @@ public class BackwardCommand extends ListenerAdapter {
         final Message message = event.getMessage();
         final String[] args = message.getContentRaw().split("\\s+");
 
-
         if (args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "backward")) {
-
-
             final GuildVoiceState memberVoiceState = member.getVoiceState();
-
             message.delete().queue();
-
             if (!memberVoiceState.inVoiceChannel()) {
-
                 channel.sendMessage("You Need To Be In A Voice Channel For This Command Works !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else if(args.length < 2) {
-
                 channel.sendMessage("Missing Arguments : Specify a duration to move back in seconds").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
-
                 final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
                 final AudioPlayer audioPlayer = musicManager.audioPlayer;
                 final AudioTrack playingTrack = audioPlayer.getPlayingTrack();
@@ -69,14 +57,10 @@ public class BackwardCommand extends ListenerAdapter {
                 final int toBackward = Integer.parseInt(args[1]);
 
                 if(toBackward < 10 ) {
-
                     channel.sendMessage("Cannot Forward Less Than 10 seconds").queue(
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
                 } else {
-
                     playingTrack.setPosition(playingTrack.getPosition() - toBackward*1000L);
-
                 }
             }
         }

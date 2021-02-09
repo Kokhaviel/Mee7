@@ -45,7 +45,6 @@ public class PlayerManager {
 
         AudioSourceManagers.registerLocalSource(this.playerManager);
         AudioSourceManagers.registerRemoteSources(this.playerManager);
-
     }
 
 
@@ -53,16 +52,13 @@ public class PlayerManager {
 
         return this.musicManagers.computeIfAbsent(guild.getIdLong(), guildID -> {
             final GuildMusicManager guildMusicManager = new GuildMusicManager(this.playerManager);
-
             guild.getAudioManager().setSendingHandler(guildMusicManager.getSendHandler());
 
             return guildMusicManager;
-
         });
     }
 
     public void loadAndPlay(TextChannel channel, String trackUrl) {
-
         final GuildMusicManager musicManager = this.getMusicManager(channel.getGuild());
 
         this.playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
@@ -92,33 +88,21 @@ public class PlayerManager {
                         );
 
                 for (AudioTrack track : tracks ) {
-
                     musicManager.scheduler.queue(track);
-
                 }
             }
 
             @Override
-            public void noMatches() {
-
-            }
+            public void noMatches() {  }
 
             @Override
-            public void loadFailed(FriendlyException exception) {
-
-            }
+            public void loadFailed(FriendlyException exception) {  }
         });
-
     }
 
     public static PlayerManager getInstance() {
-
         if(INSTANCE == null) INSTANCE = new PlayerManager();
 
         return INSTANCE;
-
     }
-
-
-
 }

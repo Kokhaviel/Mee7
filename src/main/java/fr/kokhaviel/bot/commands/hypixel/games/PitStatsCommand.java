@@ -19,8 +19,7 @@ package fr.kokhaviel.bot.commands.hypixel.games;
 
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -37,8 +36,6 @@ public class PitStatsCommand extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-
-
         final Message message = event.getMessage();
         final String[] args = message.getContentRaw().split("\\s+");
         final TextChannel channel = (TextChannel) event.getChannel();
@@ -48,21 +45,15 @@ public class PitStatsCommand extends ListenerAdapter {
             if(args.length == 1) {
                 channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "quakecraft <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
-
-
                 if (!args[1].matches("^\\w{3,16}$")) {
                     channel.sendMessage("You must specify a valid Minecraft username !").queue(
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
                 } else {
 
-
                     message.delete().queue();
-
                     final Player player = sloth.getPlayer(args[1]);
                     final Pit pit = player.getStats().getPit();
-
                     channel.sendMessage(getPitStats(event, player, pit).build()).queue();
                     channel.sendMessage(getPvPStats(event, player, pit).build()).queue();
                 }
@@ -71,7 +62,6 @@ public class PitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getPitStats(MessageReceivedEvent event, Player player, Pit pit) {
-
         EmbedBuilder pitEmbed = new EmbedBuilder();
         pitEmbed.setAuthor("Pit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         pitEmbed.setColor(new Color(82, 53, 33));
@@ -94,8 +84,6 @@ public class PitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getPvPStats(MessageReceivedEvent event, Player player, Pit pit) {
-
-
         EmbedBuilder pitEmbed = new EmbedBuilder();
         pitEmbed.setAuthor("Pit PvP Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         pitEmbed.setColor(new Color(82, 53, 33));
@@ -121,5 +109,4 @@ public class PitStatsCommand extends ListenerAdapter {
 
         return pitEmbed;
     }
-
 }

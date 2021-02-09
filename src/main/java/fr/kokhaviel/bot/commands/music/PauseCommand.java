@@ -47,27 +47,18 @@ public class PauseCommand extends ListenerAdapter {
             final GuildVoiceState voiceState = member.getVoiceState();
             final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
             final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
-
-
             message.delete().queue();
 
             if (!voiceState.inVoiceChannel()) {
-
                 channel.sendMessage("You need to be in a voice channel to this command works").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else if (!selfVoiceState.inVoiceChannel()) {
-
                 channel.sendMessage("I need to be in a voice channel to this command works !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else if (!voiceState.getChannel().equals(selfVoiceState.getChannel())) {
-
                 channel.sendMessage("You need to be in the same voice channel as me for this command works !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
-
                 musicManager.scheduler.player.setPaused(!this.isPaused);
 
                 if (!isPaused) {
@@ -79,7 +70,6 @@ public class PauseCommand extends ListenerAdapter {
                 }
 
                 this.isPaused = !this.isPaused;
-
             }
         }
     }

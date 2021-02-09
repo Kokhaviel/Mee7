@@ -40,25 +40,17 @@ public class UnbanCommand extends ListenerAdapter {
         if (args[0].equalsIgnoreCase(Config.PREFIX + "unban")) {
 
             message.delete().queue();
-
             assert author != null;
             if (!author.hasPermission(Permission.BAN_MEMBERS)) {
-
                 channel.sendMessage("You don't have the permission to unban member !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else if (args.length < 2) {
-
                 channel.sendMessage("Missing Arguments : Please Use " + Config.PREFIX + "unban <User ID>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else if (args.length > 2) {
-
                 channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "unban <User ID>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
-
                 guild.unban(args[1]).queue(
                         success -> channel.sendMessage("Successfully Unban !").queue(
                                 delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)),

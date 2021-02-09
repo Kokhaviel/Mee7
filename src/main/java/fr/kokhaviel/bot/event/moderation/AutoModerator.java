@@ -18,14 +18,10 @@
 package fr.kokhaviel.bot.event.moderation;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import fr.kokhaviel.bot.Config;
@@ -43,10 +39,7 @@ public class AutoModerator extends ListenerAdapter {
         final Guild guild = event.getGuild();
 
         for (String arg : args) {
-
             if (badWords.contains(arg)) {
-
-
                 EmbedBuilder badwordDetect = new EmbedBuilder();
 
                 badwordDetect.setTitle("Badword Detected :");
@@ -57,14 +50,8 @@ public class AutoModerator extends ListenerAdapter {
                 badwordDetect.addField("Badword : ", arg, false);
 
                 channel.sendMessage(badwordDetect.build()).queue();
-
                 message.delete().queue();
-
             }
-
         }
-
-
     }
-
 }

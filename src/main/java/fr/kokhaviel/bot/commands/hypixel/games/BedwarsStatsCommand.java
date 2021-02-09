@@ -19,8 +19,7 @@ package fr.kokhaviel.bot.commands.hypixel.games;
 
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -46,19 +45,15 @@ public class BedwarsStatsCommand extends ListenerAdapter {
             if (args.length == 1) {
                 channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "bedwars <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
-
                 if (!args[1].matches("^\\w{3,16}$")) {
                     channel.sendMessage("You must specify a valid Minecraft username !").queue(
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
                 } else {
 
                     message.delete().queue();
-
                     final Player player = sloth.getPlayer(args[1]);
                     final BedWars bedwars = player.getStats().getBedWars();
-
                     channel.sendMessage(getBedwarsStats(event, player, bedwars).build()).queue();
                     channel.sendMessage(getRessourcesBW(event, player, bedwars).build()).queue();
                     channel.sendMessage(getGamemodesStats(event, player, bedwars).build()).queue();
@@ -68,7 +63,6 @@ public class BedwarsStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getBedwarsStats(MessageReceivedEvent event, Player player, BedWars bedwars) {
-
         EmbedBuilder bedwarsEmbed = new EmbedBuilder();
         bedwarsEmbed.setAuthor("Bedwars Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         bedwarsEmbed.setColor(Color.RED);
@@ -97,7 +91,6 @@ public class BedwarsStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getRessourcesBW(MessageReceivedEvent event, Player player, BedWars bedwars) {
-
         EmbedBuilder bedwarsEmbed = new EmbedBuilder();
         bedwarsEmbed.setAuthor("Bedwars Resources Collected", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         bedwarsEmbed.setColor(Color.RED);
@@ -113,7 +106,6 @@ public class BedwarsStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getGamemodesStats(MessageReceivedEvent event, Player player, BedWars bedwars) {
-
         EmbedBuilder bedwarsEmbed = new EmbedBuilder();
         bedwarsEmbed.setAuthor("Bedwars Gamemodes Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         bedwarsEmbed.setColor(Color.RED);
@@ -149,5 +141,4 @@ public class BedwarsStatsCommand extends ListenerAdapter {
 
         return bedwarsEmbed;
     }
-
 }

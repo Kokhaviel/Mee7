@@ -19,8 +19,7 @@ package fr.kokhaviel.bot.commands.hypixel.games.blitz;
 
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -46,16 +45,13 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
             if (args.length == 2) {
                 channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "blitz kitstats <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
-
                 if (!args[2].matches("^\\w{3,16}$")) {
                     channel.sendMessage("You must specify a valid Minecraft username !").queue(
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
                 } else {
 
                     message.delete().queue();
-
                     final Player player = sloth.getPlayer(args[2]);
                     final BlitzKitsStats blitzKitStats = player.getStats().getBlitz().getKitsStats();
 
@@ -102,7 +98,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getArachnologistStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Arachnologist Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -121,7 +116,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getArcherStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Archer Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -176,7 +170,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getBlazeStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Blaze Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -195,7 +188,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getCreeperTamerStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("CreeperTamer Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -214,7 +206,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getDiverStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Diver Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -233,7 +224,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getFarmerStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Farmer Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -252,7 +242,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getFishermanStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Fisherman Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -271,7 +260,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getFloristStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Florist Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -290,7 +278,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getGolemStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Golem Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -309,7 +296,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getGuardianStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Guardian Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -328,7 +314,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getHorseTamerStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("HorseTamer Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -347,7 +332,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getHunterStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Hunter Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -366,7 +350,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getHypeTrainStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Hype Train Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -385,7 +368,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getJockeyStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Jockey Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -404,7 +386,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getKnightStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Knight Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -423,7 +404,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getMeatMasterStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Meat Master Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -442,7 +422,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getNecromancerStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Necromancer Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -461,7 +440,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getPaladinStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Paladin Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -480,7 +458,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getPigmanStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Pigman Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -499,7 +476,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getRamboStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Rambo Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -518,7 +494,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getRandomStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Random Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -537,7 +512,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getReaperStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Reaper Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -556,7 +530,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getRedDragonStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("RedDragon Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -575,7 +548,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getRogueStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Rogue Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -594,7 +566,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getScoutStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Scout Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -613,7 +584,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getShadowKnightStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("ShadowKnight Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -632,7 +602,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getSmileySlimeStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("SmileySlime Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -651,7 +620,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getSnowmanStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Snowman Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -670,7 +638,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getSpeleologistStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Speleologist Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -689,7 +656,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getTimStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Tim Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -708,7 +674,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getToxicologistStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Toxicologist Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -727,7 +692,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getTrollStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Troll Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -746,7 +710,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getVikingStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Viking Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -765,7 +728,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getWarlockStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Warlock Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -784,7 +746,6 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getWolfTamerStats(MessageReceivedEvent event, Player player, BlitzKitsStats stats) {
-
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("WolfTamer Kit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");

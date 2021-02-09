@@ -19,8 +19,7 @@ package fr.kokhaviel.bot.commands.hypixel.games;
 
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -34,7 +33,6 @@ import static fr.kokhaviel.bot.Mee7.sloth;
 
 public class TurboKartStatsCommand extends ListenerAdapter {
 
-
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
@@ -47,7 +45,6 @@ public class TurboKartStatsCommand extends ListenerAdapter {
             if(args.length == 1) {
                 channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "turbokart <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
                 if (!args[1].matches("^\\w{3,16}$")) {
                     channel.sendMessage("You must specify a valid Minecraft username !").queue(
@@ -55,21 +52,16 @@ public class TurboKartStatsCommand extends ListenerAdapter {
                 } else {
 
                     message.delete().queue();
-
                     final Player player = sloth.getPlayer(args[1]);
                     final Tkr tkr = player.getStats().getTkr();
-
                     channel.sendMessage(getTkrStats(event, player, tkr).build()).queue();
                     channel.sendMessage(getMapStats(event, player, tkr).build()).queue();
-
                 }
             }
         }
     }
 
     private EmbedBuilder getTkrStats(MessageReceivedEvent event, Player player, Tkr tkr) {
-
-
         EmbedBuilder tkrEmbed = new EmbedBuilder();
         tkrEmbed.setAuthor("Tkr Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         tkrEmbed.setColor(Color.MAGENTA);
@@ -94,7 +86,6 @@ public class TurboKartStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getMapStats(MessageReceivedEvent event, Player player, Tkr tkr) {
-
         EmbedBuilder tkrEmbed = new EmbedBuilder();
         tkrEmbed.setAuthor("Tkr Map Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         tkrEmbed.setColor(Color.MAGENTA);
@@ -125,8 +116,6 @@ public class TurboKartStatsCommand extends ListenerAdapter {
         tkrEmbed.addField("Canyon Win Ratio : ", String.valueOf(tkr.getMaps().getCanyon().getWinRatio()), true);
         tkrEmbed.addField("Canyon Trophies : ", String.valueOf(tkr.getMaps().getCanyon().getTrophies().getGold() + tkr.getMaps().getCanyon().getTrophies().getSilver() + tkr.getMaps().getCanyon().getTrophies().getBronze()), true);
 
-
         return tkrEmbed;
     }
-
 }

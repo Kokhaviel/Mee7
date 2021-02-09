@@ -19,8 +19,7 @@ package fr.kokhaviel.bot.commands.hypixel.games;
 
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -37,7 +36,6 @@ public class WallsStatsCommand extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-
         final Message message = event.getMessage();
         final String[] args = message.getContentRaw().split("\\s+");
         final TextChannel channel = (TextChannel) event.getChannel();
@@ -47,7 +45,6 @@ public class WallsStatsCommand extends ListenerAdapter {
             if(args.length == 1) {
                 channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "walls <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
 
                 if (!args[1].matches("^\\w{3,16}$")) {
@@ -56,22 +53,16 @@ public class WallsStatsCommand extends ListenerAdapter {
                 } else {
 
                     message.delete().queue();
-
                     final Player player = sloth.getPlayer(args[1]);
                     final Walls walls = player.getStats().getWalls();
-
                     channel.sendMessage(getWallsStats(event, player, walls).build()).queue();
                     channel.sendMessage(getWallsPerksStats(event, player, walls).build()).queue();
-
                 }
             }
-
         }
-
     }
 
     private EmbedBuilder getWallsStats(MessageReceivedEvent event, Player player, Walls walls) {
-
         EmbedBuilder wallsEmbed = new EmbedBuilder();
         wallsEmbed.setAuthor("Walls Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         wallsEmbed.setColor(Color.YELLOW);
@@ -94,7 +85,6 @@ public class WallsStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getWallsPerksStats(MessageReceivedEvent event, Player player, Walls walls) {
-
         EmbedBuilder wallsPerksEmbed = new EmbedBuilder();
         wallsPerksEmbed.setAuthor("Walls Perks", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         wallsPerksEmbed.setColor(Color.YELLOW);
@@ -121,5 +111,4 @@ public class WallsStatsCommand extends ListenerAdapter {
 
         return wallsPerksEmbed;
     }
-
 }

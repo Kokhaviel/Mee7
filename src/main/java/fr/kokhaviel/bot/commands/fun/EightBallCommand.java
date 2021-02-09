@@ -52,7 +52,6 @@ public class EightBallCommand extends ListenerAdapter {
             "Concentrate and ask again.",
             "Very doubtful.");
 
-
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
 
@@ -60,22 +59,16 @@ public class EightBallCommand extends ListenerAdapter {
         final String[] args = message.getContentRaw().split("\\s+");
         final MessageChannel channel = event.getChannel();
 
-
         if (args[0].equalsIgnoreCase(Config.PREFIX + "8ball")) {
 
             if (args.length < 2) {
 
                 message.delete().queue();
-
                 channel.sendMessage("Missing Argument : Please Use " + Config.PREFIX + "8ball <Question?>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
-
                 int ballRandom = new Random().nextInt(20);
-
                 message.delete().queue();
-
                 channel.sendMessage(answer.get(ballRandom)).queue();
             }
         }

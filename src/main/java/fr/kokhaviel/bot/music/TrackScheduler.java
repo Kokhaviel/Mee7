@@ -32,32 +32,25 @@ public class TrackScheduler extends AudioEventAdapter {
     public boolean repeating = false;
 
     public TrackScheduler(AudioPlayer player) {
-
         this.player = player;
         this.queue = new LinkedBlockingQueue<>();
-
     }
 
     public void queue(AudioTrack track) {
-
         if(!this.player.startTrack(track, true)) {
 
             this.queue.offer(track);
 
         }
-
     }
 
     public void nextTrack() {
-
         this.player.startTrack(this.queue.poll(), false);
-
     }
 
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         if(endReason.mayStartNext) {
-
             if(this.repeating) {
                 this.player.startTrack(track.makeClone(), false);
             } else {

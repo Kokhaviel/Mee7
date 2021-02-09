@@ -17,22 +17,17 @@
 
 package fr.kokhaviel.bot.commands.util;
 
-import java.awt.Color;
-import java.util.concurrent.TimeUnit;
-
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.internal.entities.UserImpl;
 
-public class AboutCommand extends ListenerAdapter {
+import java.awt.*;
 
+public class AboutCommand extends ListenerAdapter {
 
     public void onMessageReceived(MessageReceivedEvent event) {
 
@@ -46,15 +41,10 @@ public class AboutCommand extends ListenerAdapter {
         if (args[0].equalsIgnoreCase(Config.PREFIX + "about")) {
 
             message.delete().queue();
-
             User user = member.getUser();
-
             channel.sendMessage(author.getAsMention() + ", a message will be send to your DM !").queue();
-
             if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
             ((UserImpl) user).getPrivateChannel().sendMessage(getAbout(jda).build()).queue();
-
         }
     }
 

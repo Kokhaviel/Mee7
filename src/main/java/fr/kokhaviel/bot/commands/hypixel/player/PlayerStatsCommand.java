@@ -19,8 +19,7 @@ package fr.kokhaviel.bot.commands.hypixel.player;
 
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -45,29 +44,22 @@ public class PlayerStatsCommand extends ListenerAdapter {
             if(args.length == 1) {
                 channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "player <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
-
                 if (!args[1].matches("^\\w{3,16}$")) {
                     channel.sendMessage("You must specify a valid Minecraft username !").queue(
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
                 } else {
 
                     message.delete().queue();
-
                     final Player player = sloth.getPlayer(args[1]);
-
                     channel.sendMessage(getPlayerStats(event, player).build()).queue();
                     channel.sendMessage(getPlayer2Stats(event, player).build()).queue();
                 }
             }
-
         }
-
     }
 
     private EmbedBuilder getPlayerStats(MessageReceivedEvent event, Player player) {
-
         EmbedBuilder playerEmbed = new EmbedBuilder();
         playerEmbed.setAuthor("Hypixel Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         playerEmbed.setColor(Color.PINK);
@@ -97,7 +89,6 @@ public class PlayerStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getPlayer2Stats(MessageReceivedEvent event, Player player) {
-
         EmbedBuilder playerEmbed = new EmbedBuilder();
         playerEmbed.setAuthor("Hypixel Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         playerEmbed.setColor(Color.PINK);

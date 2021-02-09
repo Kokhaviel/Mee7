@@ -21,12 +21,10 @@ import java.awt.Color;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import fr.kokhaviel.bot.Config;
+import fr.kokhaviel.bot.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -40,25 +38,15 @@ public class InfoCommand extends ListenerAdapter {
         final JDA jda = event.getJDA();
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "userinfo")) {
-
             message.delete().queue();
-
             TextChannel channel = (TextChannel) event.getChannel();
-
             if (args.length < 2) {
-
                 channel.sendMessage("Missing Argument : Please Use " + Config.PREFIX + "userinfo <@User> !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else if (args.length > 2) {
-
                 channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "userinfo <@User> !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
-
             } else {
-
-
                 List<Member> mentionedMembers = message.getMentionedMembers();
                 Member target = mentionedMembers.get(0);
 
@@ -68,7 +56,6 @@ public class InfoCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getUserInfo(JDA jda, Member target) {
-
         EmbedBuilder userInfoEmbed = new EmbedBuilder();
 
         userInfoEmbed.setTitle(target.getUser().getName() + " User Info")
@@ -87,5 +74,4 @@ public class InfoCommand extends ListenerAdapter {
 
         return userInfoEmbed;
     }
-
 }

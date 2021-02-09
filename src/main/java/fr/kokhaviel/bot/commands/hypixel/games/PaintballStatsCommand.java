@@ -19,8 +19,7 @@ package fr.kokhaviel.bot.commands.hypixel.games;
 
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -46,31 +45,24 @@ public class PaintballStatsCommand extends ListenerAdapter {
             if(args.length == 1) {
                 channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "paintball <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
-
                 if (!args[1].matches("^\\w{3,16}$")) {
                     channel.sendMessage("You must specify a valid Minecraft username !").queue(
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
                 } else {
 
                     message.delete().queue();
-
                     final Player player = sloth.getPlayer(args[1]);
                     final Paintball paintball = player.getStats().getPaintball();
-
                     channel.sendMessage(getPaintballStats(event, player, paintball).build()).queue();
                     channel.sendMessage(getPaintballPerksStats(event, player, paintball).build()).queue();
-
                 }
             }
         }
     }
 
     private EmbedBuilder getPaintballStats(MessageReceivedEvent event, Player player, Paintball paintball) {
-
         EmbedBuilder paintballEmbed = new EmbedBuilder();
-
 
         paintballEmbed.setAuthor("Paintball Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         paintballEmbed.setColor(new Color(85, 85, 255));
@@ -92,7 +84,6 @@ public class PaintballStatsCommand extends ListenerAdapter {
 
 
     private EmbedBuilder getPaintballPerksStats(MessageReceivedEvent event, Player player, Paintball paintball) {
-
         EmbedBuilder paintballPerksEmbed = new EmbedBuilder();
 
         paintballPerksEmbed.setAuthor("Paintball Perks", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -109,5 +100,4 @@ public class PaintballStatsCommand extends ListenerAdapter {
 
         return paintballPerksEmbed;
     }
-
 }

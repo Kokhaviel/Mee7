@@ -19,19 +19,15 @@ package fr.kokhaviel.bot;
 
 import fr.kokhaviel.bot.commands.fun.*;
 import fr.kokhaviel.bot.commands.hypixel.games.*;
-import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitLevelCommand;
-import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitStatsCommand;
-import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzStatsCommand;
-import fr.kokhaviel.bot.commands.hypixel.player.PlayerStatsCommand;
+import fr.kokhaviel.bot.commands.hypixel.games.blitz.*;
 import fr.kokhaviel.bot.commands.hypixel.server.BanStatsCommand;
 import fr.kokhaviel.bot.commands.moderation.*;
 import fr.kokhaviel.bot.commands.music.*;
-import fr.kokhaviel.bot.commands.server.RoleInfoCommand;
-import fr.kokhaviel.bot.commands.server.ServerInfoCommand;
-import fr.kokhaviel.bot.commands.user.AvatarCommand;
-import fr.kokhaviel.bot.commands.user.InfoCommand;
+import fr.kokhaviel.bot.commands.server.*;
+import fr.kokhaviel.bot.commands.user.*;
 import fr.kokhaviel.bot.commands.user.afk.AfkCommand;
 import fr.kokhaviel.bot.commands.util.*;
+import fr.kokhaviel.bot.commands.wikipedia.WikipediaSearchCommand;
 import fr.kokhaviel.bot.event.afk.AfkVerify;
 import fr.kokhaviel.bot.event.logs.Logs;
 import fr.kokhaviel.bot.event.moderation.AutoModerator;
@@ -43,18 +39,18 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import zone.nora.slothpixel.Slothpixel;
 
 import javax.security.auth.login.LoginException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Mee7 {
 
-    public static List<String> afkIDs = new ArrayList<>();
-
-    public static Slothpixel sloth = new Slothpixel();
-
+    public static List<String> afkIDs;
+    public static Slothpixel sloth;
     public static JDA jda;
 
     public Mee7() {
+
+         afkIDs = new ArrayList<>();
+         sloth  = new Slothpixel();
 
         try {
 
@@ -112,7 +108,7 @@ public class Mee7 {
                     .addEventListeners(new PingCommand())
                     .addEventListeners(new PitStatsCommand())
                     .addEventListeners(new PlayCommand())
-                    .addEventListeners(new PlayerStatsCommand())
+                    .addEventListeners(new fr.kokhaviel.bot.commands.hypixel.player.PlayerStatsCommand())
                     .addEventListeners(new QuakeCraftStatsCommand())
                     .addEventListeners(new QueueCommand())
                     .addEventListeners(new RandomCommand())
@@ -130,7 +126,6 @@ public class Mee7 {
                     .addEventListeners(new SmashStatsCommand())
                     .addEventListeners(new SpeedUHCStatsCommand())
                     .addEventListeners(new StopCommand())
-//                  .addEventListeners(new ThatPersonDoesNotExistCommand())
                     .addEventListeners(new TntGamesStatsCommand())
                     .addEventListeners(new TurboKartStatsCommand())
                     .addEventListeners(new UHCStatsCommand())
@@ -141,8 +136,10 @@ public class Mee7 {
                     .addEventListeners(new WallsStatsCommand())
                     .addEventListeners(new WarlordsStatsCommand())
 
-                    .setActivity(Activity.watching("la doc avant de poser une question..."))
+                    .addEventListeners(new WikipediaSearchCommand())
+                    //.addEventListeners(new ThatPersonDoesNotExistCommand())
 
+                    .setActivity(Activity.watching("la doc avant de poser une question..."))
                     .build();
 
         } catch (LoginException le) {
@@ -150,7 +147,6 @@ public class Mee7 {
         }
 
     }
-
 
     public static void main(String[] args) {
         new Mee7();

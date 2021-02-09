@@ -19,12 +19,9 @@ package fr.kokhaviel.bot.commands.music;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import fr.kokhaviel.bot.Config;
-import fr.kokhaviel.bot.music.GuildMusicManager;
-import fr.kokhaviel.bot.music.PlayerManager;
+import fr.kokhaviel.bot.music.*;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -51,14 +48,11 @@ public class QueueCommand extends ListenerAdapter {
 
             final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
             final BlockingQueue<AudioTrack> queue = musicManager.scheduler.queue;
-
-            event.getMessage().delete().queue();
-
+            message.delete().queue();
             final int trackCount = Math.min(queue.size(), 10);
             final List<AudioTrack> trackList = new ArrayList<>(queue);
 
             if (queue.isEmpty()) {
-
                 channel.sendMessage("Queue is currently empty !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
             } else {
@@ -77,14 +71,12 @@ public class QueueCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getMusicQueue(MessageReceivedEvent event, String iconUrl, int trackCount, List<AudioTrack> trackList) {
-
         EmbedBuilder queueEmbed = new EmbedBuilder();
 
         queueEmbed.setTitle("Current Queue :");
         queueEmbed.setColor(Color.ORANGE);
         queueEmbed.setAuthor("Queue Command", null, iconUrl);
         queueEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
-
 
         for (int i = 0; i < trackCount; i++) {
 
@@ -93,16 +85,12 @@ public class QueueCommand extends ListenerAdapter {
             final String author = track.getInfo().author;
 
             queueEmbed.addField(title + " `[" + timeFormat(track.getDuration()) + "]`", author, false);
-
         }
 
         if (trackList.size() > trackCount) {
-
             queueEmbed.addField("And " + (trackList.size() - trackCount) + " More ...", "", false);
-
         }
 
         return queueEmbed;
     }
-
 }

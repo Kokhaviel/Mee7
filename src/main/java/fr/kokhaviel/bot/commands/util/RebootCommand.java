@@ -17,11 +17,9 @@
 
 package fr.kokhaviel.bot.commands.util;
 
-import fr.kokhaviel.bot.Config;
-import fr.kokhaviel.bot.Mee7;
+import fr.kokhaviel.bot.*;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -37,17 +35,9 @@ public class RebootCommand extends ListenerAdapter {
 
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "reboot") && author.getId().equals(Config.OWNER_ID)) {
-
             message.delete().queue();
-
             jda.shutdown();
-
             new Mee7();
-
         }
-
-
     }
-
-
 }

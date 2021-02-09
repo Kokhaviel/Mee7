@@ -20,8 +20,7 @@ package fr.kokhaviel.bot.event.afk;
 import java.awt.Color;
 import java.util.List;
 
-import fr.kokhaviel.bot.Config;
-import fr.kokhaviel.bot.Mee7;
+import fr.kokhaviel.bot.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -37,13 +36,10 @@ public class AfkVerify extends ListenerAdapter {
 
         final MessageChannel channel = event.getChannel();
         final Guild guild = event.getGuild();
-
-        List<Member> members = event.getMessage().getMentionedMembers();
+        final List<Member> members = event.getMessage().getMentionedMembers();
 
         for (Member member : members) {
-
             if (Mee7.afkIDs.contains(member.getId())) {
-
                 EmbedBuilder afkMentionEmbed = new EmbedBuilder();
 
                 afkMentionEmbed.setTitle("Afk Member Mention")
@@ -55,12 +51,7 @@ public class AfkVerify extends ListenerAdapter {
                         .addField("Member Mentioned : ", member.getUser().getAsTag(), false);
 
                 channel.sendMessage(afkMentionEmbed.build()).queue();
-
-
             }
-
         }
-
     }
-
 }

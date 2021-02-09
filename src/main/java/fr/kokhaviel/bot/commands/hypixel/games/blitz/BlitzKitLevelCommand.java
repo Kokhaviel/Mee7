@@ -19,14 +19,12 @@ package fr.kokhaviel.bot.commands.hypixel.games.blitz;
 
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import zone.nora.slothpixel.player.Player;
 import zone.nora.slothpixel.player.stats.blitz.kits.BlitzKits;
-import zone.nora.slothpixel.player.stats.blitz.kits.BlitzKitsStats;
 
 import java.awt.*;
 import java.util.concurrent.TimeUnit;
@@ -55,7 +53,6 @@ public class BlitzKitLevelCommand extends ListenerAdapter {
                 } else {
 
                     message.delete().queue();
-
                     final Player player = sloth.getPlayer(args[2]);
                     final BlitzKits blitzLevelsStats = player.getStats().getBlitz().getKitsLevels();
 
@@ -67,7 +64,6 @@ public class BlitzKitLevelCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getBlitzKit1Level(MessageReceivedEvent event, Player player, BlitzKits blitzLevelsStats) {
-
         EmbedBuilder blitzLevelsEmbed = new EmbedBuilder();
 
         blitzLevelsEmbed.setAuthor("Blitz Kit Levels (1)", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
@@ -105,7 +101,6 @@ public class BlitzKitLevelCommand extends ListenerAdapter {
 
 
     private EmbedBuilder getBlitzKit2Level(MessageReceivedEvent event, Player player, BlitzKits blitzLevelsStats) {
-
         EmbedBuilder blitzLevelsEmbed = new EmbedBuilder();
 
         blitzLevelsEmbed.setAuthor("Blitz Kit Levels (2)", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");

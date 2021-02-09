@@ -20,9 +20,7 @@ package fr.kokhaviel.bot.commands.server;
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -41,16 +39,11 @@ public class ServerInfoCommand extends ListenerAdapter {
         final JDA jda = event.getJDA();
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "serverinfo")) {
-
             message.delete().queue();
-
             Guild guild = event.getGuild();
-
             if (args.length > 1) {
-
                 channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "serverinfo").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
                 channel.sendMessage(getServerInfo(guild, jda).build()).queue();
             }
@@ -58,7 +51,6 @@ public class ServerInfoCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getServerInfo(Guild guild, JDA jda) {
-
         EmbedBuilder serverinfoEmbed = new EmbedBuilder();
 
         serverinfoEmbed.setTitle(guild.getName() + " Server Info")

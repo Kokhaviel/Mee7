@@ -19,8 +19,7 @@ package fr.kokhaviel.bot.commands.hypixel.games;
 
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -43,35 +42,27 @@ public class UHCStatsCommand extends ListenerAdapter {
 
         if (args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "uhc")) {
 
-
             if (args.length == 1) {
                 channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "uhc <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
-
-
                 if (!args[1].matches("^\\w{3,16}$")) {
                     channel.sendMessage("You must specify a valid Minecraft username !").queue(
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
                 } else {
 
                     message.delete().queue();
-
                     final Player player = sloth.getPlayer(args[1]);
                     UHC uhc = player.getStats().getUhc();
-
                     channel.sendMessage(getUHCStats(event, player, uhc).build()).queue();
                     channel.sendMessage(getModesUHCStats(event, player, uhc).build()).queue();
                     channel.sendMessage(getPerksStats(event, player, uhc).build()).queue();
-
                 }
             }
         }
     }
 
     private EmbedBuilder getUHCStats(MessageReceivedEvent event, Player player, UHC uhc) {
-
         EmbedBuilder uhcEmbed = new EmbedBuilder();
         uhcEmbed.setAuthor("UHC Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         uhcEmbed.setColor(Color.YELLOW);
@@ -93,7 +84,6 @@ public class UHCStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getModesUHCStats(MessageReceivedEvent event, Player player, UHC uhc) {
-
         EmbedBuilder uhcEmbed = new EmbedBuilder();
         uhcEmbed.setAuthor("UHC Solo Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         uhcEmbed.setColor(Color.YELLOW);
@@ -118,7 +108,6 @@ public class UHCStatsCommand extends ListenerAdapter {
     }
 
     private EmbedBuilder getPerksStats(MessageReceivedEvent event, Player player, UHC uhc) {
-
         EmbedBuilder uhcEmbed = new EmbedBuilder();
         uhcEmbed.setAuthor("UHC Perks Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         uhcEmbed.setColor(Color.YELLOW);
@@ -139,5 +128,4 @@ public class UHCStatsCommand extends ListenerAdapter {
 
         return uhcEmbed;
     }
-
 }

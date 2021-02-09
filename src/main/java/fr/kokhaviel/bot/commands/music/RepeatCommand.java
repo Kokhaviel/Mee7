@@ -18,8 +18,7 @@
 package fr.kokhaviel.bot.commands.music;
 
 import fr.kokhaviel.bot.Config;
-import fr.kokhaviel.bot.music.GuildMusicManager;
-import fr.kokhaviel.bot.music.PlayerManager;
+import fr.kokhaviel.bot.music.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -44,31 +43,22 @@ public class RepeatCommand extends ListenerAdapter {
 
             final GuildVoiceState voiceState = member.getVoiceState();
             final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
-
             message.delete().queue();
 
             if(!voiceState.inVoiceChannel()) {
-
                 channel.sendMessage("You need to be in a voice channel to this command works").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else if (!selfVoiceState.inVoiceChannel()) {
-
                 channel.sendMessage("I need to be in a voice channel to this command works !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else if (!voiceState.getChannel().equals(selfVoiceState.getChannel())) {
-
                 channel.sendMessage("You need to be in the same voice channel as me for this command works !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
 
                 final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
                 final boolean newRepeat = !musicManager.scheduler.repeating;
-
                 musicManager.scheduler.repeating = newRepeat;
-
                 channel.sendMessageFormat("Player has been set to **%s**", newRepeat ? "repeating" : "not repeating").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
             }

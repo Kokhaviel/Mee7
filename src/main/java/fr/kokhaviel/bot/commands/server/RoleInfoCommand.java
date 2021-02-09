@@ -20,10 +20,7 @@ package fr.kokhaviel.bot.commands.server;
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -44,33 +41,23 @@ public class RoleInfoCommand extends ListenerAdapter {
 
 
         if (args[0].equalsIgnoreCase(Config.PREFIX + "roleinfo")) {
-
             message.delete().queue();
-
             if (args.length < 2) {
-
                 channel.sendMessage("Missing Arguments : Please Use " + Config.PREFIX + "roleinfo <@Role> !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else if (args.length > 2) {
-
                 channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "roleinfo <@Role> !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
-
                 List<Role> roleMentioned = message.getMentionedRoles();
                 Role target = roleMentioned.get(0);
 
                 channel.sendMessage(getRoleInfo(guild, jda, target).build()).queue();
-
             }
         }
-
     }
 
     private EmbedBuilder getRoleInfo(Guild guild, JDA jda, Role target) {
-
         EmbedBuilder roleinfoEmbed = new EmbedBuilder();
 
         roleinfoEmbed.setTitle(target.getName() + " Role Info")
@@ -86,5 +73,4 @@ public class RoleInfoCommand extends ListenerAdapter {
 
         return roleinfoEmbed;
     }
-
 }

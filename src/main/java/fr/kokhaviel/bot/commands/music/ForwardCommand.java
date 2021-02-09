@@ -20,8 +20,7 @@ package fr.kokhaviel.bot.commands.music;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import fr.kokhaviel.bot.Config;
-import fr.kokhaviel.bot.music.GuildMusicManager;
-import fr.kokhaviel.bot.music.PlayerManager;
+import fr.kokhaviel.bot.music.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -40,23 +39,17 @@ public class ForwardCommand extends ListenerAdapter {
         final Message message = event.getMessage();
         final String[] args = message.getContentRaw().split("\\s+");
 
-
         if (args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "forward")) {
 
             final GuildVoiceState memberVoiceState = member.getVoiceState();
-
             message.delete().queue();
 
             if (!memberVoiceState.inVoiceChannel()) {
-
                 channel.sendMessage("You Need To Be In A Voice Channel For This Command Works !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else if(args.length < 2) {
-
                 channel.sendMessage("Missing Arguments : Specify a duration to advance in seconds").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-                
             } else {
 
                 final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
@@ -66,15 +59,11 @@ public class ForwardCommand extends ListenerAdapter {
                 final int toForward = Integer.parseInt(args[1]);
 
                 if(toForward < 10 ) {
-
                     channel.sendMessage("Cannot Forward Less Than 10 seconds").queue(
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
                 } else {
-
                     playingTrack.setPosition(playingTrack.getPosition() + toForward* 1000L);
                 }
-
             }
         }
     }

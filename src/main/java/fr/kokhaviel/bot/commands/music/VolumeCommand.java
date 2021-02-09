@@ -19,8 +19,7 @@ package fr.kokhaviel.bot.commands.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import fr.kokhaviel.bot.Config;
-import fr.kokhaviel.bot.music.GuildMusicManager;
-import fr.kokhaviel.bot.music.PlayerManager;
+import fr.kokhaviel.bot.music.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -49,35 +48,23 @@ public class VolumeCommand extends ListenerAdapter {
             final AudioPlayer audioPlayer = musicManager.audioPlayer;
 
             if (args.length == 1) {
-
                 channel.sendMessageFormat("Current Music Volume : %d%% \n`Hint : 100%% is the default volume`", audioPlayer.getVolume()).queue();
-
             }
-
-            if(!voiceState.inVoiceChannel()) {
-
+            if (!voiceState.inVoiceChannel()) {
                 channel.sendMessage("You need to be in a voice channel to this command works").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else if (!selfVoiceState.inVoiceChannel()) {
-
                 channel.sendMessage("I need to be in a voice channel to this command works !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else if (!voiceState.getChannel().equals(selfVoiceState.getChannel())) {
-
                 channel.sendMessage("You need to be in the same voice channel as me for this command works !").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
             } else {
-
                 audioPlayer.setVolume(Integer.parseInt(args[1]));
 
                 channel.sendMessageFormat("Music Volume is Now %s%% !", args[1]).queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
             }
-
         }
-
     }
 }
