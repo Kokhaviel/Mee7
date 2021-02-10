@@ -281,4 +281,43 @@ public class HelpCommand extends ListenerAdapter {
         ((UserImpl) user).getPrivateChannel().sendMessage(hypixelEmbed.build()).queue();
         ((UserImpl) user).getPrivateChannel().sendMessage(hypixel2Embed.build()).queue();
     }
+
+    private void getFuncraftHelp(int rd1, int rd2, int rd3, JDA jda, MessageReceivedEvent event, TextChannel channel, User author, User user) {
+        EmbedBuilder funcraftEmbed = new EmbedBuilder();
+        funcraftEmbed.setTitle("Help Funcraft Commands")
+                .setColor(new Color(rd1, rd2, rd3))
+                .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
+                .setDescription("Display all funcraft commands")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+
+                .addField("Player Stats : ", Config.FUNCRAFT_PREFIX + "stats <Player>", false)
+                .addField("Hikabrain Stats : ", Config.FUNCRAFT_PREFIX + "hikabrain <Player>", false)
+                .addField("Infected Stats : ", Config.FUNCRAFT_PREFIX + "infected <Player>", false)
+                .addField("Octogone Stats : ", Config.FUNCRAFT_PREFIX + "octogone <Player>", false)
+                .addField("PvpSmash Stats : ", Config.FUNCRAFT_PREFIX + "pvpsmash <Player>", false)
+                .addField("Rush Stats : ", Config.FUNCRAFT_PREFIX + "rush <Player>", false)
+                .addField("Shootcraft Stats : ", Config.FUNCRAFT_PREFIX + "shootcraft <Player>", false)
+                .addField("Skywars Stats : ", Config.FUNCRAFT_PREFIX + "skywars <Player>", false)
+                .addField("Survival Stats : ", Config.FUNCRAFT_PREFIX + "survival <Player>", false);
+
+        channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
+        if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
+        ((UserImpl) user).getPrivateChannel().sendMessage(funcraftEmbed.build()).queue();
+    }
+
+    private void getWikipediaHelp(int rd1, int rd2, int rd3, JDA jda, MessageReceivedEvent event, TextChannel channel, User author, User user) {
+
+        EmbedBuilder wikipediaEmbed = new EmbedBuilder();
+        wikipediaEmbed.setTitle("Help Wikipedia Commands")
+                .setColor(new Color(rd1, rd2, rd3))
+                .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
+                .setDescription("Display all wikipedia commands")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+
+                .addField("Search Command : ", Config.WIKIPEDIA_PREFIX + "search <Wikipedia Page>", false);
+
+        channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
+        if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
+        ((UserImpl) user).getPrivateChannel().sendMessage(wikipediaEmbed.build()).queue();
+    }
 }
