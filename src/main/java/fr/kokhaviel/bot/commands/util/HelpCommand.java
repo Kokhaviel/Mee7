@@ -76,6 +76,8 @@ public class HelpCommand extends ListenerAdapter {
                     case "hypixel":
                         getHypixelHelp(rd1, rd2, rd3, jda, channel, author, user);
                         break;
+                    case "funcraft":
+                        getFuncraftHelp(rd1, rd2, rd3, jda, channel, author, user);
                     default:
                         getHelp(rd1, rd2, rd3, jda, channel, author, user);
                         break;
@@ -101,9 +103,7 @@ public class HelpCommand extends ListenerAdapter {
         helpEmbed.addField("Music Commands : ", Config.PREFIX + "help music", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(helpEmbed.build()).queue();
     }
 
@@ -120,9 +120,7 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Server Info Command : ", Config.PREFIX + "serverinfo", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(serverEmbed.build()).queue();
 
 
@@ -145,9 +143,7 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Shutdown Command : ", Config.PREFIX + "shutdown (Owner Only)", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(utilEmbed.build()).queue();
     }
 
@@ -167,9 +163,7 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("DameDane Command", Config.PREFIX + "damedane", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(funEmbed.build()).queue();
     }
 
@@ -187,9 +181,7 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("AFK Command : ", Config.PREFIX + "afk", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(userEmbed.build()).queue();
     }
 
@@ -213,9 +205,7 @@ public class HelpCommand extends ListenerAdapter {
 
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(modEmbed.build()).queue();
     }
 
@@ -243,9 +233,7 @@ public class HelpCommand extends ListenerAdapter {
 
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(musicEmbed.build()).queue();
 
 
@@ -307,5 +295,23 @@ public class HelpCommand extends ListenerAdapter {
         ((UserImpl) user).getPrivateChannel().sendMessage(hypixel3Embed.build()).queue();
 
     }
+
+    private void getFuncraftHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
+
+        EmbedBuilder funcraftEmbed = new EmbedBuilder();
+
+        funcraftEmbed.setTitle("Help Hypixel Games Commands")
+                .setColor(new Color(rd1, rd2, rd3))
+                .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
+                .setDescription("Display all hypixel commands")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+
+                .addField("Player Stats : ", Config.FUNCRAFT_PREFIX + "stats <Player>", false)
+                .addField("Rush Stats : ", Config.FUNCRAFT_PREFIX + "rush <Player>", false)
+                .addField("Hikabrain Stats : ", Config.FUNCRAFT_PREFIX + "hikabrain <Player>", false);
+
+        channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
+        if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
+        ((UserImpl) user).getPrivateChannel().sendMessage(funcraftEmbed.build()).queue();    }
 
 }
