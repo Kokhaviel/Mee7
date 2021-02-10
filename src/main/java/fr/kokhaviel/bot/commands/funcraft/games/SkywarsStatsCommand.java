@@ -35,7 +35,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-public class OctogoneStatsCommand extends ListenerAdapter {
+public class SkywarsStatsCommand extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -44,7 +44,7 @@ public class OctogoneStatsCommand extends ListenerAdapter {
         final String[] args = message.getContentRaw().split("\\s+");
         final TextChannel channel = (TextChannel) event.getChannel();
 
-        if (args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "octogone")) {
+        if (args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "skywars")) {
 
             if (args.length < 2) {
 
@@ -60,14 +60,14 @@ public class OctogoneStatsCommand extends ListenerAdapter {
                             delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
                 } else {
 
-                    final String url = "https://lordmorgoth.net/APIs/stats?key=" + Config.FUNCRAFT_API_KEY + "&joueur=" + args[1] + "&mode=octogone&periode=always";
+                    final String url = "https://lordmorgoth.net/APIs/stats?key=" + Config.FUNCRAFT_API_KEY + "&joueur=" + args[1] + "&mode=skywars&periode=always";
 
                     try {
                         message.delete().queue();
                         Gson gson = new Gson();
-                        Octogone octogone = gson.fromJson(readJson(new URL(url)), Octogone.class);
+                        Skywars skywars = gson.fromJson(readJson(new URL(url)), Skywars.class);
 
-                        channel.sendMessage(getOctogoneStats(octogone).build()).queue();
+                        channel.sendMessage(getSkywarsStats(skywars).build()).queue();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -76,34 +76,34 @@ public class OctogoneStatsCommand extends ListenerAdapter {
         }
     }
 
-    private EmbedBuilder getOctogoneStats(Octogone octogone) {
+    private EmbedBuilder getSkywarsStats(Skywars skywars) {
 
-        EmbedBuilder octogoneEmbed = new EmbedBuilder();
-        octogoneEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        octogoneEmbed.setColor(Color.RED);
-        octogoneEmbed.setThumbnail(octogone.skin);
-        octogoneEmbed.setTitle(String.format("%s Octogone Stats", octogone.pseudo));
-        octogoneEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        EmbedBuilder skywarsEmbed = new EmbedBuilder();
+        skywarsEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+        skywarsEmbed.setColor(Color.RED);
+        skywarsEmbed.setThumbnail(skywars.skin);
+        skywarsEmbed.setTitle(String.format("%s Skywars Stats", skywars.pseudo));
+        skywarsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        octogoneEmbed.addField("Rank : ", octogone.rang, true);
+        skywarsEmbed.addField("Rank : ", skywars.rang, true);
 
-        octogoneEmbed.addBlankField(false);
-        octogoneEmbed.addField("Points : ", octogone.data.points, true);
-        octogoneEmbed.addField("Games : ", octogone.data.parties, true);
-        octogoneEmbed.addField("Victories : ", octogone.data.victoires, true);
-        octogoneEmbed.addField("Defeats : ", octogone.data.defaites, true);
-        octogoneEmbed.addField("Played Time : ", octogone.data.temps_jeu + " minutes", true);
-        octogoneEmbed.addField("Kills : ", octogone.data.kills, true);
-        octogoneEmbed.addField("Deaths : ", octogone.data.morts, true);
+        skywarsEmbed.addBlankField(false);
+        skywarsEmbed.addField("Points : ", skywars.data.points, true);
+        skywarsEmbed.addField("Games : ", skywars.data.parties, true);
+        skywarsEmbed.addField("Victories : ", skywars.data.victoires, true);
+        skywarsEmbed.addField("Defeats : ", skywars.data.defaites, true);
+        skywarsEmbed.addField("Played Time : ", skywars.data.temps_jeu + " minutes", true);
+        skywarsEmbed.addField("Kills : ", skywars.data.kills, true);
+        skywarsEmbed.addField("Deaths : ", skywars.data.morts, true);
 
-        octogoneEmbed.addBlankField(false);
-        octogoneEmbed.addField("Winrate : ", octogone.stats.winrate + "%", true);
-        octogoneEmbed.addField("KDR : ", octogone.stats.kd, true);
-        octogoneEmbed.addField("Average Kills / Games : ", octogone.stats.kills_game,true);
-        octogoneEmbed.addField("Average Deaths / Games : ", octogone.stats.morts_game, true);
-        octogoneEmbed.addField("Average Time / Games : ", octogone.stats.temps_partie + "s", true);
+        skywarsEmbed.addBlankField(false);
+        skywarsEmbed.addField("Winrate : ", skywars.stats.winrate + "%", true);
+        skywarsEmbed.addField("KDR : ", skywars.stats.kd, true);
+        skywarsEmbed.addField("Average Kills / Games : ", skywars.stats.kills_game,true);
+        skywarsEmbed.addField("Average Deaths / Games : ", skywars.stats.morts_game, true);
+        skywarsEmbed.addField("Average Time / Games : ", skywars.stats.temps_partie + "s", true);
 
-        return octogoneEmbed;
+        return skywarsEmbed;
     }
 
     private static JsonElement readJson(URL jsonURL) {
@@ -164,7 +164,7 @@ public class OctogoneStatsCommand extends ListenerAdapter {
         String temps_partie;
     }
 
-    static class Octogone {
+    static class Skywars {
         String pseudo;
         String mode_jeu;
         String rang;

@@ -80,7 +80,7 @@ public class HikabrainStatsCommand extends ListenerAdapter {
         hikabrainEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         hikabrainEmbed.setColor(Color.RED);
         hikabrainEmbed.setThumbnail(hikabrain.skin);
-        hikabrainEmbed.setTitle(String.format("%s Rush Stats", hikabrain.pseudo));
+        hikabrainEmbed.setTitle(String.format("%s Hikabrain Stats", hikabrain.pseudo));
         hikabrainEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
         hikabrainEmbed.addField("Rank : ", hikabrain.rang, true);
