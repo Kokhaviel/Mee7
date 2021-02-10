@@ -18,10 +18,7 @@
 package fr.kokhaviel.bot;
 
 import fr.kokhaviel.bot.commands.fun.*;
-import fr.kokhaviel.bot.commands.funcraft.games.HikabrainStatsCommand;
-import fr.kokhaviel.bot.commands.funcraft.games.OctogoneStatsCommand;
-import fr.kokhaviel.bot.commands.funcraft.games.PvpSmashStatsCommand;
-import fr.kokhaviel.bot.commands.funcraft.games.RushStatsCommand;
+import fr.kokhaviel.bot.commands.funcraft.games.*;
 import fr.kokhaviel.bot.commands.hypixel.games.*;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitLevelCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitStatsCommand;
@@ -132,6 +129,7 @@ public class Mee7 {
                     .addEventListeners(new RushStatsCommand())
                     .addEventListeners(new SayCommand())
                     .addEventListeners(new ServerInfoCommand())
+                    .addEventListeners(new ShootcraftStatsCommand())
                     .addEventListeners(new ShutdownCommand())
                     .addEventListeners(new SkipCommand())
                     .addEventListeners(new SkyClashStatsCommand())
