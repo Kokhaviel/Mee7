@@ -49,51 +49,47 @@ public class HelpCommand extends ListenerAdapter {
             final int rd3 = new Random().nextInt(255);
 
             if(args.length == 1) {
-
-                getHelp(rd1, rd2, rd3, jda, channel, author, user);
-
+                getHelp(rd1, rd2, rd3, event, jda, channel, author, user);
             } else {
                 switch (args[1]) {
-
                     case "server":
-                        getServerHelp(rd1, rd2, rd3, jda, channel, author, user);
+                        getServerHelp(rd1, rd2, rd3, event, jda, channel, author, user);
                         break;
                     case "util":
-                        getUtilHelp(rd1, rd2, rd3, jda, channel, author, user);
+                        getUtilHelp(rd1, rd2, rd3, event, jda, channel, author, user);
                         break;
                     case "fun":
-                        getFunHelp(rd1, rd2, rd3, jda, channel, author, user);
+                        getFunHelp(rd1, rd2, rd3, event, jda, channel, author, user);
                         break;
                     case "user":
-                        getUserHelp(rd1, rd2, rd3, jda, channel, author, user);
+                        getUserHelp(rd1, rd2, rd3, event, jda, channel, author, user);
                         break;
                     case "moderation":
-                        getModerationHelp(rd1, rd2, rd3, jda, channel, author, user);
+                        getModerationHelp(rd1, rd2, rd3, event, jda, channel, author, user);
                         break;
                     case "music":
-                        getMusicHelp(rd1, rd2, rd3, jda, channel, author, user);
+                        getMusicHelp(rd1, rd2, rd3, event, jda, channel, author, user);
                         break;
                     case "hypixel":
                         getHypixelHelp(rd1, rd2, rd3, jda, channel, author, user);
                         break;
-                    case "funcraft":
-                        getFuncraftHelp(rd1, rd2, rd3, jda, channel, author, user);
                     default:
-                        getHelp(rd1, rd2, rd3, jda, channel, author, user);
+                        getHelp(rd1, rd2, rd3, event, jda, channel, author, user);
                         break;
                 }
             }
         }
     }
 
-    private void getHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
+    private void getHelp(int rd1, int rd2, int rd3, MessageReceivedEvent event, JDA jda, TextChannel channel, User author, User user) {
         EmbedBuilder helpEmbed = new EmbedBuilder();
 
         helpEmbed.setTitle("Help Menu");
         helpEmbed.setColor(new Color(rd1, rd2, rd3));
         helpEmbed.setAuthor("Help", null, jda.getSelfUser().getAvatarUrl());
         helpEmbed.setDescription("Display all help commands");
+        helpEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+
 
         helpEmbed.addField("Util Commands : ", Config.PREFIX + "help util", false);
         helpEmbed.addField("User Commands : ", Config.PREFIX + "help user", false);
@@ -107,14 +103,14 @@ public class HelpCommand extends ListenerAdapter {
         ((UserImpl) user).getPrivateChannel().sendMessage(helpEmbed.build()).queue();
     }
 
-    private void getServerHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
+    private void getServerHelp(int rd1, int rd2, int rd3, MessageReceivedEvent event, JDA jda, TextChannel channel, User author, User user) {
         EmbedBuilder serverEmbed = new EmbedBuilder();
 
         serverEmbed.setTitle("Help Server Commands")
                 .setColor(new Color(rd1, rd2, rd3))
                 .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                 .setDescription("Display all server commands")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Role Info Command : ", Config.PREFIX + "roleinfo <@Role>", false)
                 .addField("Server Info Command : ", Config.PREFIX + "serverinfo", false);
@@ -122,18 +118,17 @@ public class HelpCommand extends ListenerAdapter {
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
         ((UserImpl) user).getPrivateChannel().sendMessage(serverEmbed.build()).queue();
-
-
     }
 
-    private void getUtilHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
+    private void getUtilHelp(int rd1, int rd2, int rd3, MessageReceivedEvent event, JDA jda, TextChannel channel, User author, User user) {
         EmbedBuilder utilEmbed = new EmbedBuilder();
 
         utilEmbed.setTitle("Help Util Commands")
                 .setColor(new Color(rd1, rd2, rd3))
                 .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                 .setDescription("Display all util commands")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+
 
                 .addField("Help Command : ", Config.PREFIX + "help <category>", false)
                 .addField("About Command : ", Config.PREFIX + "about", false)
@@ -147,14 +142,14 @@ public class HelpCommand extends ListenerAdapter {
         ((UserImpl) user).getPrivateChannel().sendMessage(utilEmbed.build()).queue();
     }
 
-    private void getFunHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
+    private void getFunHelp(int rd1, int rd2, int rd3, MessageReceivedEvent event, JDA jda, TextChannel channel, User author, User user) {
         EmbedBuilder funEmbed = new EmbedBuilder();
 
         funEmbed.setTitle("Help Fun Commands")
                 .setColor(new Color(rd1, rd2, rd3))
                 .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                 .setDescription("Display all fun commands")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Random Command : ", Config.PREFIX + "random <Number1> <Number2>", false)
                 .addField("Say Command : ", Config.PREFIX + "say <Something To Say>", false)
@@ -167,14 +162,14 @@ public class HelpCommand extends ListenerAdapter {
         ((UserImpl) user).getPrivateChannel().sendMessage(funEmbed.build()).queue();
     }
 
-    private void getUserHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
+    private void getUserHelp(int rd1, int rd2, int rd3, MessageReceivedEvent event, JDA jda, TextChannel channel, User author, User user) {
         EmbedBuilder userEmbed = new EmbedBuilder();
 
         userEmbed.setTitle("Help User Commands")
                 .setColor(new Color(rd1, rd2, rd3))
                 .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                 .setDescription("Display all user commands")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Avatar Command : ", Config.PREFIX + "avatar <User ID>", false)
                 .addField("User Info Command : ", Config.PREFIX + "userinfo <User ID>", false)
@@ -185,14 +180,14 @@ public class HelpCommand extends ListenerAdapter {
         ((UserImpl) user).getPrivateChannel().sendMessage(userEmbed.build()).queue();
     }
 
-    private void getModerationHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
+    private void getModerationHelp(int rd1, int rd2, int rd3, MessageReceivedEvent event, JDA jda, TextChannel channel, User author, User user) {
         EmbedBuilder modEmbed = new EmbedBuilder();
 
         modEmbed.setTitle("Help Moderation Commands")
                 .setColor(new Color(rd1, rd2, rd3))
                 .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                 .setDescription("Display all moderation commands")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Ban Command : ", Config.PREFIX + "ban <@User>", false)
                 .addField("Unban Command : ", Config.PREFIX + "unban <User ID>", false)
@@ -209,14 +204,14 @@ public class HelpCommand extends ListenerAdapter {
         ((UserImpl) user).getPrivateChannel().sendMessage(modEmbed.build()).queue();
     }
 
-    private void getMusicHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
+    private void getMusicHelp(int rd1, int rd2, int rd3, MessageReceivedEvent event, JDA jda, TextChannel channel, User author, User user) {
         EmbedBuilder musicEmbed = new EmbedBuilder();
 
         musicEmbed.setTitle("Help Music Commands")
                 .setColor(new Color(rd1, rd2, rd3))
                 .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                 .setDescription("Display all music commands")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
                 .addField("Join Command : ", Config.MUSIC_PREFIX + "join", false)
                 .addField("Leave Command : ", Config.MUSIC_PREFIX + "leave", false)
@@ -231,24 +226,20 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Forward Command : ", Config.MUSIC_PREFIX + "forward <Time in sec>", false)
                 .addField("Backward Command : ", Config.MUSIC_PREFIX + "backward <Time in sec>", false);
 
-
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
         ((UserImpl) user).getPrivateChannel().sendMessage(musicEmbed.build()).queue();
-
-
     }
 
     private void getHypixelHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
         EmbedBuilder hypixelEmbed = new EmbedBuilder();
         EmbedBuilder hypixel2Embed = new EmbedBuilder();
-        EmbedBuilder hypixel3Embed = new EmbedBuilder();
 
         hypixelEmbed.setTitle("Help Hypixel Games Commands")
                 .setColor(new Color(rd1, rd2, rd3))
                 .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                 .setDescription("Display all hypixel commands")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)")
 
                 .addField("Quakecraft Stats : ", Config.HYPIXEL_PREFIX + "quakecraft <Player>", false)
                 .addField("Walls Stats : ", Config.HYPIXEL_PREFIX + "walls <Player>", false)
@@ -263,11 +254,11 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("UHC Stats : ", Config.HYPIXEL_PREFIX + "uhc <Player>", false)
                 .addField("Cops And Crims Stats : ", Config.HYPIXEL_PREFIX + "copsandcrims <Player>", true);
 
-
         hypixel2Embed.setTitle("Help Hypixel Games Commands")
                 .setColor(new Color(rd1, rd2, rd3))
                 .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
                 .setDescription("Display all hypixel commands")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)")
 
                 .addField("Warlords Stats : ", Config.HYPIXEL_PREFIX + "warlords <Player>", false)
                 .addField("Smash Stats : ", Config.HYPIXEL_PREFIX + "smash <Player>", false)
@@ -285,39 +276,9 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Player Stats : ", Config.HYPIXEL_PREFIX + "player <Player>", false);
 
 
-
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-
         ((UserImpl) user).getPrivateChannel().sendMessage(hypixelEmbed.build()).queue();
         ((UserImpl) user).getPrivateChannel().sendMessage(hypixel2Embed.build()).queue();
-        ((UserImpl) user).getPrivateChannel().sendMessage(hypixel3Embed.build()).queue();
-
-    }
-
-    private void getFuncraftHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
-
-        EmbedBuilder funcraftEmbed = new EmbedBuilder();
-
-        funcraftEmbed.setTitle("Help Hypixel Games Commands")
-                .setColor(new Color(rd1, rd2, rd3))
-                .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
-                .setDescription("Display all hypixel commands")
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
-
-                .addField("Player Stats : ", Config.FUNCRAFT_PREFIX + "stats <Player>", false)
-                .addField("Rush Stats : ", Config.FUNCRAFT_PREFIX + "rush <Player>", false)
-                .addField("Hikabrain Stats : ", Config.FUNCRAFT_PREFIX + "hikabrain <Player>", false)
-                .addField("Octogone Stats : ", Config.FUNCRAFT_PREFIX + "octogone <Player>", false)
-                .addField("Skywars Stats : ", Config.FUNCRAFT_PREFIX + "skywars <Player>", false)
-                .addField("PvpSmash Stats : ", Config.FUNCRAFT_PREFIX + "pvpsmash <Player>", false)
-                .addField("Shootcraft Stats : ", Config.FUNCRAFT_PREFIX + "shootcraft <Player>", false)
-                .addField("Infected Stats : ", Config.FUNCRAFT_PREFIX + "infected <Player>", false)
-                .addField("Survival Stats : ", Config.FUNCRAFT_PREFIX + "survival <Player>", false);
-
-        channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
-        if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-        ((UserImpl) user).getPrivateChannel().sendMessage(funcraftEmbed.build()).queue();
     }
 }
