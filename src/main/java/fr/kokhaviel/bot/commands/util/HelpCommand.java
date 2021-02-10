@@ -308,7 +308,8 @@ public class HelpCommand extends ListenerAdapter {
 
                 .addField("Player Stats : ", Config.FUNCRAFT_PREFIX + "stats <Player>", false)
                 .addField("Rush Stats : ", Config.FUNCRAFT_PREFIX + "rush <Player>", false)
-                .addField("Hikabrain Stats : ", Config.FUNCRAFT_PREFIX + "hikabrain <Player>", false);
+                .addField("Hikabrain Stats : ", Config.FUNCRAFT_PREFIX + "hikabrain <Player>", false)
+                .addField("Octogone Stats : ", Config.FUNCRAFT_PREFIX + "octogone <Player>", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
