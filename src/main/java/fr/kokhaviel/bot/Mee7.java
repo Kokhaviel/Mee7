@@ -18,13 +18,18 @@
 package fr.kokhaviel.bot;
 
 import fr.kokhaviel.bot.commands.fun.*;
+import fr.kokhaviel.bot.commands.funcraft.games.*;
 import fr.kokhaviel.bot.commands.hypixel.games.*;
-import fr.kokhaviel.bot.commands.hypixel.games.blitz.*;
+import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitLevelCommand;
+import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitStatsCommand;
+import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzStatsCommand;
 import fr.kokhaviel.bot.commands.hypixel.server.BanStatsCommand;
 import fr.kokhaviel.bot.commands.moderation.*;
 import fr.kokhaviel.bot.commands.music.*;
-import fr.kokhaviel.bot.commands.server.*;
-import fr.kokhaviel.bot.commands.user.*;
+import fr.kokhaviel.bot.commands.server.RoleInfoCommand;
+import fr.kokhaviel.bot.commands.server.ServerInfoCommand;
+import fr.kokhaviel.bot.commands.user.AvatarCommand;
+import fr.kokhaviel.bot.commands.user.InfoCommand;
 import fr.kokhaviel.bot.commands.user.afk.AfkCommand;
 import fr.kokhaviel.bot.commands.util.*;
 import fr.kokhaviel.bot.commands.wikipedia.WikipediaSearchCommand;
@@ -39,18 +44,18 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import zone.nora.slothpixel.Slothpixel;
 
 import javax.security.auth.login.LoginException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Mee7 {
 
-    public static List<String> afkIDs;
-    public static Slothpixel sloth;
+    public static List<String> afkIDs = new ArrayList<>();
+
+    public static Slothpixel sloth = new Slothpixel();
+
     public static JDA jda;
 
     public Mee7() {
-
-         afkIDs = new ArrayList<>();
-         sloth  = new Slothpixel();
 
         try {
 
@@ -92,6 +97,8 @@ public class Mee7 {
                     .addEventListeners(new EightBallCommand())
                     .addEventListeners(new ForwardCommand())
                     .addEventListeners(new HelpCommand())
+                    .addEventListeners(new HikabrainStatsCommand())
+                    .addEventListeners(new InfectedStatsCommand())
                     .addEventListeners(new InfoCommand())
                     .addEventListeners(new JoinCommand())
                     .addEventListeners(new KickCommand())
@@ -103,12 +110,15 @@ public class Mee7 {
                     .addEventListeners(new MurderMysteryStatsCommand())
                     .addEventListeners(new MuteCommand())
                     .addEventListeners(new NowPlayingCommand())
+                    .addEventListeners(new OctogoneStatsCommand())
                     .addEventListeners(new PaintballStatsCommand())
                     .addEventListeners(new PauseCommand())
                     .addEventListeners(new PingCommand())
                     .addEventListeners(new PitStatsCommand())
                     .addEventListeners(new PlayCommand())
+                    .addEventListeners(new fr.kokhaviel.bot.commands.funcraft.PlayerStatsCommand())
                     .addEventListeners(new fr.kokhaviel.bot.commands.hypixel.player.PlayerStatsCommand())
+                    .addEventListeners(new PvpSmashStatsCommand())
                     .addEventListeners(new QuakeCraftStatsCommand())
                     .addEventListeners(new QueueCommand())
                     .addEventListeners(new RandomCommand())
@@ -117,15 +127,19 @@ public class Mee7 {
                     .addEventListeners(new RepoCommand())
                     .addEventListeners(new ReverseCommand())
                     .addEventListeners(new RoleInfoCommand())
+                    .addEventListeners(new RushStatsCommand())
                     .addEventListeners(new SayCommand())
                     .addEventListeners(new ServerInfoCommand())
+                    .addEventListeners(new ShootcraftStatsCommand())
                     .addEventListeners(new ShutdownCommand())
                     .addEventListeners(new SkipCommand())
                     .addEventListeners(new SkyClashStatsCommand())
-                    .addEventListeners(new SkywarsStatsCommand())
+                    .addEventListeners(new fr.kokhaviel.bot.commands.hypixel.games.SkywarsStatsCommand())
+                    .addEventListeners(new fr.kokhaviel.bot.commands.funcraft.games.SkywarsStatsCommand())
                     .addEventListeners(new SmashStatsCommand())
                     .addEventListeners(new SpeedUHCStatsCommand())
                     .addEventListeners(new StopCommand())
+                    .addEventListeners(new SurvivalStatsCommand())
                     .addEventListeners(new TntGamesStatsCommand())
                     .addEventListeners(new TurboKartStatsCommand())
                     .addEventListeners(new UHCStatsCommand())
@@ -138,8 +152,8 @@ public class Mee7 {
 
                     .addEventListeners(new WikipediaSearchCommand())
                     //.addEventListeners(new ThatPersonDoesNotExistCommand())
-
                     .setActivity(Activity.watching("la doc avant de poser une question..."))
+
                     .build();
 
         } catch (LoginException le) {
@@ -147,6 +161,7 @@ public class Mee7 {
         }
 
     }
+
 
     public static void main(String[] args) {
         new Mee7();
