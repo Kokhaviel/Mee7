@@ -54,19 +54,19 @@ public class BlitzStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final Blitz blitz = player.getStats().getBlitz();
-                    channel.sendMessage(getBlitzStats(event, player, blitz).build()).queue();
+                    channel.sendMessage(getBlitzStats(player, blitz).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getBlitzStats(MessageReceivedEvent event, Player player, Blitz blitz) {
+    private EmbedBuilder getBlitzStats(Player player, Blitz blitz) {
         EmbedBuilder blitzEmbed = new EmbedBuilder();
 
         blitzEmbed.setAuthor("Blitz Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         blitzEmbed.setColor(new Color(73, 240, 255));
         blitzEmbed.setTitle(player.getUsername() + " Stats");
-        blitzEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        blitzEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         blitzEmbed.addField("Coins : ", String.valueOf(blitz.getCoins()), true);
         blitzEmbed.addField("Games Played : ", String.valueOf(blitz.getGamesPlayed()), true);

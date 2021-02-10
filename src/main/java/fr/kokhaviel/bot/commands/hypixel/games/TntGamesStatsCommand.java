@@ -54,18 +54,18 @@ public class TntGamesStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final Tnt tnt = player.getStats().getTnt();
-                    channel.sendMessage(getTntStats(event,player, tnt).build()).queue();
+                    channel.sendMessage(getTntStats(player, tnt).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getTntStats(MessageReceivedEvent event, Player player, Tnt tnt) {
+    private EmbedBuilder getTntStats(Player player, Tnt tnt) {
         EmbedBuilder tntEmbed = new EmbedBuilder();
         tntEmbed.setAuthor("TNT Games Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         tntEmbed.setColor(Color.RED);
         tntEmbed.setTitle(player.getUsername() + " Stats");
-        tntEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        tntEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         tntEmbed.addField("Coins : ", String.valueOf(tnt.getCoins()), true);
 

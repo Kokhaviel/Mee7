@@ -54,19 +54,19 @@ public class PitStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final Pit pit = player.getStats().getPit();
-                    channel.sendMessage(getPitStats(event, player, pit).build()).queue();
-                    channel.sendMessage(getPvPStats(event, player, pit).build()).queue();
+                    channel.sendMessage(getPitStats(player, pit).build()).queue();
+                    channel.sendMessage(getPvPStats(player, pit).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getPitStats(MessageReceivedEvent event, Player player, Pit pit) {
+    private EmbedBuilder getPitStats(Player player, Pit pit) {
         EmbedBuilder pitEmbed = new EmbedBuilder();
         pitEmbed.setAuthor("Pit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         pitEmbed.setColor(new Color(82, 53, 33));
         pitEmbed.setTitle(player.getUsername() + " Stats");
-        pitEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        pitEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         pitEmbed.addField("Gold : ", String.valueOf(pit.getGold()), true);
         pitEmbed.addField("Gold Earned : ", String.valueOf(pit.getGoldEarned()), true);
@@ -83,12 +83,12 @@ public class PitStatsCommand extends ListenerAdapter {
         return pitEmbed;
     }
 
-    private EmbedBuilder getPvPStats(MessageReceivedEvent event, Player player, Pit pit) {
+    private EmbedBuilder getPvPStats(Player player, Pit pit) {
         EmbedBuilder pitEmbed = new EmbedBuilder();
         pitEmbed.setAuthor("Pit PvP Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         pitEmbed.setColor(new Color(82, 53, 33));
         pitEmbed.setTitle(player.getUsername() + " Stats");
-        pitEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        pitEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         pitEmbed.addField("Sword Hits : ", String.valueOf(pit.getSwordHits()), true);
         pitEmbed.addField("Blocks Placed : ", String.valueOf(pit.getBlocksPlaced()), true);

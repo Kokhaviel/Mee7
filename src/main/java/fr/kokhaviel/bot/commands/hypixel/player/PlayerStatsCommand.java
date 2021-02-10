@@ -39,9 +39,9 @@ public class PlayerStatsCommand extends ListenerAdapter {
         final String[] args = message.getContentRaw().split("\\s+");
         final TextChannel channel = (TextChannel) event.getChannel();
 
-        if(args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "player")) {
+        if (args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "player")) {
 
-            if(args.length == 1) {
+            if (args.length == 1) {
                 channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "player <Player>").queue(
                         delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
             } else {
@@ -64,7 +64,7 @@ public class PlayerStatsCommand extends ListenerAdapter {
         playerEmbed.setAuthor("Hypixel Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         playerEmbed.setColor(Color.PINK);
         playerEmbed.setTitle(player.getUsername() + " Stats");
-        playerEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        playerEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         playerEmbed.addField("UUID : ", player.getUuid(), true);
         playerEmbed.addField("Online : ", player.getOnline() ? "Yes" : "No", true);
@@ -93,7 +93,7 @@ public class PlayerStatsCommand extends ListenerAdapter {
         playerEmbed.setAuthor("Hypixel Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         playerEmbed.setColor(Color.PINK);
         playerEmbed.setTitle(player.getUsername() + " Stats");
-        playerEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        playerEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         playerEmbed.addField("Reward Claimed : ", String.valueOf(player.getRewards().getClaimed()), true);
         playerEmbed.addField("Daily Reward Claimed : ", String.valueOf(player.getRewards().getClaimedDaily()), true);
@@ -101,13 +101,20 @@ public class PlayerStatsCommand extends ListenerAdapter {
         playerEmbed.addField("Reward Best Streak : ", String.valueOf(player.getRewards().getStreakBest()), true);
 
         playerEmbed.addBlankField(false);
-        if(player.getLinks().getTwitter() != null) playerEmbed.addField("Twitter : ", player.getLinks().getTwitter(), true);
-        if(player.getLinks().getYoutube() != null) playerEmbed.addField("Youtube : ", player.getLinks().getYoutube(), true);
-        if(player.getLinks().getInstagram() != null) playerEmbed.addField("Instagram : ", player.getLinks().getInstagram(), true);
-        if(player.getLinks().getTwitch() != null) playerEmbed.addField("Twitch : ", player.getLinks().getTwitch(), true);
-        if(player.getLinks().getMixer() != null) playerEmbed.addField("Mixer : ", player.getLinks().getMixer(), true);
-        if(player.getLinks().getDiscord() != null) playerEmbed.addField("Discord : ", player.getLinks().getDiscord(), true);
-        if(player.getLinks().getHypixel() != null) playerEmbed.addField("Hypixel Forums : ", player.getLinks().getHypixel(), true);
+        if (player.getLinks().getTwitter() != null)
+            playerEmbed.addField("Twitter : ", player.getLinks().getTwitter(), true);
+        if (player.getLinks().getYoutube() != null)
+            playerEmbed.addField("Youtube : ", player.getLinks().getYoutube(), true);
+        if (player.getLinks().getInstagram() != null)
+            playerEmbed.addField("Instagram : ", player.getLinks().getInstagram(), true);
+        if (player.getLinks().getTwitch() != null)
+            playerEmbed.addField("Twitch : ", player.getLinks().getTwitch(), true);
+        if (player.getLinks().getMixer() != null)
+            playerEmbed.addField("Mixer : ", player.getLinks().getMixer(), true);
+        if (player.getLinks().getDiscord() != null)
+            playerEmbed.addField("Discord : ", player.getLinks().getDiscord(), true);
+        if (player.getLinks().getHypixel() != null)
+            playerEmbed.addField("Hypixel Forums : ", player.getLinks().getHypixel(), true);
 
         return playerEmbed;
     }

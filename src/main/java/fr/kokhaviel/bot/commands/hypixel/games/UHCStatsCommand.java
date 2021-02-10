@@ -54,20 +54,20 @@ public class UHCStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     UHC uhc = player.getStats().getUhc();
-                    channel.sendMessage(getUHCStats(event, player, uhc).build()).queue();
-                    channel.sendMessage(getModesUHCStats(event, player, uhc).build()).queue();
-                    channel.sendMessage(getPerksStats(event, player, uhc).build()).queue();
+                    channel.sendMessage(getUHCStats(player, uhc).build()).queue();
+                    channel.sendMessage(getModesUHCStats(player, uhc).build()).queue();
+                    channel.sendMessage(getPerksStats(player, uhc).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getUHCStats(MessageReceivedEvent event, Player player, UHC uhc) {
+    private EmbedBuilder getUHCStats(Player player, UHC uhc) {
         EmbedBuilder uhcEmbed = new EmbedBuilder();
         uhcEmbed.setAuthor("UHC Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         uhcEmbed.setColor(Color.YELLOW);
         uhcEmbed.setTitle(player.getUsername() + " Stats");
-        uhcEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        uhcEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         uhcEmbed.addField("Coins : ", String.valueOf(uhc.getCoins()), true);
         uhcEmbed.addField("Wins : ", String.valueOf(uhc.getWins()), true);
@@ -83,12 +83,12 @@ public class UHCStatsCommand extends ListenerAdapter {
         return uhcEmbed;
     }
 
-    private EmbedBuilder getModesUHCStats(MessageReceivedEvent event, Player player, UHC uhc) {
+    private EmbedBuilder getModesUHCStats(Player player, UHC uhc) {
         EmbedBuilder uhcEmbed = new EmbedBuilder();
         uhcEmbed.setAuthor("UHC Solo Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         uhcEmbed.setColor(Color.YELLOW);
         uhcEmbed.setTitle(player.getUsername() + " Stats");
-        uhcEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        uhcEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         uhcEmbed.addField("Solo Wins : ", String.valueOf(uhc.getGamemodes().getSolo().getWins()), true);
         uhcEmbed.addField("Solo Kills : ", String.valueOf(uhc.getGamemodes().getSolo().getKills()), true);
@@ -107,12 +107,12 @@ public class UHCStatsCommand extends ListenerAdapter {
         return  uhcEmbed;
     }
 
-    private EmbedBuilder getPerksStats(MessageReceivedEvent event, Player player, UHC uhc) {
+    private EmbedBuilder getPerksStats(Player player, UHC uhc) {
         EmbedBuilder uhcEmbed = new EmbedBuilder();
         uhcEmbed.setAuthor("UHC Perks Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         uhcEmbed.setColor(Color.YELLOW);
         uhcEmbed.setTitle(player.getUsername() + " Stats");
-        uhcEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        uhcEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         uhcEmbed.addField("Alchemy Perk : ", String.valueOf(uhc.getPerks().getAlchemy().getPerkAlchemyLineA()), true);
         uhcEmbed.addField("Apprentice Perk : ", String.valueOf(uhc.getPerks().getApprentice().getPerkApprenticeLineA()), true);

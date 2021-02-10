@@ -54,18 +54,18 @@ public class SkyClashStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final SkyClash skyclash = player.getStats().getSkyClash();
-                    channel.sendMessage(getSkyClashStats(event, player, skyclash).build()).queue();
+                    channel.sendMessage(getSkyClashStats(player, skyclash).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getSkyClashStats(MessageReceivedEvent event, Player player, SkyClash skyclash) {
+    private EmbedBuilder getSkyClashStats(Player player, SkyClash skyclash) {
         EmbedBuilder skyclashEmbed = new EmbedBuilder();
         skyclashEmbed.setAuthor("Skyclash Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         skyclashEmbed.setColor(Color.GREEN);
         skyclashEmbed.setTitle(player.getUsername() + " Stats");
-        skyclashEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        skyclashEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         skyclashEmbed.addField("Coins : ", String.valueOf(skyclash.getCoins()), true);
 

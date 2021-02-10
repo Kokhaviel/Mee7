@@ -56,18 +56,18 @@ public class WarlordsStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final Warlords warlords = player.getStats().getWarlords();
-                    channel.sendMessage(getWarlordsStats(event, player, warlords).build()).queue();
+                    channel.sendMessage(getWarlordsStats(player, warlords).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getWarlordsStats(MessageReceivedEvent event, Player player, Warlords warlords) {
+    private EmbedBuilder getWarlordsStats(Player player, Warlords warlords) {
         EmbedBuilder warlordsEmbed = new EmbedBuilder();
         warlordsEmbed.setAuthor("Warlords Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         warlordsEmbed.setColor(Color.BLACK);
         warlordsEmbed.setTitle(player.getUsername() + " Stats");
-        warlordsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        warlordsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         warlordsEmbed.addField("Coins : ", String.valueOf(warlords.getCoins()), true);
 

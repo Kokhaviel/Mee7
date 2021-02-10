@@ -54,18 +54,18 @@ public class VampireZStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final VampireZ vampirez = player.getStats().getVampireZ();
-                    channel.sendMessage(getVampireZStats(event, player, vampirez).build()).queue();
+                    channel.sendMessage(getVampireZStats(player, vampirez).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getVampireZStats(MessageReceivedEvent event, Player player, VampireZ vampirez) {
+    private EmbedBuilder getVampireZStats(Player player, VampireZ vampirez) {
         EmbedBuilder vampirezEmbed = new EmbedBuilder();
         vampirezEmbed.setAuthor("VampireZ Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         vampirezEmbed.setColor(new Color(252, 84, 84));
         vampirezEmbed.setTitle(player.getUsername() + " Stats");
-        vampirezEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        vampirezEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         vampirezEmbed.addField("Coins : ", String.valueOf(vampirez.getCoins()), true);
         vampirezEmbed.addField("Gold Bought : ", String.valueOf(vampirez.getGoldBought()), true);

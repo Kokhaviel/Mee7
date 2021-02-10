@@ -54,19 +54,19 @@ public class TurboKartStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final Tkr tkr = player.getStats().getTkr();
-                    channel.sendMessage(getTkrStats(event, player, tkr).build()).queue();
-                    channel.sendMessage(getMapStats(event, player, tkr).build()).queue();
+                    channel.sendMessage(getTkrStats(player, tkr).build()).queue();
+                    channel.sendMessage(getMapStats(player, tkr).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getTkrStats(MessageReceivedEvent event, Player player, Tkr tkr) {
+    private EmbedBuilder getTkrStats(Player player, Tkr tkr) {
         EmbedBuilder tkrEmbed = new EmbedBuilder();
         tkrEmbed.setAuthor("Tkr Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         tkrEmbed.setColor(Color.MAGENTA);
         tkrEmbed.setTitle(player.getUsername() + " Stats");
-        tkrEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        tkrEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         tkrEmbed.addField("Coins : ", String.valueOf(tkr.getCoins()), true);
         tkrEmbed.addField("Coins Pickup : ", String.valueOf(tkr.getCoinPickups()), true);
@@ -85,12 +85,12 @@ public class TurboKartStatsCommand extends ListenerAdapter {
         return tkrEmbed;
     }
 
-    private EmbedBuilder getMapStats(MessageReceivedEvent event, Player player, Tkr tkr) {
+    private EmbedBuilder getMapStats(Player player, Tkr tkr) {
         EmbedBuilder tkrEmbed = new EmbedBuilder();
         tkrEmbed.setAuthor("Tkr Map Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         tkrEmbed.setColor(Color.MAGENTA);
         tkrEmbed.setTitle(player.getUsername() + " Stats");
-        tkrEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        tkrEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         tkrEmbed.addField("Retro Games : ", String.valueOf(tkr.getMaps().getRetro().getGames()), true);
         tkrEmbed.addField("Retro Win Ratio : ", String.valueOf(tkr.getMaps().getRetro().getWinRatio()), true);

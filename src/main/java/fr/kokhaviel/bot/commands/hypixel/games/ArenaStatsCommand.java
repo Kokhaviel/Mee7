@@ -54,21 +54,21 @@ public class ArenaStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final Arena arena = player.getStats().getArena();
-                    channel.sendMessage(getArenaStats(event, player, arena).build()).queue();
-                    channel.sendMessage(getArena1v1Stats(event, player, arena).build()).queue();
-                    channel.sendMessage(getArena2v2Stats(event, player, arena).build()).queue();
-                    channel.sendMessage(getArena4v4Stats(event, player, arena).build()).queue();
+                    channel.sendMessage(getArenaStats(player, arena).build()).queue();
+                    channel.sendMessage(getArena1v1Stats(player, arena).build()).queue();
+                    channel.sendMessage(getArena2v2Stats(player, arena).build()).queue();
+                    channel.sendMessage(getArena4v4Stats(player, arena).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getArenaStats(MessageReceivedEvent event, Player player, Arena arena) {
+    private EmbedBuilder getArenaStats(Player player, Arena arena) {
         EmbedBuilder arenaEmbed = new EmbedBuilder();
         arenaEmbed.setAuthor("Arena Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arenaEmbed.setColor(Color.ORANGE);
         arenaEmbed.setTitle(player.getUsername() + " Stats");
-        arenaEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        arenaEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         arenaEmbed.addField("Coins : ", String.valueOf(arena.getCoins()), true);
         arenaEmbed.addField("Coins Spent : ", String.valueOf(arena.getCoinsSpent()), true);
@@ -98,13 +98,13 @@ public class ArenaStatsCommand extends ListenerAdapter {
         return arenaEmbed;
     }
 
-    private EmbedBuilder getArena1v1Stats(MessageReceivedEvent event, Player player, Arena arena) {
+    private EmbedBuilder getArena1v1Stats(Player player, Arena arena) {
         EmbedBuilder arenaEmbed = new EmbedBuilder();
 
         arenaEmbed.setAuthor("1v1 Arena Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arenaEmbed.setColor(Color.ORANGE);
         arenaEmbed.setTitle(player.getUsername() + " Stats");
-        arenaEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        arenaEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         arenaEmbed.addField("1v1 Wins : ", String.valueOf(arena.getGamemodes().getOneVOne().getWins()), true);
         arenaEmbed.addField("1v1 Losses : ", String.valueOf(arena.getGamemodes().getOneVOne().getLosses()), true);
@@ -121,13 +121,13 @@ public class ArenaStatsCommand extends ListenerAdapter {
         return arenaEmbed;
     }
 
-    private EmbedBuilder getArena2v2Stats(MessageReceivedEvent event, Player player, Arena arena) {
+    private EmbedBuilder getArena2v2Stats(Player player, Arena arena) {
         EmbedBuilder arenaEmbed = new EmbedBuilder();
 
         arenaEmbed.setAuthor("2v2 Arena Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arenaEmbed.setColor(Color.ORANGE);
         arenaEmbed.setTitle(player.getUsername() + " Stats");
-        arenaEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        arenaEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         arenaEmbed.addField("2v2 Wins : ", String.valueOf(arena.getGamemodes().getTwoVTwo().getWins()), true);
         arenaEmbed.addField("2v2 Losses : ", String.valueOf(arena.getGamemodes().getTwoVTwo().getLosses()), true);
@@ -144,13 +144,13 @@ public class ArenaStatsCommand extends ListenerAdapter {
         return arenaEmbed;
     }
 
-    private EmbedBuilder getArena4v4Stats(MessageReceivedEvent event, Player player, Arena arena) {
+    private EmbedBuilder getArena4v4Stats(Player player, Arena arena) {
         EmbedBuilder arenaEmbed = new EmbedBuilder();
 
         arenaEmbed.setAuthor("4v4 Arena Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arenaEmbed.setColor(Color.ORANGE);
         arenaEmbed.setTitle(player.getUsername() + " Stats");
-        arenaEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        arenaEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         arenaEmbed.addField("4v4 Wins : ", String.valueOf(arena.getGamemodes().getFourVFour().getWins()), true);
         arenaEmbed.addField("4v4 Losses : ", String.valueOf(arena.getGamemodes().getFourVFour().getLosses()), true);

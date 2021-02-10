@@ -54,18 +54,18 @@ public class QuakeCraftStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final Quake quake = player.getStats().getQuake();
-                    channel.sendMessage(getQuakeStats(event, player, quake).build()).queue();
+                    channel.sendMessage(getQuakeStats(player, quake).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getQuakeStats(MessageReceivedEvent event, Player player, Quake quake) {
+    private EmbedBuilder getQuakeStats(Player player, Quake quake) {
         EmbedBuilder quakecraftEmbed = new EmbedBuilder();
         quakecraftEmbed.setAuthor("QuakeCraft Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         quakecraftEmbed.setColor(Color.MAGENTA);
         quakecraftEmbed.setTitle(player.getUsername() + " Stats");
-        quakecraftEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        quakecraftEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         quakecraftEmbed.addField("Coins : ", String.valueOf(quake.getCoins()), true);
         quakecraftEmbed.addField("Dash Cooldown : ",quake.getDashCooldown() + "s", true);

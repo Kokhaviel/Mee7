@@ -55,18 +55,18 @@ public class BuildBattleStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final BuildBattle bb = player.getStats().getBuildBattle();
-                    channel.sendMessage(getBuildBattleStats(event, player, bb, channel).build()).queue();
+                    channel.sendMessage(getBuildBattleStats(player, bb, channel).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getBuildBattleStats(MessageReceivedEvent event, Player player, BuildBattle buildBattle, TextChannel channel) {
+    private EmbedBuilder getBuildBattleStats(Player player, BuildBattle buildBattle, TextChannel channel) {
         EmbedBuilder buildBattleEmbed = new EmbedBuilder();
         buildBattleEmbed.setAuthor("Build Battle Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         buildBattleEmbed.setColor(Color.BLUE);
         buildBattleEmbed.setTitle(player.getUsername() + " Stats");
-        buildBattleEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        buildBattleEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         buildBattleEmbed.addField("Coins : ", String.valueOf(buildBattle.getCoins()), true);
         buildBattleEmbed.addField("Score : ", String.valueOf(buildBattle.getScore()), true);

@@ -55,19 +55,19 @@ public class WallsStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final Walls walls = player.getStats().getWalls();
-                    channel.sendMessage(getWallsStats(event, player, walls).build()).queue();
-                    channel.sendMessage(getWallsPerksStats(event, player, walls).build()).queue();
+                    channel.sendMessage(getWallsStats(player, walls).build()).queue();
+                    channel.sendMessage(getWallsPerksStats(player, walls).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getWallsStats(MessageReceivedEvent event, Player player, Walls walls) {
+    private EmbedBuilder getWallsStats(Player player, Walls walls) {
         EmbedBuilder wallsEmbed = new EmbedBuilder();
         wallsEmbed.setAuthor("Walls Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         wallsEmbed.setColor(Color.YELLOW);
         wallsEmbed.setTitle(player.getUsername() + " Stats");
-        wallsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        wallsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         wallsEmbed.addField("Coins : ", String.valueOf(walls.getCoins()), true);
 
@@ -84,12 +84,12 @@ public class WallsStatsCommand extends ListenerAdapter {
         return wallsEmbed;
     }
 
-    private EmbedBuilder getWallsPerksStats(MessageReceivedEvent event, Player player, Walls walls) {
+    private EmbedBuilder getWallsPerksStats(Player player, Walls walls) {
         EmbedBuilder wallsPerksEmbed = new EmbedBuilder();
         wallsPerksEmbed.setAuthor("Walls Perks", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         wallsPerksEmbed.setColor(Color.YELLOW);
         wallsPerksEmbed.setTitle(player.getUsername() + " Stats");
-        wallsPerksEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        wallsPerksEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         wallsPerksEmbed.addField("Boss Kills Perk : ", String.valueOf(walls.getPerks().getBossSkills()), true);
         wallsPerksEmbed.addField("Boss Digger Perk : ", String.valueOf(walls.getPerks().getBossDigger()), true);

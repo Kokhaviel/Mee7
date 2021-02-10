@@ -54,20 +54,20 @@ public class PaintballStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final Paintball paintball = player.getStats().getPaintball();
-                    channel.sendMessage(getPaintballStats(event, player, paintball).build()).queue();
-                    channel.sendMessage(getPaintballPerksStats(event, player, paintball).build()).queue();
+                    channel.sendMessage(getPaintballStats(player, paintball).build()).queue();
+                    channel.sendMessage(getPaintballPerksStats(player, paintball).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getPaintballStats(MessageReceivedEvent event, Player player, Paintball paintball) {
+    private EmbedBuilder getPaintballStats(Player player, Paintball paintball) {
         EmbedBuilder paintballEmbed = new EmbedBuilder();
 
         paintballEmbed.setAuthor("Paintball Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         paintballEmbed.setColor(new Color(85, 85, 255));
         paintballEmbed.setTitle(player.getUsername() + " Stats");
-        paintballEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        paintballEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         paintballEmbed.addField("Coins : ", String.valueOf(paintball.getCoins()), true);
         paintballEmbed.addField("Shots Fired : ", String.valueOf(paintball.getShotsFired()), true);
@@ -83,13 +83,13 @@ public class PaintballStatsCommand extends ListenerAdapter {
     }
 
 
-    private EmbedBuilder getPaintballPerksStats(MessageReceivedEvent event, Player player, Paintball paintball) {
+    private EmbedBuilder getPaintballPerksStats(Player player, Paintball paintball) {
         EmbedBuilder paintballPerksEmbed = new EmbedBuilder();
 
         paintballPerksEmbed.setAuthor("Paintball Perks", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         paintballPerksEmbed.setColor(new Color(85, 85, 255));
         paintballPerksEmbed.setTitle(player.getUsername() + " Stats");
-        paintballPerksEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        paintballPerksEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         paintballPerksEmbed.addField("Adrenaline Perk : ", String.valueOf(paintball.getPerks().getAdrenaline()), true);
         paintballPerksEmbed.addField("Endurance perk : ", String.valueOf(paintball.getPerks().getEndurance()), true);

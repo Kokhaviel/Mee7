@@ -53,18 +53,18 @@ public class SmashStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final Smash smash = player.getStats().getSmash();
-                    channel.sendMessage(getSmashStats(event, player, smash).build()).queue();
+                    channel.sendMessage(getSmashStats(player, smash).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getSmashStats(MessageReceivedEvent event, Player player, Smash smash) {
+    private EmbedBuilder getSmashStats(Player player, Smash smash) {
         EmbedBuilder smashEmbed = new EmbedBuilder();
         smashEmbed.setAuthor("Smash Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         smashEmbed.setColor(Color.RED);
         smashEmbed.setTitle(player.getUsername() + " Stats");
-        smashEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        smashEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         smashEmbed.addField("Coins : ", String.valueOf(smash.getCoins()), true);
 

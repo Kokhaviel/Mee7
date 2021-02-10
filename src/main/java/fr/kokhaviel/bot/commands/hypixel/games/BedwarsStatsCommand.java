@@ -54,20 +54,20 @@ public class BedwarsStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final BedWars bedwars = player.getStats().getBedWars();
-                    channel.sendMessage(getBedwarsStats(event, player, bedwars).build()).queue();
-                    channel.sendMessage(getRessourcesBW(event, player, bedwars).build()).queue();
-                    channel.sendMessage(getGamemodesStats(event, player, bedwars).build()).queue();
+                    channel.sendMessage(getBedwarsStats(player, bedwars).build()).queue();
+                    channel.sendMessage(getResourcesBW(player, bedwars).build()).queue();
+                    channel.sendMessage(getGamemodesStats(player, bedwars).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getBedwarsStats(MessageReceivedEvent event, Player player, BedWars bedwars) {
+    private EmbedBuilder getBedwarsStats(Player player, BedWars bedwars) {
         EmbedBuilder bedwarsEmbed = new EmbedBuilder();
         bedwarsEmbed.setAuthor("Bedwars Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         bedwarsEmbed.setColor(Color.RED);
         bedwarsEmbed.setTitle(player.getUsername() + " Stats");
-        bedwarsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        bedwarsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         bedwarsEmbed.addField("Coins : ", String.valueOf(bedwars.getCoins()), true);
         bedwarsEmbed.addField("Level : ", String.valueOf(bedwars.getLevel()), true);
@@ -90,12 +90,12 @@ public class BedwarsStatsCommand extends ListenerAdapter {
         return bedwarsEmbed;
     }
 
-    private EmbedBuilder getRessourcesBW(MessageReceivedEvent event, Player player, BedWars bedwars) {
+    private EmbedBuilder getResourcesBW(Player player, BedWars bedwars) {
         EmbedBuilder bedwarsEmbed = new EmbedBuilder();
         bedwarsEmbed.setAuthor("Bedwars Resources Collected", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         bedwarsEmbed.setColor(Color.RED);
         bedwarsEmbed.setTitle(player.getUsername() + " Stats");
-        bedwarsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        bedwarsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         bedwarsEmbed.addField("Iron Collected : ", String.valueOf(bedwars.getResourcesCollected().getIron()), false);
         bedwarsEmbed.addField("Gold Collected : ", String.valueOf(bedwars.getResourcesCollected().getGold()), false);
@@ -105,12 +105,12 @@ public class BedwarsStatsCommand extends ListenerAdapter {
         return bedwarsEmbed;
     }
 
-    private EmbedBuilder getGamemodesStats(MessageReceivedEvent event, Player player, BedWars bedwars) {
+    private EmbedBuilder getGamemodesStats(Player player, BedWars bedwars) {
         EmbedBuilder bedwarsEmbed = new EmbedBuilder();
         bedwarsEmbed.setAuthor("Bedwars Gamemodes Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         bedwarsEmbed.setColor(Color.RED);
         bedwarsEmbed.setTitle(player.getUsername() + " Stats");
-        bedwarsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        bedwarsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         bedwarsEmbed.addField("Solo Wins : ", String.valueOf(bedwars.getGamemodes().getSolo().getWins()), true);
         bedwarsEmbed.addField("Solo Losses : ", String.valueOf(bedwars.getGamemodes().getSolo().getLosses()), true);

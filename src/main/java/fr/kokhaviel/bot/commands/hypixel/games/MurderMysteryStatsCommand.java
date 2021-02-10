@@ -54,18 +54,18 @@ public class MurderMysteryStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final MurderMystery mm = player.getStats().getMurderMystery();
-                    channel.sendMessage(getMMStats(event, player, mm).build()).queue();
+                    channel.sendMessage(getMMStats(player, mm).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getMMStats(MessageReceivedEvent event, Player player, MurderMystery murderMystery) {
+    private EmbedBuilder getMMStats(Player player, MurderMystery murderMystery) {
         EmbedBuilder murderMysteryEmbed = new EmbedBuilder();
         murderMysteryEmbed.setAuthor("Murder Mystery Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         murderMysteryEmbed.setColor(new Color(122, 36, 96));
         murderMysteryEmbed.setTitle(player.getUsername() + " Stats");
-        murderMysteryEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        murderMysteryEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         murderMysteryEmbed.addField("Coins : ", String.valueOf(murderMystery.getCoins()), true);
 

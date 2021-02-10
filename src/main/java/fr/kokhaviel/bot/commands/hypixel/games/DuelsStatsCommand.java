@@ -54,18 +54,18 @@ public class DuelsStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final Duels duels = player.getStats().getDuels();
-                    channel.sendMessage(getDuelsStats(event, player, duels).build()).queue();
+                    channel.sendMessage(getDuelsStats(player, duels).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getDuelsStats(MessageReceivedEvent event, Player player, Duels duels) {
+    private EmbedBuilder getDuelsStats(Player player, Duels duels) {
         EmbedBuilder duelsEmbed = new EmbedBuilder();
         duelsEmbed.setAuthor("Duels Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         duelsEmbed.setColor(Color.WHITE);
         duelsEmbed.setTitle(player.getUsername() + " Stats");
-        duelsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        duelsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         duelsEmbed.addField("Coins : ", String.valueOf(duels.getCoins()), true);
         duelsEmbed.addField("Wins : ", String.valueOf(duels.getWins()), true);

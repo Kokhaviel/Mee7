@@ -56,20 +56,20 @@ public class BlitzKitLevelCommand extends ListenerAdapter {
                     final Player player = sloth.getPlayer(args[2]);
                     final BlitzKits blitzLevelsStats = player.getStats().getBlitz().getKitsLevels();
 
-                    channel.sendMessage(getBlitzKit1Level(event, player, blitzLevelsStats).build()).queue();
-                    channel.sendMessage(getBlitzKit2Level(event, player, blitzLevelsStats).build()).queue();
+                    channel.sendMessage(getBlitzKit1Level(player, blitzLevelsStats).build()).queue();
+                    channel.sendMessage(getBlitzKit2Level(player, blitzLevelsStats).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getBlitzKit1Level(MessageReceivedEvent event, Player player, BlitzKits blitzLevelsStats) {
+    private EmbedBuilder getBlitzKit1Level(Player player, BlitzKits blitzLevelsStats) {
         EmbedBuilder blitzLevelsEmbed = new EmbedBuilder();
 
         blitzLevelsEmbed.setAuthor("Blitz Kit Levels (1)", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         blitzLevelsEmbed.setColor(new Color(73, 240, 255));
         blitzLevelsEmbed.setTitle(player.getUsername() + " Stats");
-        blitzLevelsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        blitzLevelsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         blitzLevelsEmbed.addField("Arachnologist : ", String.valueOf(blitzLevelsStats.getArachnologist()), true);
         blitzLevelsEmbed.addField("Archer : ", String.valueOf(blitzLevelsStats.getArcher()), true);
@@ -100,14 +100,13 @@ public class BlitzKitLevelCommand extends ListenerAdapter {
     }
 
 
-    private EmbedBuilder getBlitzKit2Level(MessageReceivedEvent event, Player player, BlitzKits blitzLevelsStats) {
+    private EmbedBuilder getBlitzKit2Level(Player player, BlitzKits blitzLevelsStats) {
         EmbedBuilder blitzLevelsEmbed = new EmbedBuilder();
 
         blitzLevelsEmbed.setAuthor("Blitz Kit Levels (2)", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         blitzLevelsEmbed.setColor(new Color(73, 240, 255));
         blitzLevelsEmbed.setTitle(player.getUsername() + " Stats");
-        blitzLevelsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
-
+        blitzLevelsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         blitzLevelsEmbed.addField("Red Dragon : ", String.valueOf(blitzLevelsStats.getReddragon()), true);
         blitzLevelsEmbed.addField("Rogue : ", String.valueOf(blitzLevelsStats.getRogue()), true);

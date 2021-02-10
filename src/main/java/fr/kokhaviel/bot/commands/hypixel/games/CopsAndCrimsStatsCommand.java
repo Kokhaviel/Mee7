@@ -55,21 +55,21 @@ public class CopsAndCrimsStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final CvC cvc = player.getStats().getCvC();
-                    channel.sendMessage(getCvCStats(event, player, cvc).build()).queue();
-                    channel.sendMessage(getCvcPerksStats(event, player, cvc).build()).queue();
-                    channel.sendMessage(getCvcPerks2Stats(event, player, cvc).build()).queue();
-                    channel.sendMessage(getCvcCosmetics(event, player, cvc).build()).queue();
+                    channel.sendMessage(getCvCStats(player, cvc).build()).queue();
+                    channel.sendMessage(getCvcPerksStats(player, cvc).build()).queue();
+                    channel.sendMessage(getCvcPerks2Stats(player, cvc).build()).queue();
+                    channel.sendMessage(getCvcCosmetics(player, cvc).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getCvCStats(MessageReceivedEvent event, Player player, CvC cvc) {
+    private EmbedBuilder getCvCStats(Player player, CvC cvc) {
         EmbedBuilder cvcStats = new EmbedBuilder();
         cvcStats.setAuthor("Cops and Crims Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         cvcStats.setColor(Color.DARK_GRAY);
         cvcStats.setTitle(player.getUsername() + " Stats");
-        cvcStats.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        cvcStats.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         cvcStats.addField("Coins : ", String.valueOf(cvc.getCoins()), true);
         cvcStats.addField("Wins : ", String.valueOf(cvc.getWins()), true);
@@ -96,12 +96,12 @@ public class CopsAndCrimsStatsCommand extends ListenerAdapter {
         return cvcStats;
     }
 
-    private EmbedBuilder getCvcPerksStats(MessageReceivedEvent event, Player player, CvC cvc) {
+    private EmbedBuilder getCvcPerksStats(Player player, CvC cvc) {
         EmbedBuilder cvcStats = new EmbedBuilder();
         cvcStats.setAuthor("Cops and Crims Perks Stats (1)", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         cvcStats.setColor(Color.DARK_GRAY);
         cvcStats.setTitle(player.getUsername() + " Stats");
-        cvcStats.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        cvcStats.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         cvcStats.addField("Player Body Armor Cost : ", String.valueOf(cvc.getPerks().getPlayer().getBodyArmorCost()), true);
         cvcStats.addField("Player Bounty Hunter : ", String.valueOf(cvc.getPerks().getPlayer().getBountyHunter()), true);
@@ -127,12 +127,12 @@ public class CopsAndCrimsStatsCommand extends ListenerAdapter {
         return cvcStats;
     }
 
-    private EmbedBuilder getCvcPerks2Stats(MessageReceivedEvent event, Player player, CvC cvc) {
+    private EmbedBuilder getCvcPerks2Stats(Player player, CvC cvc) {
         EmbedBuilder cvcStats = new EmbedBuilder();
         cvcStats.setAuthor("Cops and Crims Perks Stats (2)", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         cvcStats.setColor(Color.DARK_GRAY);
         cvcStats.setTitle(player.getUsername() + " Stats");
-        cvcStats.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        cvcStats.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         cvcStats.addField("Pistol Damage Increase : ", String.valueOf(cvc.getPerks().getPistol().getDamageIncrease()), true);
         cvcStats.addField("Pistol Recoil Reduction : ", String.valueOf(cvc.getPerks().getPistol().getRecoilReduction()), true);
@@ -156,12 +156,12 @@ public class CopsAndCrimsStatsCommand extends ListenerAdapter {
         return cvcStats;
     }
 
-    private EmbedBuilder getCvcCosmetics(MessageReceivedEvent event, Player player, CvC cvc) {
+    private EmbedBuilder getCvcCosmetics(Player player, CvC cvc) {
         EmbedBuilder cvcStats = new EmbedBuilder();
         cvcStats.setAuthor("Cops and Crims Selected Cosmetics Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         cvcStats.setColor(Color.DARK_GRAY);
         cvcStats.setTitle(player.getUsername() + " Stats");
-        cvcStats.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        cvcStats.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
 
         cvcStats.addField("Carbine : ", cvc.getSelectedCosmetics().getCarbine(), true);

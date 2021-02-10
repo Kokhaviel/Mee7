@@ -54,20 +54,20 @@ public class ArcadeStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final Arcade arcade = player.getStats().getArcade();
-                    channel.sendMessage(getArcade1Stats(event, player, arcade).build()).queue();
-                    channel.sendMessage(getArcade2Stats(event, player, arcade).build()).queue();
-                    channel.sendMessage(getArcade3Stats(event, player, arcade).build()).queue();
+                    channel.sendMessage(getArcade1Stats(player, arcade).build()).queue();
+                    channel.sendMessage(getArcade2Stats(player, arcade).build()).queue();
+                    channel.sendMessage(getArcade3Stats(player, arcade).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getArcade1Stats(MessageReceivedEvent event, Player player, Arcade arcade) {
+    private EmbedBuilder getArcade1Stats(Player player, Arcade arcade) {
         EmbedBuilder arcadeEmbed = new EmbedBuilder();
         arcadeEmbed.setAuthor("Arcade Stats (1)", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arcadeEmbed.setColor(Color.GREEN);
         arcadeEmbed.setTitle(player.getUsername() + " Stats");
-        arcadeEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        arcadeEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         arcadeEmbed.addField("Coins : ", String.valueOf(arcade.getCoins()), true);
         arcadeEmbed.addField("Kills : ", String.valueOf(arcade.getKills()), true);
@@ -100,12 +100,12 @@ public class ArcadeStatsCommand extends ListenerAdapter {
         return arcadeEmbed;
     }
 
-    private EmbedBuilder getArcade2Stats(MessageReceivedEvent event, Player player, Arcade arcade) {
+    private EmbedBuilder getArcade2Stats(Player player, Arcade arcade) {
         EmbedBuilder arcadeEmbed = new EmbedBuilder();
         arcadeEmbed.setAuthor("Arcade Stats (2)", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arcadeEmbed.setColor(Color.GREEN);
         arcadeEmbed.setTitle(player.getUsername() + " Stats");
-        arcadeEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        arcadeEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         arcadeEmbed.addField("Party Games 1st Place : ", String.valueOf(arcade.getModes().getPartyGames().getWins_1()), true);
         arcadeEmbed.addField("Party Games 2nd Place : ", String.valueOf(arcade.getModes().getPartyGames().getWins_2()), true);
@@ -138,13 +138,13 @@ public class ArcadeStatsCommand extends ListenerAdapter {
         return arcadeEmbed;
     }
 
-    private EmbedBuilder getArcade3Stats(MessageReceivedEvent event, Player player, Arcade arcade) {
+    private EmbedBuilder getArcade3Stats(Player player, Arcade arcade) {
 
         EmbedBuilder arcadeEmbed = new EmbedBuilder();
         arcadeEmbed.setAuthor("Arcade Stats (3)", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         arcadeEmbed.setColor(Color.GREEN);
         arcadeEmbed.setTitle(player.getUsername() + " Stats");
-        arcadeEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        arcadeEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         arcadeEmbed.addField("Hole in the Wall Wins : ", String.valueOf(arcade.getModes().getHoleInTheWall().getWins()), true);
         arcadeEmbed.addField("Hole in the Wall Rounds : ", String.valueOf(arcade.getModes().getHoleInTheWall().getRounds()), true);

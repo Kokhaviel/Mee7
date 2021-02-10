@@ -54,19 +54,19 @@ public class MegaWallsStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final MegaWalls megawalls = player.getStats().getMegaWalls();
-                    channel.sendMessage(getMegaWallsStats(event, player, megawalls).build()).queue();
+                    channel.sendMessage(getMegaWallsStats(player, megawalls).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getMegaWallsStats(MessageReceivedEvent event, Player player, MegaWalls megawalls) {
+    private EmbedBuilder getMegaWallsStats(Player player, MegaWalls megawalls) {
         EmbedBuilder megaWallsEmbed = new EmbedBuilder();
 
         megaWallsEmbed.setAuthor("Mega Walls Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         megaWallsEmbed.setColor(new Color(111, 78, 104));
         megaWallsEmbed.setTitle(player.getUsername() + " Stats");
-        megaWallsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        megaWallsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         megaWallsEmbed.addField("Coins : ", String.valueOf(megawalls.getCoins()), true);
 

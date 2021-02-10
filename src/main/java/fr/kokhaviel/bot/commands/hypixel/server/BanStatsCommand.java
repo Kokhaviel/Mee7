@@ -52,7 +52,7 @@ public class BanStatsCommand extends ListenerAdapter {
         bansEmbed.setAuthor("Hypixel Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         bansEmbed.setColor(Color.RED);
         bansEmbed.setTitle("Bans Stats");
-        bansEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        bansEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         bansEmbed.addField("Last Minute Watchdog Bans : ", String.valueOf(bans.getWatchdog().getLastMinute()), true);
         bansEmbed.addField("Daily Watchdog Bans : ", String.valueOf(bans.getWatchdog().getDaily()), true);

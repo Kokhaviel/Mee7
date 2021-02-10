@@ -53,18 +53,18 @@ public class CrazyWallsStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final CrazyWalls cw = player.getStats().getCrazyWalls();
-                    channel.sendMessage(getCWStats(event, player, cw).build()).queue();
+                    channel.sendMessage(getCWStats(player, cw).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getCWStats(MessageReceivedEvent event, Player player, CrazyWalls cw) {
+    private EmbedBuilder getCWStats(Player player, CrazyWalls cw) {
         EmbedBuilder crazyEmbed = new EmbedBuilder();
         crazyEmbed.setAuthor("Crazy Walls Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         crazyEmbed.setColor(Color.YELLOW);
         crazyEmbed.setTitle(player.getUsername() + " Stats");
-        crazyEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        crazyEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         crazyEmbed.addField("Coins : " , String.valueOf(cw.getCoins()), true);
 

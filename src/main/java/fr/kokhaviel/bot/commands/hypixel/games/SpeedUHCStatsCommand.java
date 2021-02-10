@@ -54,21 +54,21 @@ public class SpeedUHCStatsCommand extends ListenerAdapter {
                     message.delete().queue();
                     final Player player = sloth.getPlayer(args[1]);
                     final SpeedUHC speedUHC = player.getStats().getSpeedUHC();
-                    channel.sendMessage(getSpeedUHCStats(event, player, speedUHC).build()).queue();
-                    channel.sendMessage(getSpeedUHCSolo(event, player, speedUHC).build()).queue();
-                    channel.sendMessage(getTeamsStats(event, player, speedUHC).build()).queue();
-                    channel.sendMessage(getActiveKit(event, player, speedUHC).build()).queue();
+                    channel.sendMessage(getSpeedUHCStats(player, speedUHC).build()).queue();
+                    channel.sendMessage(getSpeedUHCSolo(player, speedUHC).build()).queue();
+                    channel.sendMessage(getTeamsStats(player, speedUHC).build()).queue();
+                    channel.sendMessage(getActiveKit(player, speedUHC).build()).queue();
                 }
             }
         }
     }
 
-    private EmbedBuilder getSpeedUHCStats(MessageReceivedEvent event, Player player, SpeedUHC speedUHC) {
+    private EmbedBuilder getSpeedUHCStats(Player player, SpeedUHC speedUHC) {
         EmbedBuilder speedUHCEmbed = new EmbedBuilder();
         speedUHCEmbed.setAuthor("SpeedUHC Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         speedUHCEmbed.setColor(Color.YELLOW);
         speedUHCEmbed.setTitle(player.getUsername() + " Stats");
-        speedUHCEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        speedUHCEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         speedUHCEmbed.addField("Coins :", String.valueOf(speedUHC.getCoins()), true);
         speedUHCEmbed.addField("Wins : ", String.valueOf(speedUHC.getWins()), true);
@@ -94,12 +94,12 @@ public class SpeedUHCStatsCommand extends ListenerAdapter {
         return speedUHCEmbed;
     }
 
-    private EmbedBuilder getSpeedUHCSolo(MessageReceivedEvent event, Player player, SpeedUHC speedUHC) {
+    private EmbedBuilder getSpeedUHCSolo(Player player, SpeedUHC speedUHC) {
         EmbedBuilder speedUHCEmbed = new EmbedBuilder();
         speedUHCEmbed.setAuthor("SpeedUHC Solo Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         speedUHCEmbed.setColor(Color.YELLOW);
         speedUHCEmbed.setTitle(player.getUsername() + " Stats");
-        speedUHCEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        speedUHCEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         speedUHCEmbed.addField("Wins : ", String.valueOf(speedUHC.getGamemodes().getSolo().getWins()), true);
         speedUHCEmbed.addField("Wins Streak : ", String.valueOf(speedUHC.getGamemodes().getSolo().getWinstreak()), true);
@@ -115,12 +115,12 @@ public class SpeedUHCStatsCommand extends ListenerAdapter {
         return speedUHCEmbed;
     }
 
-    private EmbedBuilder getTeamsStats(MessageReceivedEvent event, Player player, SpeedUHC speedUHC) {
+    private EmbedBuilder getTeamsStats(Player player, SpeedUHC speedUHC) {
         EmbedBuilder speedUHCEmbed = new EmbedBuilder();
         speedUHCEmbed.setAuthor("SpeedUHC Teams Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         speedUHCEmbed.setColor(Color.YELLOW);
         speedUHCEmbed.setTitle(player.getUsername() + " Stats");
-        speedUHCEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        speedUHCEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         speedUHCEmbed.addField("Wins : ", String.valueOf(speedUHC.getGamemodes().getTeams().getWins()), true);
         speedUHCEmbed.addField("Wins Streak : ", String.valueOf(speedUHC.getGamemodes().getTeams().getWinstreak()), true);
@@ -136,12 +136,12 @@ public class SpeedUHCStatsCommand extends ListenerAdapter {
         return speedUHCEmbed;
     }
 
-    private EmbedBuilder getActiveKit(MessageReceivedEvent event, Player player, SpeedUHC speedUHC) {
+    private EmbedBuilder getActiveKit(Player player, SpeedUHC speedUHC) {
         EmbedBuilder speedUHCEmbed = new EmbedBuilder();
         speedUHCEmbed.setAuthor("SpeedUHC Active Kit", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
         speedUHCEmbed.setColor(Color.YELLOW);
         speedUHCEmbed.setTitle(player.getUsername() + " Stats");
-        speedUHCEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+        speedUHCEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
         speedUHCEmbed.addField("Active Mastery : ", speedUHC.getMastery().getActiveMastery(), true);
         speedUHCEmbed.addField("Active Normal kit : ", speedUHC.getGamemodes().getNormal().getActiveKit(), true);
