@@ -168,8 +168,8 @@ public class OctogoneStatsCommand extends ListenerAdapter {
         String pseudo;
         String mode_jeu;
         String rang;
-        HikabrainStatsCommand.Data data;
-        HikabrainStatsCommand.Stats stats;
+        Data data;
+        Stats stats;
         String skin;
     }
 }
