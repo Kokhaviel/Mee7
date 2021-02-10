@@ -312,7 +312,8 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Octogone Stats : ", Config.FUNCRAFT_PREFIX + "octogone <Player>", false)
                 .addField("Skywars Stats : ", Config.FUNCRAFT_PREFIX + "skywars <Player>", false)
                 .addField("PvpSmash Stats : ", Config.FUNCRAFT_PREFIX + "pvpsmash <Player>", false)
-                .addField("Shootcraft Stats : ", Config.FUNCRAFT_PREFIX + "shootcraft <Player>", false);
+                .addField("Shootcraft Stats : ", Config.FUNCRAFT_PREFIX + "shootcraft <Player>", false)
+                .addField("Infected Stats : ", Config.FUNCRAFT_PREFIX + "infected <Player>", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();

@@ -98,6 +98,7 @@ public class Mee7 {
                     .addEventListeners(new ForwardCommand())
                     .addEventListeners(new HelpCommand())
                     .addEventListeners(new HikabrainStatsCommand())
+                    .addEventListeners(new InfectedStatsCommand())
                     .addEventListeners(new InfoCommand())
                     .addEventListeners(new JoinCommand())
                     .addEventListeners(new KickCommand())
