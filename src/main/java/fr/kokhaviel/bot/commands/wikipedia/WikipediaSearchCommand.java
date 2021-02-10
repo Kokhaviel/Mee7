@@ -17,18 +17,18 @@
 
 package fr.kokhaviel.bot.commands.wikipedia;
 
+import com.google.gson.Gson;
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.sourceforge.jwbf.core.actions.HttpActionClient;
-import net.sourceforge.jwbf.core.contentRep.Article;
-import net.sourceforge.jwbf.mediawiki.bots.MediaWikiBot;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -54,83 +54,51 @@ public class WikipediaSearchCommand extends ListenerAdapter {
 
             } else {
 
-                HttpActionClient client = HttpActionClient.builder() //
-                        .withUrl("https://en.wikipedia.org/w/") //
-                        .withUserAgent("Mee7", "1.0", "Kokhaviel") //
-                        .withRequestsPerUnit(10, TimeUnit.MINUTES) //
-                        .build();
-
-                MediaWikiBot bot = new MediaWikiBot(client);
-
-                Article article;
-                EmbedBuilder embed = new EmbedBuilder();
-                embed.setAuthor("Wikipedia Search", null, "https://en.wikipedia.org/wiki/Wikipedia#/media/File:Wikipedia-logo-v2.svg");
-                embed.setColor(Color.WHITE);
-                embed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nWikipedia API by eldur (https://github.com/eldur/jwbf)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+                Gson gson = new Gson();
 
                 try {
 
-                    ArrayList<String> researchArgs = new ArrayList<>(Arrays.asList(args));
-                    researchArgs.remove(0);
-                    String[] strings = researchArgs.toArray(new String[0]);
-                    StringBuilder sb = new StringBuilder();
-                    for (String string : strings) {
-                        sb.append(string).append(" ");
+                    ArrayList<String> research = new ArrayList<>(Arrays.asList(args));
+                    research.remove(0);
+                    StringBuilder finalResearch = new StringBuilder();
+
+                    for (String s : research) {
+                        finalResearch.append(s).append("_");
                     }
-                    article = new Article(bot, sb.toString());
-                    System.out.println(article.getText());
-                    embed.setTitle(article.getTitle());
-                    String[] searches = article.getText().split("\n");
-                    for (String search : searches) {
-                        if (search.contains("Short description") || search.contains("short description")) {
+                    final String url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + finalResearch;
+                    WikipediaContent content = gson.fromJson(WikipediaUtilities.readJson(new URL(url)), WikipediaContent.class);
 
-                            final String[] split = search.split("\\|");
-                            embed.addField("Short Description",
-                                    split[1].replace("}", ""),
-                                    false);
+                    channel.sendMessage(getContentPage(content).build()).queue();
 
-                        }
-
-                        if (search.contains("Distinguish")) {
-
-                            final String replace = search.replace("{", "")
-                                    .replace("}", "")
-                                    .replace("Distinguish|", "");
-
-                            embed.addField("Distinguish : ", replace, false);
-                        }
-                        if (search.contains("Logo") || search.contains("logo")) {
-
-                            System.out.println("Logo : " + search);
-                            String[] logoResearch = search
-                                    .replace("| logo = ", "")
-                                    .replace("| Logo = ", "")
-                                    .replace("[[", "")
-                                    .replace("]]", "")
-                                    .replace(" ", "_")
-                                    .split("\\|");
-
-                            System.out.println("Logo Research" + Arrays.toString(logoResearch));
-
-                            String url = "https://en.wikipedia.org/wiki/";
-                            if(logoResearch.length> 0) {
-                                String fileName = logoResearch[0];
-                                String finalUrl = url + fileName;
-                                System.out.println("Final URL" + finalUrl);
-
-                                embed.setThumbnail(finalUrl);
-                            }
-
-
-                        }
-                    }
-
-                    channel.sendMessage(embed.build()).queue();
-
-                } catch (Exception e) {
+                } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
             }
         }
+    }
+
+    private EmbedBuilder getContentPage(WikipediaContent content) {
+        EmbedBuilder wikiEmbed = new EmbedBuilder();
+        wikiEmbed.setAuthor("Wikipedia Search", null, "https://upload.wikimedia.org/wikipedia/commons/0/06/Wikipedia-logo_ka.png");
+        wikiEmbed.setColor(Color.BLACK);
+        wikiEmbed.setThumbnail(content.thumbnail.source);
+        wikiEmbed.setTitle(content.title + " Wikipedia Page");
+        wikiEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG, "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128" );
+
+        wikiEmbed.addField("Description : ", content.description, false);
+        wikiEmbed.addField("Article Content : ", content.extract, false);
+
+        return wikiEmbed;
+    }
+
+    static class Image {
+        String source;
+    }
+
+    static class WikipediaContent {
+        String title;
+        Image thumbnail;
+        String description;
+        String extract;
     }
 }

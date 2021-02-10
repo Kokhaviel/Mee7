@@ -73,6 +73,9 @@ public class HelpCommand extends ListenerAdapter {
                     case "hypixel":
                         getHypixelHelp(rd1, rd2, rd3, jda, channel, author, user);
                         break;
+                    case "wikipedia":
+                        getWikipediaHelp(rd1, rd2, rd3, jda, channel, author, user);
+                        break;
                     default:
                         getHelp(rd1, rd2, rd3, event, jda, channel, author, user);
                         break;
@@ -280,5 +283,21 @@ public class HelpCommand extends ListenerAdapter {
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
         ((UserImpl) user).getPrivateChannel().sendMessage(hypixelEmbed.build()).queue();
         ((UserImpl) user).getPrivateChannel().sendMessage(hypixel2Embed.build()).queue();
+    }
+
+    private void getWikipediaHelp(int rd1, int rd2, int rd3, JDA jda, TextChannel channel, User author, User user) {
+        EmbedBuilder wikipediaEmbed = new EmbedBuilder();
+
+        wikipediaEmbed.setTitle("Help Wikipedia Commands")
+                .setColor(new Color(rd1, rd2, rd3))
+                .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
+                .setDescription("Display all wikipedia commands")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG, "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+
+                .addField("Wikipedia Search : ", Config.WIKIPEDIA_PREFIX + "search <Wikipedia Page>", false);
+
+        channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
+        if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
+        ((UserImpl) user).getPrivateChannel().sendMessage(wikipediaEmbed.build()).queue();
     }
 }
