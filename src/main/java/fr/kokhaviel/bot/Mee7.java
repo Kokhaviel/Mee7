@@ -139,6 +139,7 @@ public class Mee7 {
                     .addEventListeners(new SmashStatsCommand())
                     .addEventListeners(new SpeedUHCStatsCommand())
                     .addEventListeners(new StopCommand())
+                    .addEventListeners(new SurvivalStatsCommand())
                     .addEventListeners(new TntGamesStatsCommand())
                     .addEventListeners(new TurboKartStatsCommand())
                     .addEventListeners(new UHCStatsCommand())
