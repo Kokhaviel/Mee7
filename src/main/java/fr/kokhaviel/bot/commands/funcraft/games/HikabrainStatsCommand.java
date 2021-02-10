@@ -80,7 +80,7 @@ public class HikabrainStatsCommand extends ListenerAdapter {
         EmbedBuilder hikabrainEmbed = new EmbedBuilder();
 
         if (hikabrain.exit_code.equals("0")) {
-            hikabrainEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+            hikabrainEmbed.setAuthor("Funcraft Player Stats", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
             hikabrainEmbed.setColor(Color.RED);
             hikabrainEmbed.setThumbnail(hikabrain.skin);
             hikabrainEmbed.setTitle(String.format("%s Hikabrain Stats", hikabrain.pseudo));

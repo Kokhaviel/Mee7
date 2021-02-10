@@ -86,7 +86,7 @@ public class PlayerStatsCommand extends ListenerAdapter {
 
         EmbedBuilder funcraftEmbed = new EmbedBuilder();
 
-        funcraftEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+        funcraftEmbed.setAuthor("Funcraft Player Stats", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
         funcraftEmbed.setColor(Color.RED);
         funcraftEmbed.setThumbnail(stats.skin);
         funcraftEmbed.setTitle(String.format("[%s] %s Stats", stats.grade, stats.pseudo));
@@ -112,7 +112,7 @@ public class PlayerStatsCommand extends ListenerAdapter {
 
         EmbedBuilder friendsEmbed = new EmbedBuilder();
 
-        friendsEmbed.setAuthor("Funcraft Player Friends", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+        friendsEmbed.setAuthor("Funcraft Player Friends", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
         friendsEmbed.setColor(Color.RED);
         friendsEmbed.setThumbnail(stats.skin);
         friendsEmbed.setTitle(String.format("[%s] %s Friends", stats.grade, stats.pseudo));

@@ -86,7 +86,7 @@ public class RushStatsCommand extends ListenerAdapter {
         EmbedBuilder rushEmbed = new EmbedBuilder();
 
         if(rush.exit_code.equals("0")) {
-            rushEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+            rushEmbed.setAuthor("Funcraft Player Stats", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
             rushEmbed.setColor(Color.RED);
             rushEmbed.setThumbnail(rush.skin);
             rushEmbed.setTitle(String.format("%s Rush Stats", rush.pseudo));

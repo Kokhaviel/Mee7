@@ -80,7 +80,7 @@ public class SkywarsStatsCommand extends ListenerAdapter {
         EmbedBuilder skywarsEmbed = new EmbedBuilder();
 
         if(skywars.exit_code.equals("0")) {
-            skywarsEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+            skywarsEmbed.setAuthor("Funcraft Player Stats", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
             skywarsEmbed.setColor(Color.RED);
             skywarsEmbed.setThumbnail(skywars.skin);
             skywarsEmbed.setTitle(String.format("%s Skywars Stats", skywars.pseudo));
@@ -110,14 +110,6 @@ public class SkywarsStatsCommand extends ListenerAdapter {
         }
 
         return skywarsEmbed;
-    }
-
-    private static InputStream catchForbidden(URL url) throws IOException {
-
-        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.addRequestProperty("User-Agent", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.124 Safari/537.36");
-        connection.setInstanceFollowRedirects(true);
-        return connection.getInputStream();
     }
 
     static class Data {

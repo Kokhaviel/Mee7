@@ -32,7 +32,6 @@ import fr.kokhaviel.bot.commands.user.AvatarCommand;
 import fr.kokhaviel.bot.commands.user.InfoCommand;
 import fr.kokhaviel.bot.commands.user.afk.AfkCommand;
 import fr.kokhaviel.bot.commands.util.*;
-import fr.kokhaviel.bot.commands.wikipedia.WikipediaSearchCommand;
 import fr.kokhaviel.bot.event.afk.AfkVerify;
 import fr.kokhaviel.bot.event.logs.Logs;
 import fr.kokhaviel.bot.event.moderation.AutoModerator;
@@ -150,7 +149,6 @@ public class Mee7 {
                     .addEventListeners(new WallsStatsCommand())
                     .addEventListeners(new WarlordsStatsCommand())
 
-                    .addEventListeners(new WikipediaSearchCommand())
                     //.addEventListeners(new ThatPersonDoesNotExistCommand())
                     .setActivity(Activity.watching("la doc avant de poser une question..."))
 

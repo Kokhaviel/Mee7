@@ -84,7 +84,7 @@ public class ShootcraftStatsCommand extends ListenerAdapter {
         EmbedBuilder shootcraftEmbed = new EmbedBuilder();
 
         if(shootcraft.exit_code.equals("0")) {
-            shootcraftEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+            shootcraftEmbed.setAuthor("Funcraft Player Stats", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
             shootcraftEmbed.setColor(Color.RED);
             shootcraftEmbed.setThumbnail(shootcraft.skin);
             shootcraftEmbed.setTitle(String.format("%s Shootcraft Stats", shootcraft.pseudo));
