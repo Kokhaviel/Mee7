@@ -17,17 +17,18 @@
 
 package fr.kokhaviel.bot.commands.funcraft.games;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
 import fr.kokhaviel.bot.Config;
+import fr.kokhaviel.bot.commands.funcraft.JsonUtilities;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.io.*;
-import java.net.HttpURLConnection;
+import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
@@ -63,9 +64,9 @@ public class RushStatsCommand extends ListenerAdapter {
 
                         message.delete().queue();
                         Gson gson = new Gson();
-                        Rush rush = gson.fromJson(readJson(new URL(url)), Rush.class);
+                        Rush rush = gson.fromJson(JsonUtilities.readJson(new URL(url)), Rush.class);
 
-                        channel.sendMessage(getRushStats(rush).build()).queue();
+                        if(rush.exit_code.equals("0")) channel.sendMessage(getRushStats(rush, channel).build()).queue();
 
 
                     } catch (IOException e) {
@@ -80,75 +81,42 @@ public class RushStatsCommand extends ListenerAdapter {
         }
     }
 
-    private EmbedBuilder getRushStats(Rush rush) {
+    private EmbedBuilder getRushStats(Rush rush, TextChannel channel) {
 
         EmbedBuilder rushEmbed = new EmbedBuilder();
-        rushEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        rushEmbed.setColor(Color.RED);
-        rushEmbed.setThumbnail(rush.skin);
-        rushEmbed.setTitle(String.format("%s Rush Stats", rush.pseudo));
-        rushEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        rushEmbed.addField("Rank : ", rush.rang, true);
+        if(rush.exit_code.equals("0")) {
+            rushEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+            rushEmbed.setColor(Color.RED);
+            rushEmbed.setThumbnail(rush.skin);
+            rushEmbed.setTitle(String.format("%s Rush Stats", rush.pseudo));
+            rushEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        rushEmbed.addBlankField(false);
-        rushEmbed.addField("Points : ", rush.data.points, true);
-        rushEmbed.addField("Games : ", rush.data.parties, true);
-        rushEmbed.addField("Victories : ", rush.data.victoires, true);
-        rushEmbed.addField("Defeats : ", rush.data.defaites, true);
-        rushEmbed.addField("Played Time : ", rush.data.temps_jeu + " minutes", true);
-        rushEmbed.addField("Kills : ", rush.data.kills, true);
-        rushEmbed.addField("Deaths : ", rush.data.morts, true);
-        rushEmbed.addField("Beds Destroyed : ", rush.data.lits_detruits, true);
+            rushEmbed.addField("Rank : ", rush.rang, true);
 
-        rushEmbed.addBlankField(false);
-        rushEmbed.addField("Winrate : ", rush.stats.winrate + "%", true);
-        rushEmbed.addField("KDR : ", rush.stats.kd, true);
-        rushEmbed.addField("Average Kills / Games : ", rush.stats.kills_game,true);
-        rushEmbed.addField("Average Deaths / Games : ", rush.stats.morts_game, true);
-        rushEmbed.addField("Average Time / Games : ", rush.stats.temps_partie + " s", true);
+            rushEmbed.addBlankField(false);
+            rushEmbed.addField("Points : ", rush.data.points, true);
+            rushEmbed.addField("Games : ", rush.data.parties, true);
+            rushEmbed.addField("Victories : ", rush.data.victoires, true);
+            rushEmbed.addField("Defeats : ", rush.data.defaites, true);
+            rushEmbed.addField("Played Time : ", rush.data.temps_jeu + " minutes", true);
+            rushEmbed.addField("Kills : ", rush.data.kills, true);
+            rushEmbed.addField("Deaths : ", rush.data.morts, true);
+            rushEmbed.addField("Beds Destroyed : ", rush.data.lits_detruits, true);
 
+            rushEmbed.addBlankField(false);
+            rushEmbed.addField("Winrate : ", rush.stats.winrate + "%", true);
+            rushEmbed.addField("KDR : ", rush.stats.kd, true);
+            rushEmbed.addField("Average Kills / Games : ", rush.stats.kills_game, true);
+            rushEmbed.addField("Average Deaths / Games : ", rush.stats.morts_game, true);
+            rushEmbed.addField("Average Time / Games : ", rush.stats.temps_partie + " s", true);
+
+        }
+
+        if(!rush.exit_code.equals("0")) {
+            channel.sendMessage(JsonUtilities.getErrorCode(rush.exit_code)).queue();
+        }
         return rushEmbed;
-    }
-
-    private static JsonElement readJson(URL jsonURL) {
-
-        try {
-
-            return readJson(catchForbidden(jsonURL));
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-        return JsonNull.INSTANCE;
-    }
-
-    private static JsonElement readJson(InputStream inputStream) {
-
-        JsonElement element = JsonNull.INSTANCE;
-        try(InputStream stream = new BufferedInputStream(inputStream)) {
-
-            final Reader reader = new BufferedReader(new InputStreamReader(stream));
-            final StringBuilder sb = new StringBuilder();
-
-            int character;
-            while ((character = reader.read()) != -1) sb.append((char)character);
-
-            element =  JsonParser.parseString(sb.toString());
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-
-        return element.getAsJsonObject();
-    }
-
-    private static InputStream catchForbidden(URL url) throws IOException {
-
-        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.addRequestProperty("User-Agent", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.124 Safari/537.36");
-        connection.setInstanceFollowRedirects(true);
-        return connection.getInputStream();
     }
 
     static class Data {
@@ -171,6 +139,7 @@ public class RushStatsCommand extends ListenerAdapter {
     }
 
     static class Rush {
+        String exit_code;
         String pseudo;
         String mode_jeu;
         String rang;

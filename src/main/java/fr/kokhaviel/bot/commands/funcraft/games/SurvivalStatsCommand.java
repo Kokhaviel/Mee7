@@ -18,10 +18,8 @@
 package fr.kokhaviel.bot.commands.funcraft.games;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonParser;
 import fr.kokhaviel.bot.Config;
+import fr.kokhaviel.bot.commands.funcraft.JsonUtilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -30,8 +28,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.io.*;
-import java.net.HttpURLConnection;
+import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
@@ -65,9 +62,9 @@ public class SurvivalStatsCommand extends ListenerAdapter {
                     try {
                         message.delete().queue();
                         Gson gson = new Gson();
-                        Survival survival = gson.fromJson(readJson(new URL(url)), Survival.class);
+                        Survival survival = gson.fromJson(JsonUtilities.readJson(new URL(url)), Survival.class);
 
-                        channel.sendMessage(getSurvivalStats(survival).build()).queue();
+                        if(survival.exit_code.equals("0")) channel.sendMessage(getSurvivalStats(survival, channel).build()).queue();
 
                     } catch (IOException e) {
 
@@ -81,75 +78,41 @@ public class SurvivalStatsCommand extends ListenerAdapter {
         }
     }
     
-    private EmbedBuilder getSurvivalStats(Survival survival) {
+    private EmbedBuilder getSurvivalStats(Survival survival, TextChannel channel) {
         
         EmbedBuilder survivalEmbed = new EmbedBuilder();
-        survivalEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        survivalEmbed.setColor(Color.RED);
-        survivalEmbed.setThumbnail(survival.skin);
-        survivalEmbed.setTitle(String.format("%s survival Stats", survival.pseudo));
-        survivalEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        survivalEmbed.addField("Rank : ", survival.rang, true);
+        if(survival.exit_code.equals("0")) {
+            survivalEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+            survivalEmbed.setColor(Color.RED);
+            survivalEmbed.setThumbnail(survival.skin);
+            survivalEmbed.setTitle(String.format("%s survival Stats", survival.pseudo));
+            survivalEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        survivalEmbed.addBlankField(false);
-        survivalEmbed.addField("Points : ", survival.data.points, true);
-        survivalEmbed.addField("Games : ", survival.data.parties, true);
-        survivalEmbed.addField("Victories : ", survival.data.victoires, true);
-        survivalEmbed.addField("Defeats : ", survival.data.defaites, true);
-        survivalEmbed.addField("Played Time : ", survival.data.temps_jeu + " minutes", true);
-        survivalEmbed.addField("Kills : ", survival.data.kills, true);
-        survivalEmbed.addField("Deaths : ", survival.data.morts, true);
+            survivalEmbed.addField("Rank : ", survival.rang, true);
 
-        survivalEmbed.addBlankField(false);
-        survivalEmbed.addField("Winrate : ", survival.stats.winrate + "%", true);
-        survivalEmbed.addField("KDR : ", survival.stats.kd, true);
-        survivalEmbed.addField("Average Kills / Games : ", survival.stats.kills_game,true);
-        survivalEmbed.addField("Average Deaths / Games : ", survival.stats.morts_game, true);
-        survivalEmbed.addField("Average Time / Games : ", survival.stats.temps_partie + " s", true);
+            survivalEmbed.addBlankField(false);
+            survivalEmbed.addField("Points : ", survival.data.points, true);
+            survivalEmbed.addField("Games : ", survival.data.parties, true);
+            survivalEmbed.addField("Victories : ", survival.data.victoires, true);
+            survivalEmbed.addField("Defeats : ", survival.data.defaites, true);
+            survivalEmbed.addField("Played Time : ", survival.data.temps_jeu + " minutes", true);
+            survivalEmbed.addField("Kills : ", survival.data.kills, true);
+            survivalEmbed.addField("Deaths : ", survival.data.morts, true);
 
+            survivalEmbed.addBlankField(false);
+            survivalEmbed.addField("Winrate : ", survival.stats.winrate + "%", true);
+            survivalEmbed.addField("KDR : ", survival.stats.kd, true);
+            survivalEmbed.addField("Average Kills / Games : ", survival.stats.kills_game, true);
+            survivalEmbed.addField("Average Deaths / Games : ", survival.stats.morts_game, true);
+            survivalEmbed.addField("Average Time / Games : ", survival.stats.temps_partie + " s", true);
+        }
+
+        if(!survival.exit_code.equals("0")) {
+            channel.sendMessage(JsonUtilities.getErrorCode(survival.exit_code)).queue();
+        }
 
         return survivalEmbed;
-    }
-
-    private static JsonElement readJson(URL jsonURL) {
-
-        try {
-
-            return readJson(catchForbidden(jsonURL));
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-        return JsonNull.INSTANCE;
-    }
-
-    private static JsonElement readJson(InputStream inputStream) {
-
-        JsonElement element = JsonNull.INSTANCE;
-        try(InputStream stream = new BufferedInputStream(inputStream)) {
-
-            final Reader reader = new BufferedReader(new InputStreamReader(stream));
-            final StringBuilder sb = new StringBuilder();
-
-            int character;
-            while ((character = reader.read()) != -1) sb.append((char)character);
-
-            element =  JsonParser.parseString(sb.toString());
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-
-        return element.getAsJsonObject();
-    }
-
-    private static InputStream catchForbidden(URL url) throws IOException {
-
-        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.addRequestProperty("User-Agent", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.124 Safari/537.36");
-        connection.setInstanceFollowRedirects(true);
-        return connection.getInputStream();
     }
 
     static class Data {
@@ -171,6 +134,7 @@ public class SurvivalStatsCommand extends ListenerAdapter {
     }
 
     static class Survival {
+        String exit_code;
         String pseudo;
         String mode_jeu;
         String rang;

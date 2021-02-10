@@ -20,9 +20,6 @@
 package fr.kokhaviel.bot.commands.funcraft;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonParser;
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -32,8 +29,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.io.*;
-import java.net.HttpURLConnection;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -71,7 +67,7 @@ public class PlayerStatsCommand extends ListenerAdapter {
 
                         message.delete().queue();
                         Gson gson = new Gson();
-                        Stats stats = gson.fromJson(readJson(new URL(url)), Stats.class);
+                        Stats stats = gson.fromJson(JsonUtilities.readJson(new URL(url)), Stats.class);
                         channel.sendMessage(getFuncraftStats(stats).build()).queue();
                         channel.sendMessage(getPlayerFriends(stats).build()).queue();
 
@@ -127,46 +123,6 @@ public class PlayerStatsCommand extends ListenerAdapter {
         }
 
         return friendsEmbed;
-    }
-
-    private static JsonElement readJson(URL jsonURL) {
-
-        try {
-
-            return readJson(catchForbidden(jsonURL));
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-        return JsonNull.INSTANCE;
-    }
-
-    private static JsonElement readJson(InputStream inputStream) {
-
-        JsonElement element = JsonNull.INSTANCE;
-        try(InputStream stream = new BufferedInputStream(inputStream)) {
-
-            final Reader reader = new BufferedReader(new InputStreamReader(stream));
-            final StringBuilder sb = new StringBuilder();
-
-            int character;
-            while ((character = reader.read()) != -1) sb.append((char)character);
-
-            element =  JsonParser.parseString(sb.toString());
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-
-        return element.getAsJsonObject();
-    }
-
-    private static InputStream catchForbidden(URL url) throws IOException {
-
-        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.addRequestProperty("User-Agent", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.124 Safari/537.36");
-        connection.setInstanceFollowRedirects(true);
-        return connection.getInputStream();
     }
 
 

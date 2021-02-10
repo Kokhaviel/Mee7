@@ -18,10 +18,8 @@
 package fr.kokhaviel.bot.commands.funcraft.games;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonParser;
 import fr.kokhaviel.bot.Config;
+import fr.kokhaviel.bot.commands.funcraft.JsonUtilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -30,7 +28,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -65,9 +64,9 @@ public class SkywarsStatsCommand extends ListenerAdapter {
                     try {
                         message.delete().queue();
                         Gson gson = new Gson();
-                        Skywars skywars = gson.fromJson(readJson(new URL(url)), Skywars.class);
+                        Skywars skywars = gson.fromJson(JsonUtilities.readJson(new URL(url)), Skywars.class);
 
-                        channel.sendMessage(getSkywarsStats(skywars).build()).queue();
+                        if(skywars.exit_code.equals("0")) channel.sendMessage(getSkywarsStats(skywars, channel).build()).queue();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -76,66 +75,41 @@ public class SkywarsStatsCommand extends ListenerAdapter {
         }
     }
 
-    private EmbedBuilder getSkywarsStats(Skywars skywars) {
+    private EmbedBuilder getSkywarsStats(Skywars skywars, TextChannel channel) {
 
         EmbedBuilder skywarsEmbed = new EmbedBuilder();
-        skywarsEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        skywarsEmbed.setColor(Color.RED);
-        skywarsEmbed.setThumbnail(skywars.skin);
-        skywarsEmbed.setTitle(String.format("%s Skywars Stats", skywars.pseudo));
-        skywarsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        skywarsEmbed.addField("Rank : ", skywars.rang, true);
+        if(skywars.exit_code.equals("0")) {
+            skywarsEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+            skywarsEmbed.setColor(Color.RED);
+            skywarsEmbed.setThumbnail(skywars.skin);
+            skywarsEmbed.setTitle(String.format("%s Skywars Stats", skywars.pseudo));
+            skywarsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        skywarsEmbed.addBlankField(false);
-        skywarsEmbed.addField("Points : ", skywars.data.points, true);
-        skywarsEmbed.addField("Games : ", skywars.data.parties, true);
-        skywarsEmbed.addField("Victories : ", skywars.data.victoires, true);
-        skywarsEmbed.addField("Defeats : ", skywars.data.defaites, true);
-        skywarsEmbed.addField("Played Time : ", skywars.data.temps_jeu + " minutes", true);
-        skywarsEmbed.addField("Kills : ", skywars.data.kills, true);
-        skywarsEmbed.addField("Deaths : ", skywars.data.morts, true);
+            skywarsEmbed.addField("Rank : ", skywars.rang, true);
 
-        skywarsEmbed.addBlankField(false);
-        skywarsEmbed.addField("Winrate : ", skywars.stats.winrate + "%", true);
-        skywarsEmbed.addField("KDR : ", skywars.stats.kd, true);
-        skywarsEmbed.addField("Average Kills / Games : ", skywars.stats.kills_game,true);
-        skywarsEmbed.addField("Average Deaths / Games : ", skywars.stats.morts_game, true);
-        skywarsEmbed.addField("Average Time / Games : ", skywars.stats.temps_partie + "s", true);
+            skywarsEmbed.addBlankField(false);
+            skywarsEmbed.addField("Points : ", skywars.data.points, true);
+            skywarsEmbed.addField("Games : ", skywars.data.parties, true);
+            skywarsEmbed.addField("Victories : ", skywars.data.victoires, true);
+            skywarsEmbed.addField("Defeats : ", skywars.data.defaites, true);
+            skywarsEmbed.addField("Played Time : ", skywars.data.temps_jeu + " minutes", true);
+            skywarsEmbed.addField("Kills : ", skywars.data.kills, true);
+            skywarsEmbed.addField("Deaths : ", skywars.data.morts, true);
+
+            skywarsEmbed.addBlankField(false);
+            skywarsEmbed.addField("Winrate : ", skywars.stats.winrate + "%", true);
+            skywarsEmbed.addField("KDR : ", skywars.stats.kd, true);
+            skywarsEmbed.addField("Average Kills / Games : ", skywars.stats.kills_game, true);
+            skywarsEmbed.addField("Average Deaths / Games : ", skywars.stats.morts_game, true);
+            skywarsEmbed.addField("Average Time / Games : ", skywars.stats.temps_partie + "s", true);
+        }
+
+        if(!skywars.exit_code.equals("0")) {
+            channel.sendMessage(JsonUtilities.getErrorCode(skywars.exit_code)).queue();
+        }
 
         return skywarsEmbed;
-    }
-
-    private static JsonElement readJson(URL jsonURL) {
-
-        try {
-
-            return readJson(catchForbidden(jsonURL));
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-        return JsonNull.INSTANCE;
-    }
-
-    private static JsonElement readJson(InputStream inputStream) {
-
-        JsonElement element = JsonNull.INSTANCE;
-        try (InputStream stream = new BufferedInputStream(inputStream)) {
-
-            final Reader reader = new BufferedReader(new InputStreamReader(stream));
-            final StringBuilder sb = new StringBuilder();
-
-            int character;
-            while ((character = reader.read()) != -1) sb.append((char) character);
-
-            element = JsonParser.parseString(sb.toString());
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-
-        return element.getAsJsonObject();
     }
 
     private static InputStream catchForbidden(URL url) throws IOException {
@@ -165,6 +139,7 @@ public class SkywarsStatsCommand extends ListenerAdapter {
     }
 
     static class Skywars {
+        String exit_code;
         String pseudo;
         String mode_jeu;
         String rang;

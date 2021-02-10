@@ -18,10 +18,8 @@
 package fr.kokhaviel.bot.commands.funcraft.games;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonParser;
 import fr.kokhaviel.bot.Config;
+import fr.kokhaviel.bot.commands.funcraft.JsonUtilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -30,8 +28,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.io.*;
-import java.net.HttpURLConnection;
+import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
@@ -66,10 +63,9 @@ public class ShootcraftStatsCommand extends ListenerAdapter {
 
                         message.delete().queue();
                         Gson gson = new Gson();
-                        Shootcraft shootcraft = gson.fromJson(readJson(new URL(url)), Shootcraft.class);
+                        Shootcraft shootcraft = gson.fromJson(JsonUtilities.readJson(new URL(url)), Shootcraft.class);
 
-                        channel.sendMessage(getShootcraftStats(shootcraft).build()).queue();
-
+                        if(shootcraft.exit_code.equals("0")) channel.sendMessage(getShootcraftStats(shootcraft, channel).build()).queue();
 
                     } catch (IOException e) {
 
@@ -83,74 +79,40 @@ public class ShootcraftStatsCommand extends ListenerAdapter {
         }
     }
 
-    private EmbedBuilder getShootcraftStats(Shootcraft shootcraft) {
+    private EmbedBuilder getShootcraftStats(Shootcraft shootcraft, TextChannel channel) {
 
         EmbedBuilder shootcraftEmbed = new EmbedBuilder();
-        shootcraftEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        shootcraftEmbed.setColor(Color.RED);
-        shootcraftEmbed.setThumbnail(shootcraft.skin);
-        shootcraftEmbed.setTitle(String.format("%s Shootcraft Stats", shootcraft.pseudo));
-        shootcraftEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        shootcraftEmbed.addField("Rank : ", shootcraft.rang, true);
+        if(shootcraft.exit_code.equals("0")) {
+            shootcraftEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+            shootcraftEmbed.setColor(Color.RED);
+            shootcraftEmbed.setThumbnail(shootcraft.skin);
+            shootcraftEmbed.setTitle(String.format("%s Shootcraft Stats", shootcraft.pseudo));
+            shootcraftEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        shootcraftEmbed.addBlankField(false);
-        shootcraftEmbed.addField("Points : ", shootcraft.data.points, true);
-        shootcraftEmbed.addField("Games : ", shootcraft.data.parties, true);
-        shootcraftEmbed.addField("Victories : ", shootcraft.data.victoires, true);
-        shootcraftEmbed.addField("Defeats : ", shootcraft.data.defaites, true);
-        shootcraftEmbed.addField("Played Time : ", shootcraft.data.temps_jeu, true);
-        shootcraftEmbed.addField("Kills : ", shootcraft.data.kills, true);
-        shootcraftEmbed.addField("Deaths : ", shootcraft.data.morts, true);
+            shootcraftEmbed.addField("Rank : ", shootcraft.rang, true);
 
-        shootcraftEmbed.addBlankField(false);
-        shootcraftEmbed.addField("Winrate : ", shootcraft.stats.winrate + "%", false);
-        shootcraftEmbed.addField("KDR : ", shootcraft.stats.kd, false);
-        shootcraftEmbed.addField("Average Kills / Games : ", shootcraft.stats.kills_game,true);
-        shootcraftEmbed.addField("Average Deaths / Games : ", shootcraft.stats.morts_game, true);
-        shootcraftEmbed.addField("Average Time / Games : ", shootcraft.stats.temps_partie + " s", true);
+            shootcraftEmbed.addBlankField(false);
+            shootcraftEmbed.addField("Points : ", shootcraft.data.points, true);
+            shootcraftEmbed.addField("Games : ", shootcraft.data.parties, true);
+            shootcraftEmbed.addField("Victories : ", shootcraft.data.victoires, true);
+            shootcraftEmbed.addField("Defeats : ", shootcraft.data.defaites, true);
+            shootcraftEmbed.addField("Played Time : ", shootcraft.data.temps_jeu, true);
+            shootcraftEmbed.addField("Kills : ", shootcraft.data.kills, true);
+            shootcraftEmbed.addField("Deaths : ", shootcraft.data.morts, true);
 
+            shootcraftEmbed.addBlankField(false);
+            shootcraftEmbed.addField("Winrate : ", shootcraft.stats.winrate + "%", false);
+            shootcraftEmbed.addField("KDR : ", shootcraft.stats.kd, false);
+            shootcraftEmbed.addField("Average Kills / Games : ", shootcraft.stats.kills_game, true);
+            shootcraftEmbed.addField("Average Deaths / Games : ", shootcraft.stats.morts_game, true);
+            shootcraftEmbed.addField("Average Time / Games : ", shootcraft.stats.temps_partie + " s", true);
+        }
+
+        if(!shootcraft.exit_code.equals("0")) {
+            channel.sendMessage(JsonUtilities.getErrorCode(shootcraft.exit_code)).queue();
+        }
         return shootcraftEmbed;
-    }
-
-    private static JsonElement readJson(URL jsonURL) {
-
-        try {
-
-            return readJson(catchForbidden(jsonURL));
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-        return JsonNull.INSTANCE;
-    }
-
-    private static JsonElement readJson(InputStream inputStream) {
-
-        JsonElement element = JsonNull.INSTANCE;
-        try(InputStream stream = new BufferedInputStream(inputStream)) {
-
-            final Reader reader = new BufferedReader(new InputStreamReader(stream));
-            final StringBuilder sb = new StringBuilder();
-
-            int character;
-            while ((character = reader.read()) != -1) sb.append((char)character);
-
-            element =  JsonParser.parseString(sb.toString());
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-
-        return element.getAsJsonObject();
-    }
-
-    private static InputStream catchForbidden(URL url) throws IOException {
-
-        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.addRequestProperty("User-Agent", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.124 Safari/537.36");
-        connection.setInstanceFollowRedirects(true);
-        return connection.getInputStream();
     }
 
     static class Data {
@@ -172,6 +134,7 @@ public class ShootcraftStatsCommand extends ListenerAdapter {
     }
 
     static class Shootcraft {
+        String exit_code;
         String pseudo;
         String mode_jeu;
         String rang;

@@ -18,10 +18,8 @@
 package fr.kokhaviel.bot.commands.funcraft.games;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonParser;
 import fr.kokhaviel.bot.Config;
+import fr.kokhaviel.bot.commands.funcraft.JsonUtilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -30,8 +28,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.io.*;
-import java.net.HttpURLConnection;
+import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
@@ -65,9 +62,9 @@ public class OctogoneStatsCommand extends ListenerAdapter {
                     try {
                         message.delete().queue();
                         Gson gson = new Gson();
-                        Octogone octogone = gson.fromJson(readJson(new URL(url)), Octogone.class);
+                        Octogone octogone = gson.fromJson(JsonUtilities.readJson(new URL(url)), Octogone.class);
 
-                        channel.sendMessage(getOctogoneStats(octogone).build()).queue();
+                        if(octogone.exit_code.equals("0")) channel.sendMessage(getOctogoneStats(octogone, channel).build()).queue();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -76,74 +73,43 @@ public class OctogoneStatsCommand extends ListenerAdapter {
         }
     }
 
-    private EmbedBuilder getOctogoneStats(Octogone octogone) {
+    private EmbedBuilder getOctogoneStats(Octogone octogone, TextChannel channel) {
 
         EmbedBuilder octogoneEmbed = new EmbedBuilder();
-        octogoneEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        octogoneEmbed.setColor(Color.RED);
-        octogoneEmbed.setThumbnail(octogone.skin);
-        octogoneEmbed.setTitle(String.format("%s Octogone Stats", octogone.pseudo));
-        octogoneEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        octogoneEmbed.addField("Rank : ", octogone.rang, true);
+        if(octogone.exit_code.equals("0")) {
+            octogoneEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+            octogoneEmbed.setColor(Color.RED);
+            octogoneEmbed.setThumbnail(octogone.skin);
+            octogoneEmbed.setTitle(String.format("%s Octogone Stats", octogone.pseudo));
+            octogoneEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        octogoneEmbed.addBlankField(false);
-        octogoneEmbed.addField("Points : ", octogone.data.points, true);
-        octogoneEmbed.addField("Games : ", octogone.data.parties, true);
-        octogoneEmbed.addField("Victories : ", octogone.data.victoires, true);
-        octogoneEmbed.addField("Defeats : ", octogone.data.defaites, true);
-        octogoneEmbed.addField("Played Time : ", octogone.data.temps_jeu + " minutes", true);
-        octogoneEmbed.addField("Kills : ", octogone.data.kills, true);
-        octogoneEmbed.addField("Deaths : ", octogone.data.morts, true);
+            octogoneEmbed.addField("Rank : ", octogone.rang, true);
 
-        octogoneEmbed.addBlankField(false);
-        octogoneEmbed.addField("Winrate : ", octogone.stats.winrate + "%", true);
-        octogoneEmbed.addField("KDR : ", octogone.stats.kd, true);
-        octogoneEmbed.addField("Average Kills / Games : ", octogone.stats.kills_game,true);
-        octogoneEmbed.addField("Average Deaths / Games : ", octogone.stats.morts_game, true);
-        octogoneEmbed.addField("Average Time / Games : ", octogone.stats.temps_partie + "s", true);
+            octogoneEmbed.addBlankField(false);
+            octogoneEmbed.addField("Points : ", octogone.data.points, true);
+            octogoneEmbed.addField("Games : ", octogone.data.parties, true);
+            octogoneEmbed.addField("Victories : ", octogone.data.victoires, true);
+            octogoneEmbed.addField("Defeats : ", octogone.data.defaites, true);
+            octogoneEmbed.addField("Played Time : ", octogone.data.temps_jeu + " minutes", true);
+            octogoneEmbed.addField("Kills : ", octogone.data.kills, true);
+            octogoneEmbed.addField("Deaths : ", octogone.data.morts, true);
 
+            octogoneEmbed.addBlankField(false);
+            octogoneEmbed.addField("Winrate : ", octogone.stats.winrate + "%", true);
+            octogoneEmbed.addField("KDR : ", octogone.stats.kd, true);
+            octogoneEmbed.addField("Average Kills / Games : ", octogone.stats.kills_game, true);
+            octogoneEmbed.addField("Average Deaths / Games : ", octogone.stats.morts_game, true);
+            octogoneEmbed.addField("Average Time / Games : ", octogone.stats.temps_partie + "s", true);
+
+        }
+
+        if(!octogone.exit_code.equals("0")) {
+
+            channel.sendMessage(JsonUtilities.getErrorCode(octogone.exit_code)).queue();
+
+        }
         return octogoneEmbed;
-    }
-
-    private static JsonElement readJson(URL jsonURL) {
-
-        try {
-
-            return readJson(catchForbidden(jsonURL));
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-        return JsonNull.INSTANCE;
-    }
-
-    private static JsonElement readJson(InputStream inputStream) {
-
-        JsonElement element = JsonNull.INSTANCE;
-        try (InputStream stream = new BufferedInputStream(inputStream)) {
-
-            final Reader reader = new BufferedReader(new InputStreamReader(stream));
-            final StringBuilder sb = new StringBuilder();
-
-            int character;
-            while ((character = reader.read()) != -1) sb.append((char) character);
-
-            element = JsonParser.parseString(sb.toString());
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-
-        return element.getAsJsonObject();
-    }
-
-    private static InputStream catchForbidden(URL url) throws IOException {
-
-        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.addRequestProperty("User-Agent", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.124 Safari/537.36");
-        connection.setInstanceFollowRedirects(true);
-        return connection.getInputStream();
     }
 
     static class Data {
@@ -165,6 +131,7 @@ public class OctogoneStatsCommand extends ListenerAdapter {
     }
 
     static class Octogone {
+        String exit_code;
         String pseudo;
         String mode_jeu;
         String rang;

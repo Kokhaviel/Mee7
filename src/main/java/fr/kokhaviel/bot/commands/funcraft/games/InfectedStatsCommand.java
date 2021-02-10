@@ -18,10 +18,8 @@
 package fr.kokhaviel.bot.commands.funcraft.games;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonParser;
 import fr.kokhaviel.bot.Config;
+import fr.kokhaviel.bot.commands.funcraft.JsonUtilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -30,8 +28,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.io.*;
-import java.net.HttpURLConnection;
+import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
@@ -44,9 +41,9 @@ public class InfectedStatsCommand extends ListenerAdapter {
         final String[] args = message.getContentRaw().split("\\s+");
         final TextChannel channel = (TextChannel) event.getChannel();
 
-        if(args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "infected")) {
+        if (args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "infected")) {
 
-            if(args.length < 2) {
+            if (args.length < 2) {
 
                 message.delete().queue();
 
@@ -66,9 +63,9 @@ public class InfectedStatsCommand extends ListenerAdapter {
 
                         message.delete().queue();
                         Gson gson = new Gson();
-                        Infected infected = gson.fromJson(readJson(new URL(url)), Infected.class);
+                        Infected infected = gson.fromJson(JsonUtilities.readJson(new URL(url)), Infected.class);
 
-                        channel.sendMessage(getInfectedStats(infected).build()).queue();
+                        if(infected.exit_code.equals("0")) channel.sendMessage(getInfectedStats(infected, channel).build()).queue();
 
                     } catch (IOException e) {
 
@@ -81,76 +78,42 @@ public class InfectedStatsCommand extends ListenerAdapter {
             }
         }
     }
-    
-    private EmbedBuilder getInfectedStats(Infected infected) {
-        
+
+    private EmbedBuilder getInfectedStats(Infected infected, TextChannel channel) {
+
         EmbedBuilder infectedEmbed = new EmbedBuilder();
-        infectedEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        infectedEmbed.setColor(Color.RED);
-        infectedEmbed.setThumbnail(infected.skin);
-        infectedEmbed.setTitle(String.format("%s Infected Stats", infected.pseudo));
-        infectedEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        infectedEmbed.addField("Rank : ", infected.rang, false);
+        if (infected.exit_code.equals("0")) {
+            infectedEmbed.setAuthor("Funcraft Player Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+            infectedEmbed.setColor(Color.RED);
+            infectedEmbed.setThumbnail(infected.skin);
+            infectedEmbed.setTitle(String.format("%s Infected Stats", infected.pseudo));
+            infectedEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        infectedEmbed.addBlankField(false);
-        infectedEmbed.addField("Points : ", infected.data.points, true);
-        infectedEmbed.addField("Games : ", infected.data.parties, true);
-        infectedEmbed.addField("Victories : ", infected.data.victoires, true);
-        infectedEmbed.addField("Defeats : ", infected.data.defaites, true);
-        infectedEmbed.addField("Played Time : ", infected.data.temps_jeu + " minutes", true);
-        infectedEmbed.addField("Kills : ", infected.data.kills, true);
-        infectedEmbed.addField("Deaths : ", infected.data.morts, true);
+            infectedEmbed.addField("Rank : ", infected.rang, false);
 
-        infectedEmbed.addBlankField(false);
-        infectedEmbed.addField("Winrate : ", infected.stats.winrate + "%", true);
-        infectedEmbed.addField("KDR : ", infected.stats.kd, true);
-        infectedEmbed.addField("Average Kills / Games : ", infected.stats.kills_game,true);
-        infectedEmbed.addField("Average Deaths / Games : ", infected.stats.morts_game, true);
-        infectedEmbed.addField("Average Time / Games : ", infected.stats.temps_partie + " s", true);
+            infectedEmbed.addBlankField(false);
+            infectedEmbed.addField("Points : ", infected.data.points, true);
+            infectedEmbed.addField("Games : ", infected.data.parties, true);
+            infectedEmbed.addField("Victories : ", infected.data.victoires, true);
+            infectedEmbed.addField("Defeats : ", infected.data.defaites, true);
+            infectedEmbed.addField("Played Time : ", infected.data.temps_jeu + " minutes", true);
+            infectedEmbed.addField("Kills : ", infected.data.kills, true);
+            infectedEmbed.addField("Deaths : ", infected.data.morts, true);
 
-
-        return infectedEmbed;     
-    }
-
-    private static JsonElement readJson(URL jsonURL) {
-
-        try {
-
-            return readJson(catchForbidden(jsonURL));
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-        return JsonNull.INSTANCE;
-    }
-
-    private static JsonElement readJson(InputStream inputStream) {
-
-        JsonElement element = JsonNull.INSTANCE;
-        try(InputStream stream = new BufferedInputStream(inputStream)) {
-
-            final Reader reader = new BufferedReader(new InputStreamReader(stream));
-            final StringBuilder sb = new StringBuilder();
-
-            int character;
-            while ((character = reader.read()) != -1) sb.append((char)character);
-
-            element =  JsonParser.parseString(sb.toString());
-        } catch (IOException e) {
-
-            e.printStackTrace();
+            infectedEmbed.addBlankField(false);
+            infectedEmbed.addField("Winrate : ", infected.stats.winrate + "%", true);
+            infectedEmbed.addField("KDR : ", infected.stats.kd, true);
+            infectedEmbed.addField("Average Kills / Games : ", infected.stats.kills_game, true);
+            infectedEmbed.addField("Average Deaths / Games : ", infected.stats.morts_game, true);
+            infectedEmbed.addField("Average Time / Games : ", infected.stats.temps_partie + " s", true);
         }
 
-        return element.getAsJsonObject();
-    }
+        if (infected.exit_code.equals("0")) {
+            channel.sendMessage(JsonUtilities.getErrorCode(infected.exit_code)).queue();
+        }
 
-    private static InputStream catchForbidden(URL url) throws IOException {
-
-        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.addRequestProperty("User-Agent", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.124 Safari/537.36");
-        connection.setInstanceFollowRedirects(true);
-        return connection.getInputStream();
+        return infectedEmbed;
     }
 
     static class Data {
@@ -172,6 +135,7 @@ public class InfectedStatsCommand extends ListenerAdapter {
     }
 
     static class Infected {
+        String exit_code;
         String pseudo;
         String mode_jeu;
         String rang;
