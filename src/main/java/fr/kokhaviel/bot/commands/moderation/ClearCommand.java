@@ -17,17 +17,20 @@
 
 package fr.kokhaviel.bot.commands.moderation;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 public class ClearCommand extends ListenerAdapter {
 
+    //TODO : java.lang.IllegalArgumentException: Message Id provided was older than 2 weeks.
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {

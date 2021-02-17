@@ -420,19 +420,21 @@ public class Logs extends ListenerAdapter {
     public void onGuildMessageUpdate(GuildMessageUpdateEvent event) {
         System.out.println("Message Updated : " + event.getMessage().getId() + " By " + Objects.requireNonNull(event.getMember()).getUser().getAsTag());
 
-        List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
-        TextChannel logsChannel = textChannels.get(0);
+        if (!event.getAuthor().equals(event.getJDA().getSelfUser())) {
+            List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
+            TextChannel logsChannel = textChannels.get(0);
 
-        EmbedBuilder messageUpdateEmbed = new EmbedBuilder();
+            EmbedBuilder messageUpdateEmbed = new EmbedBuilder();
 
-        messageUpdateEmbed.setTitle("Message Update")
-                .setColor(Color.ORANGE)
-                .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+            messageUpdateEmbed.setTitle("Message Update")
+                    .setColor(Color.ORANGE)
+                    .setThumbnail(event.getMember().getUser().getAvatarUrl())
+                    .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
 
-                .addField("Message Updated : ", event.getMessage().getId() + " By " + event.getMember().getUser().getAsTag(), false);
+                    .addField("Message Updated : ", event.getMessage().getId() + " By " + event.getMember().getUser().getAsTag(), false);
 
-        logsChannel.sendMessage(messageUpdateEmbed.build()).queue();
+            logsChannel.sendMessage(messageUpdateEmbed.build()).queue();
+        }
     }
 
     @Override

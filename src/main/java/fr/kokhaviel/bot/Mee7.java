@@ -19,17 +19,14 @@ package fr.kokhaviel.bot;
 
 import fr.kokhaviel.bot.commands.fun.*;
 import fr.kokhaviel.bot.commands.funcraft.games.*;
+import fr.kokhaviel.bot.commands.giveaways.GiveawayCommands;
 import fr.kokhaviel.bot.commands.hypixel.games.*;
-import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitLevelCommand;
-import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitStatsCommand;
-import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzStatsCommand;
+import fr.kokhaviel.bot.commands.hypixel.games.blitz.*;
 import fr.kokhaviel.bot.commands.hypixel.server.BanStatsCommand;
 import fr.kokhaviel.bot.commands.moderation.*;
 import fr.kokhaviel.bot.commands.music.*;
-import fr.kokhaviel.bot.commands.server.RoleInfoCommand;
-import fr.kokhaviel.bot.commands.server.ServerInfoCommand;
-import fr.kokhaviel.bot.commands.user.AvatarCommand;
-import fr.kokhaviel.bot.commands.user.InfoCommand;
+import fr.kokhaviel.bot.commands.server.*;
+import fr.kokhaviel.bot.commands.user.*;
 import fr.kokhaviel.bot.commands.user.afk.AfkCommand;
 import fr.kokhaviel.bot.commands.util.*;
 import fr.kokhaviel.bot.event.afk.AfkVerify;
@@ -44,7 +41,9 @@ import zone.nora.slothpixel.Slothpixel;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Mee7 {
 
@@ -53,6 +52,8 @@ public class Mee7 {
     public static Slothpixel sloth = new Slothpixel();
 
     public static JDA jda;
+
+    private static final Set<Long> currentGiveaways = new HashSet<>();
 
     public Mee7() {
 
@@ -91,6 +92,7 @@ public class Mee7 {
                     .addEventListeners(new ClearCommand())
                     .addEventListeners(new CopsAndCrimsStatsCommand())
                     .addEventListeners(new CrazyWallsStatsCommand())
+                    .addEventListeners(new GiveawayCommands())
                     .addEventListeners(new DameDaneCommand())
                     .addEventListeners(new DuelsStatsCommand())
                     .addEventListeners(new EightBallCommand())
@@ -164,4 +166,11 @@ public class Mee7 {
     public static void main(String[] args) {
         new Mee7();
     }
+
+    public static Set<Long> getCurrentGiveaways() {
+        return currentGiveaways;
+    }
+
 }
+
+
