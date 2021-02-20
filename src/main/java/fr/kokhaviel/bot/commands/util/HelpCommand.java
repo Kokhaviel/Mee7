@@ -73,6 +73,18 @@ public class HelpCommand extends ListenerAdapter {
                     case "hypixel":
                         getHypixelHelp(rd1, rd2, rd3, jda, channel, author, user);
                         break;
+                    case "funcraft":
+                        getFuncraftHelp(rd1, rd2, rd3, jda, event, channel, author, user);
+                        break;
+                    case "wikipedia":
+                        getWikipediaHelp(rd1, rd2, rd3, jda, event, channel, author, user);
+                        break;
+                    case "giveaways":
+                        getGiveawaysHelp(rd1, rd2, rd3, jda, event, channel, author, user);
+                        break;
+                    case "covid":
+                        getCovidHelp(rd1, rd2, rd3, jda, event, channel, author, user);
+                        break;
                     default:
                         getHelp(rd1, rd2, rd3, event, jda, channel, author, user);
                         break;
@@ -97,6 +109,11 @@ public class HelpCommand extends ListenerAdapter {
         helpEmbed.addField("Moderation Commands : ", Config.PREFIX + "help moderation", false);
         helpEmbed.addField("Fun Commands : ", Config.PREFIX + "help fun", false);
         helpEmbed.addField("Music Commands : ", Config.PREFIX + "help music", false);
+        helpEmbed.addField("Funcraft Commands : ", Config.PREFIX + "help funcraft", false);
+        helpEmbed.addField("Hypixel Commands : ", Config.PREFIX + "help hypixel", false);
+        helpEmbed.addField("Wikipedia Commands : ", Config.PREFIX + "help wikipedia", false);
+        helpEmbed.addField("Giveaways Commands : ", Config.PREFIX + "help giveaways", false);
+        helpEmbed.addField("Covid Commands : ", Config.PREFIX + "help covid", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
@@ -319,5 +336,41 @@ public class HelpCommand extends ListenerAdapter {
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
         ((UserImpl) user).getPrivateChannel().sendMessage(wikipediaEmbed.build()).queue();
+    }
+
+    private void getGiveawaysHelp(int rd1, int rd2, int rd3, JDA jda, MessageReceivedEvent event, TextChannel channel, User author, User user) {
+
+        EmbedBuilder giveawaysEmbed = new EmbedBuilder();
+        giveawaysEmbed.setTitle("Help Giveaways Commands")
+                .setColor(new Color(rd1, rd2, rd3))
+                .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
+                .setDescription("Display all giveaways commands")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+
+                .addField("Create Command : ", Config.GIVEAWAYS_PREFIX + "create\nAnd Follow Instructions Given", false);
+
+        channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
+        if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
+        ((UserImpl) user).getPrivateChannel().sendMessage(giveawaysEmbed.build()).queue();
+
+    }
+
+
+    private void getCovidHelp(int rd1, int rd2, int rd3, JDA jda, MessageReceivedEvent event, TextChannel channel, User author, User user) {
+
+        EmbedBuilder giveawaysEmbed = new EmbedBuilder();
+        giveawaysEmbed.setTitle("Help Covid Commands")
+                .setColor(new Color(rd1, rd2, rd3))
+                .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
+                .setDescription("Display all covid commands")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+
+                .addField("Covid Command : ", Config.COVID_PREFIX + "stats", false)
+                .addField("Covid Country Command : ", Config.COVID_PREFIX + "stats <Country>", false);
+
+        channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
+        if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
+        ((UserImpl) user).getPrivateChannel().sendMessage(giveawaysEmbed.build()).queue();
+
     }
 }
