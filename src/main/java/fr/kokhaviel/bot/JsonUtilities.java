@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.kokhaviel.bot.commands.wikipedia;
+package fr.kokhaviel.bot;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -25,8 +25,31 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class WikipediaUtilities {
+public class JsonUtilities {
 
+    public static String getErrorCode(String errorCode) {
+        switch (errorCode) {
+            case "1":
+                return "Data doesn't exist. This player haven't play this game mode !";
+            case "2":
+                return "Incorrect Period, Please Contact " + Config.DEVELOPER_TAG;
+            case "3":
+                return "Invalid Game Mode, Please contact " + Config.DEVELOPER_TAG;
+            case "4":
+                return "Player doesn't exist !";
+            case "5":
+                return "No API Key Specified, Please Contact " + Config.DEVELOPER_TAG;
+            case "6":
+                return "API Key doesn't exist, Please Contact " + Config.DEVELOPER_TAG;
+            case "7":
+                return "Please Wait 10 Seconds Between Each Request !";
+            case "8":
+                return "Internal Error ....";
+            case "9":
+                return "Unable to connect to the Funcraft site.";
+        }
+        return "Unknown Error ...";
+    }
 
     public static JsonElement readJson(URL jsonURL) {
 
@@ -34,7 +57,6 @@ public class WikipediaUtilities {
 
             return readJson(catchForbidden(jsonURL));
         } catch (IOException e) {
-
             e.printStackTrace();
         }
         return JsonNull.INSTANCE;

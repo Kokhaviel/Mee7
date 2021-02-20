@@ -17,6 +17,7 @@
 
 package fr.kokhaviel.bot;
 
+import fr.kokhaviel.bot.commands.covid.CovidCommand;
 import fr.kokhaviel.bot.commands.fun.*;
 import fr.kokhaviel.bot.commands.funcraft.games.*;
 import fr.kokhaviel.bot.commands.giveaways.GiveawayCommands;
@@ -91,6 +92,7 @@ public class Mee7 {
                     .addEventListeners(new BuildBattleStatsCommand())
                     .addEventListeners(new ClearCommand())
                     .addEventListeners(new CopsAndCrimsStatsCommand())
+                    .addEventListeners(new CovidCommand())
                     .addEventListeners(new CrazyWallsStatsCommand())
                     .addEventListeners(new GiveawayCommands())
                     .addEventListeners(new DameDaneCommand())

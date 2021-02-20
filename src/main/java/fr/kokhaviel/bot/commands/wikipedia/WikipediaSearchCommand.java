@@ -19,6 +19,7 @@ package fr.kokhaviel.bot.commands.wikipedia;
 
 import com.google.gson.Gson;
 import fr.kokhaviel.bot.Config;
+import fr.kokhaviel.bot.JsonUtilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -66,7 +67,7 @@ public class WikipediaSearchCommand extends ListenerAdapter {
                         finalResearch.append(s).append("_");
                     }
                     final String url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + finalResearch;
-                    WikipediaContent content = gson.fromJson(WikipediaUtilities.readJson(new URL(url)), WikipediaContent.class);
+                    WikipediaContent content = gson.fromJson(JsonUtilities.readJson(new URL(url)), WikipediaContent.class);
 
                     channel.sendMessage(getContentPage(content).build()).queue();
 

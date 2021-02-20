@@ -19,7 +19,7 @@ package fr.kokhaviel.bot.commands.funcraft.games;
 
 import com.google.gson.Gson;
 import fr.kokhaviel.bot.Config;
-import fr.kokhaviel.bot.commands.funcraft.JsonUtilities;
+import fr.kokhaviel.bot.JsonUtilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
