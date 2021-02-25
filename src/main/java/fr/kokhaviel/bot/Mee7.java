@@ -22,12 +22,19 @@ import fr.kokhaviel.bot.commands.fun.*;
 import fr.kokhaviel.bot.commands.funcraft.games.*;
 import fr.kokhaviel.bot.commands.giveaways.GiveawayCommands;
 import fr.kokhaviel.bot.commands.hypixel.games.*;
-import fr.kokhaviel.bot.commands.hypixel.games.blitz.*;
+import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitLevelCommand;
+import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitStatsCommand;
+import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzStatsCommand;
 import fr.kokhaviel.bot.commands.hypixel.server.BanStatsCommand;
+import fr.kokhaviel.bot.commands.minecraft.AchievementCommand;
+import fr.kokhaviel.bot.commands.minecraft.ServerStatsCommand;
+import fr.kokhaviel.bot.commands.minecraft.SkinCommand;
 import fr.kokhaviel.bot.commands.moderation.*;
 import fr.kokhaviel.bot.commands.music.*;
-import fr.kokhaviel.bot.commands.server.*;
-import fr.kokhaviel.bot.commands.user.*;
+import fr.kokhaviel.bot.commands.server.RoleInfoCommand;
+import fr.kokhaviel.bot.commands.server.ServerInfoCommand;
+import fr.kokhaviel.bot.commands.user.AvatarCommand;
+import fr.kokhaviel.bot.commands.user.InfoCommand;
 import fr.kokhaviel.bot.commands.user.afk.AfkCommand;
 import fr.kokhaviel.bot.commands.util.*;
 import fr.kokhaviel.bot.event.afk.AfkVerify;
@@ -56,6 +63,8 @@ public class Mee7 {
 
     private static final Set<Long> currentGiveaways = new HashSet<>();
 
+    private static final Set<Long> currentAchievements = new HashSet<>();
+
     public Mee7() {
 
         try {
@@ -76,6 +85,7 @@ public class Mee7 {
                     .enableCache(CacheFlag.VOICE_STATE)
 
                     .addEventListeners(new AboutCommand())
+                    .addEventListeners(new AchievementCommand())
                     .addEventListeners(new AfkCommand())
                     .addEventListeners(new AfkVerify())
                     .addEventListeners(new ArcadeStatsCommand())
@@ -133,8 +143,10 @@ public class Mee7 {
                     .addEventListeners(new RushStatsCommand())
                     .addEventListeners(new SayCommand())
                     .addEventListeners(new ServerInfoCommand())
+                    .addEventListeners(new ServerStatsCommand())
                     .addEventListeners(new ShootcraftStatsCommand())
                     .addEventListeners(new ShutdownCommand())
+                    .addEventListeners(new SkinCommand())
                     .addEventListeners(new SkipCommand())
                     .addEventListeners(new SkyClashStatsCommand())
                     .addEventListeners(new fr.kokhaviel.bot.commands.hypixel.games.SkywarsStatsCommand())
@@ -173,6 +185,9 @@ public class Mee7 {
         return currentGiveaways;
     }
 
+    public static Set<Long> getCurrentAchievements() {
+        return currentAchievements;
+    }
 }
 
 
