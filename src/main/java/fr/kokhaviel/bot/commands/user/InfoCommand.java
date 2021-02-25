@@ -17,61 +17,67 @@
 
 package fr.kokhaviel.bot.commands.user;
 
-import java.awt.Color;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import fr.kokhaviel.bot.*;
+import fr.kokhaviel.bot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.awt.*;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 public class InfoCommand extends ListenerAdapter {
 
-    @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+	@Override
+	public void onMessageReceived(MessageReceivedEvent event) {
 
-        final Message message = event.getMessage();
-        final String[] args = message.getContentRaw().split("\\s+");
-        final JDA jda = event.getJDA();
+		final Message message = event.getMessage();
+		final String[] args = message.getContentRaw().split("\\s+");
+		final JDA jda = event.getJDA();
 
-        if (args[0].equalsIgnoreCase(Config.PREFIX + "userinfo")) {
-            message.delete().queue();
-            TextChannel channel = (TextChannel) event.getChannel();
-            if (args.length < 2) {
-                channel.sendMessage("Missing Argument : Please Use " + Config.PREFIX + "userinfo <@User> !").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else if (args.length > 2) {
-                channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "userinfo <@User> !").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else {
-                List<Member> mentionedMembers = message.getMentionedMembers();
-                Member target = mentionedMembers.get(0);
+		if(args[0].equalsIgnoreCase(Config.PREFIX + "userinfo")) {
+			message.delete().queue();
+			TextChannel channel = (TextChannel) event.getChannel();
+			if(args.length < 2) {
+				channel.sendMessage("Missing Argument : Please Use " + Config.PREFIX + "userinfo <@User> !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-                channel.sendMessage(getUserInfo(jda, target).build()).queue();
-            }
-        }
-    }
+			if(args.length > 2) {
+				channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "userinfo <@User> !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
+			List<Member> mentionedMembers = message.getMentionedMembers();
+			Member target = mentionedMembers.get(0);
 
-    private EmbedBuilder getUserInfo(JDA jda, Member target) {
-        EmbedBuilder userInfoEmbed = new EmbedBuilder();
+			channel.sendMessage(getUserInfo(jda, target).build()).queue();
 
-        userInfoEmbed.setTitle(target.getUser().getName() + " User Info")
-                .setColor(Color.CYAN)
-                .setThumbnail(target.getUser().getAvatarUrl())
-                .setAuthor("User Info", null, jda.getSelfUser().getAvatarUrl());
+		}
+	}
 
-        userInfoEmbed.addField("ID : ", target.getId(), false);
+	private EmbedBuilder getUserInfo(JDA jda, Member target) {
+		EmbedBuilder userInfoEmbed = new EmbedBuilder();
 
-        if (target.getNickname() != null) userInfoEmbed.addField("Nickname : ", target.getNickname(), false);
+		userInfoEmbed.setTitle(target.getUser().getName() + " User Info")
+				.setColor(Color.CYAN)
+				.setThumbnail(target.getUser().getAvatarUrl())
+				.setAuthor("User Info", null, jda.getSelfUser().getAvatarUrl());
 
-        userInfoEmbed.addField("Joined on ", target.getTimeJoined().toString(), false);
-        userInfoEmbed.addField("Account Created on ", target.getTimeCreated().toString(), false);
-        userInfoEmbed.addField("Status", target.getOnlineStatus().getKey(), false);
-        userInfoEmbed.addField("Activities : ", target.getActivities().toString(), false);
+		userInfoEmbed.addField("ID : ", target.getId(), false);
 
-        return userInfoEmbed;
-    }
+		if(target.getNickname() != null) userInfoEmbed.addField("Nickname : ", target.getNickname(), false);
+
+		userInfoEmbed.addField("Joined on ", target.getTimeJoined().toString(), false);
+		userInfoEmbed.addField("Account Created on ", target.getTimeCreated().toString(), false);
+		userInfoEmbed.addField("Status", target.getOnlineStatus().getKey(), false);
+		userInfoEmbed.addField("Activities : ", target.getActivities().toString(), false);
+
+		return userInfoEmbed;
+	}
 }

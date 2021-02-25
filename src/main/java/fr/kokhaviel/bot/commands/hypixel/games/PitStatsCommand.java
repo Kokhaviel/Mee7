@@ -33,80 +33,81 @@ import static fr.kokhaviel.bot.Mee7.sloth;
 
 public class PitStatsCommand extends ListenerAdapter {
 
-    @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+	@Override
+	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-        final Message message = event.getMessage();
-        final String[] args = message.getContentRaw().split("\\s+");
-        final TextChannel channel = (TextChannel) event.getChannel();
+		final Message message = event.getMessage();
+		final String[] args = message.getContentRaw().split("\\s+");
+		final TextChannel channel = (TextChannel) event.getChannel();
 
-        if(args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "pit")) {
+		if(args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "pit")) {
 
-            if(args.length == 1) {
-                channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "quakecraft <Player>").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else {
-                if (!args[1].matches("^\\w{3,16}$")) {
-                    channel.sendMessage("You must specify a valid Minecraft username !").queue(
-                            delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-                } else {
+			if(args.length == 1) {
+				channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "quakecraft <Player>").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-                    message.delete().queue();
-                    final Player player = sloth.getPlayer(args[1]);
-                    final Pit pit = player.getStats().getPit();
-                    channel.sendMessage(getPitStats(player, pit).build()).queue();
-                    channel.sendMessage(getPvPStats(player, pit).build()).queue();
-                }
-            }
-        }
-    }
+			if(!args[1].matches("^\\w{3,16}$")) {
+				channel.sendMessage("You must specify a valid Minecraft username !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-    private EmbedBuilder getPitStats(Player player, Pit pit) {
-        EmbedBuilder pitEmbed = new EmbedBuilder();
-        pitEmbed.setAuthor("Pit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        pitEmbed.setColor(new Color(82, 53, 33));
-        pitEmbed.setTitle(player.getUsername() + " Stats");
-        pitEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
+			message.delete().queue();
+			final Player player = sloth.getPlayer(args[1]);
+			final Pit pit = player.getStats().getPit();
+			channel.sendMessage(getPitStats(player, pit).build()).queue();
+			channel.sendMessage(getPvPStats(player, pit).build()).queue();
+		}
+	}
 
-        pitEmbed.addField("Gold : ", String.valueOf(pit.getGold()), true);
-        pitEmbed.addField("Gold Earned : ", String.valueOf(pit.getGoldEarned()), true);
-        pitEmbed.addField("XP : ", String.valueOf(pit.getXp()), true);
-        pitEmbed.addField("Prestige : ", String.valueOf(pit.getPrestige()), true);
-        pitEmbed.addField("Play Time : ", pit.getPlaytimeMinutes() + " minutes", true);
-        pitEmbed.addField("Kills : ", String.valueOf(pit.getKills()), true);
-        pitEmbed.addField("Assists : ", String.valueOf(pit.getAssists()), true);
-        pitEmbed.addField("Deaths : ", String.valueOf(pit.getDeaths()), true);
-        pitEmbed.addField("KDR : ", String.valueOf(pit.getKdRatio()), true);
-        pitEmbed.addField("Diamond Items Purchased : ", String.valueOf(pit.getDiamondItemsPurchased()), true);
-        pitEmbed.addField("Jump into Pit : ", String.valueOf(pit.getJumpedIntoPit() + pit.getLaunchedByLaunchers()), true);
+	private EmbedBuilder getPitStats(Player player, Pit pit) {
+		EmbedBuilder pitEmbed = new EmbedBuilder();
+		pitEmbed.setAuthor("Pit Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+		pitEmbed.setColor(new Color(82, 53, 33));
+		pitEmbed.setTitle(player.getUsername() + " Stats");
+		pitEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
-        return pitEmbed;
-    }
+		pitEmbed.addField("Gold : ", String.valueOf(pit.getGold()), true);
+		pitEmbed.addField("Gold Earned : ", String.valueOf(pit.getGoldEarned()), true);
+		pitEmbed.addField("XP : ", String.valueOf(pit.getXp()), true);
+		pitEmbed.addField("Prestige : ", String.valueOf(pit.getPrestige()), true);
+		pitEmbed.addField("Play Time : ", pit.getPlaytimeMinutes() + " minutes", true);
+		pitEmbed.addField("Kills : ", String.valueOf(pit.getKills()), true);
+		pitEmbed.addField("Assists : ", String.valueOf(pit.getAssists()), true);
+		pitEmbed.addField("Deaths : ", String.valueOf(pit.getDeaths()), true);
+		pitEmbed.addField("KDR : ", String.valueOf(pit.getKdRatio()), true);
+		pitEmbed.addField("Diamond Items Purchased : ", String.valueOf(pit.getDiamondItemsPurchased()), true);
+		pitEmbed.addField("Jump into Pit : ", String.valueOf(pit.getJumpedIntoPit() + pit.getLaunchedByLaunchers()), true);
 
-    private EmbedBuilder getPvPStats(Player player, Pit pit) {
-        EmbedBuilder pitEmbed = new EmbedBuilder();
-        pitEmbed.setAuthor("Pit PvP Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        pitEmbed.setColor(new Color(82, 53, 33));
-        pitEmbed.setTitle(player.getUsername() + " Stats");
-        pitEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
+		return pitEmbed;
+	}
 
-        pitEmbed.addField("Sword Hits : ", String.valueOf(pit.getSwordHits()), true);
-        pitEmbed.addField("Blocks Placed : ", String.valueOf(pit.getBlocksPlaced()), true);
-        pitEmbed.addField("Blocks Broken : ", String.valueOf(pit.getBlockBroken()), true);
-        pitEmbed.addField("Fishing Rod Launched : ", String.valueOf(pit.getFishingRodLaunched()), true);
-        pitEmbed.addField("Arrows Fired : ", String.valueOf(pit.getArrowsFired()), true);
-        pitEmbed.addField("Arrows Hits : ", String.valueOf(pit.getArrowHits()), true);
-        pitEmbed.addField("GApple Eaten : ", String.valueOf(pit.getGappleEaten()), true);
-        pitEmbed.addField("GHead Eaten : ", String.valueOf(pit.getGheadEaten()), true);
+	private EmbedBuilder getPvPStats(Player player, Pit pit) {
+		EmbedBuilder pitEmbed = new EmbedBuilder();
+		pitEmbed.setAuthor("Pit PvP Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+		pitEmbed.setColor(new Color(82, 53, 33));
+		pitEmbed.setTitle(player.getUsername() + " Stats");
+		pitEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
-        pitEmbed.addBlankField(false);
-        pitEmbed.addField("Melee Damage Dealt : ", String.valueOf(pit.getDamageDealt().getMelee()), true);
-        pitEmbed.addField("Bow Damage Dealt : ", String.valueOf(pit.getDamageDealt().getBow()), true);
+		pitEmbed.addField("Sword Hits : ", String.valueOf(pit.getSwordHits()), true);
+		pitEmbed.addField("Blocks Placed : ", String.valueOf(pit.getBlocksPlaced()), true);
+		pitEmbed.addField("Blocks Broken : ", String.valueOf(pit.getBlockBroken()), true);
+		pitEmbed.addField("Fishing Rod Launched : ", String.valueOf(pit.getFishingRodLaunched()), true);
+		pitEmbed.addField("Arrows Fired : ", String.valueOf(pit.getArrowsFired()), true);
+		pitEmbed.addField("Arrows Hits : ", String.valueOf(pit.getArrowHits()), true);
+		pitEmbed.addField("GApple Eaten : ", String.valueOf(pit.getGappleEaten()), true);
+		pitEmbed.addField("GHead Eaten : ", String.valueOf(pit.getGheadEaten()), true);
 
-        pitEmbed.addBlankField(false);
-        pitEmbed.addField("Melee Damage Taken : ", String.valueOf(pit.getDamageTaken().getMelee()), true);
-        pitEmbed.addField("Bow Damage Taken : ", String.valueOf(pit.getDamageTaken().getBow()), true);
+		pitEmbed.addBlankField(false);
+		pitEmbed.addField("Melee Damage Dealt : ", String.valueOf(pit.getDamageDealt().getMelee()), true);
+		pitEmbed.addField("Bow Damage Dealt : ", String.valueOf(pit.getDamageDealt().getBow()), true);
 
-        return pitEmbed;
-    }
+		pitEmbed.addBlankField(false);
+		pitEmbed.addField("Melee Damage Taken : ", String.valueOf(pit.getDamageTaken().getMelee()), true);
+		pitEmbed.addField("Bow Damage Taken : ", String.valueOf(pit.getDamageTaken().getBow()), true);
+
+		return pitEmbed;
+	}
 }

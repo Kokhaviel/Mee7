@@ -30,46 +30,46 @@ import java.util.concurrent.TimeUnit;
 
 public class ServerInfoCommand extends ListenerAdapter {
 
-    @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+	@Override
+	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-        final Message message = event.getMessage();
-        final String[] args = message.getContentRaw().split("\\s+");
-        final MessageChannel channel = event.getChannel();
-        final JDA jda = event.getJDA();
+		final Message message = event.getMessage();
+		final String[] args = message.getContentRaw().split("\\s+");
+		final MessageChannel channel = event.getChannel();
+		final JDA jda = event.getJDA();
 
-        if (args[0].equalsIgnoreCase(Config.PREFIX + "serverinfo")) {
-            message.delete().queue();
-            Guild guild = event.getGuild();
-            if (args.length > 1) {
-                channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "serverinfo").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else {
-                channel.sendMessage(getServerInfo(guild, jda).build()).queue();
-            }
-        }
-    }
+		if(args[0].equalsIgnoreCase(Config.PREFIX + "serverinfo")) {
+			message.delete().queue();
+			Guild guild = event.getGuild();
+			if(args.length > 1) {
+				channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "serverinfo").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
+			channel.sendMessage(getServerInfo(guild, jda).build()).queue();
+		}
+	}
 
-    private EmbedBuilder getServerInfo(Guild guild, JDA jda) {
-        EmbedBuilder serverinfoEmbed = new EmbedBuilder();
+	private EmbedBuilder getServerInfo(Guild guild, JDA jda) {
+		EmbedBuilder serverinfoEmbed = new EmbedBuilder();
 
-        serverinfoEmbed.setTitle(guild.getName() + " Server Info")
-                .setColor(Color.CYAN)
-                .setThumbnail(guild.getIconUrl())
-                .setAuthor("Server Info", null, jda.getSelfUser().getAvatarUrl());
+		serverinfoEmbed.setTitle(guild.getName() + " Server Info")
+				.setColor(Color.CYAN)
+				.setThumbnail(guild.getIconUrl())
+				.setAuthor("Server Info", null, jda.getSelfUser().getAvatarUrl());
 
-        serverinfoEmbed.addField("Name : ", guild.getName(), false);
-        serverinfoEmbed.addField("Owner : ", guild.getOwner().getUser().getAsTag(), false);
-        if (guild.getIconUrl() != null) serverinfoEmbed.addField("Icon : ", guild.getIconUrl(), false);
-        if (guild.getBannerUrl() != null) serverinfoEmbed.addField("Banner : ", guild.getBannerUrl(), false);
-        serverinfoEmbed.addField("Region : ", guild.getRegion().getName(), false);
-        if (guild.getDescription() != null)
-            serverinfoEmbed.addField("Description : ", guild.getDescription(), false);
-        serverinfoEmbed.addField("Boost Tier : ", guild.getBoostTier().name(), false);
-        if (guild.getSystemChannel() != null)
-            serverinfoEmbed.addField("System Channel : ", guild.getSystemChannel().getAsMention(), false);
+		serverinfoEmbed.addField("Name : ", guild.getName(), false);
+		serverinfoEmbed.addField("Owner : ", guild.getOwner().getUser().getAsTag(), false);
+		if(guild.getIconUrl() != null) serverinfoEmbed.addField("Icon : ", guild.getIconUrl(), false);
+		if(guild.getBannerUrl() != null) serverinfoEmbed.addField("Banner : ", guild.getBannerUrl(), false);
+		serverinfoEmbed.addField("Region : ", guild.getRegion().getName(), false);
+		if(guild.getDescription() != null)
+			serverinfoEmbed.addField("Description : ", guild.getDescription(), false);
+		serverinfoEmbed.addField("Boost Tier : ", guild.getBoostTier().name(), false);
+		if(guild.getSystemChannel() != null)
+			serverinfoEmbed.addField("System Channel : ", guild.getSystemChannel().getAsMention(), false);
 
-        return serverinfoEmbed;
-    }
+		return serverinfoEmbed;
+	}
 
 }

@@ -33,42 +33,41 @@ import static fr.kokhaviel.bot.Mee7.sloth;
 
 public class SkyClashStatsCommand extends ListenerAdapter {
 
-    @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+	@Override
+	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-        final Message message = event.getMessage();
-        final String[] args = message.getContentRaw().split("\\s+");
-        final TextChannel channel = (TextChannel) event.getChannel();
+		final Message message = event.getMessage();
+		final String[] args = message.getContentRaw().split("\\s+");
+		final TextChannel channel = (TextChannel) event.getChannel();
 
-        if (args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "skyclash")) {
+		if(args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "skyclash")) {
 
-            if (args.length == 1) {
-                channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "skyclash <Player>").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else {
-                if (!args[1].matches("^\\w{3,16}$")) {
-                    channel.sendMessage("You must specify a valid Minecraft username !").queue(
-                            delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-                } else {
+			if(args.length == 1) {
+				channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "skyclash <Player>").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
+			if(!args[1].matches("^\\w{3,16}$")) {
+				channel.sendMessage("You must specify a valid Minecraft username !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
+			message.delete().queue();
+			final Player player = sloth.getPlayer(args[1]);
+			final SkyClash skyclash = player.getStats().getSkyClash();
+			channel.sendMessage(getSkyClashStats(player, skyclash).build()).queue();
+		}
+	}
 
-                    message.delete().queue();
-                    final Player player = sloth.getPlayer(args[1]);
-                    final SkyClash skyclash = player.getStats().getSkyClash();
-                    channel.sendMessage(getSkyClashStats(player, skyclash).build()).queue();
-                }
-            }
-        }
-    }
+	private EmbedBuilder getSkyClashStats(Player player, SkyClash skyclash) {
+		EmbedBuilder skyclashEmbed = new EmbedBuilder();
+		skyclashEmbed.setAuthor("Skyclash Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+		skyclashEmbed.setColor(Color.GREEN);
+		skyclashEmbed.setTitle(player.getUsername() + " Stats");
+		skyclashEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
-    private EmbedBuilder getSkyClashStats(Player player, SkyClash skyclash) {
-        EmbedBuilder skyclashEmbed = new EmbedBuilder();
-        skyclashEmbed.setAuthor("Skyclash Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        skyclashEmbed.setColor(Color.GREEN);
-        skyclashEmbed.setTitle(player.getUsername() + " Stats");
-        skyclashEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
+		skyclashEmbed.addField("Coins : ", String.valueOf(skyclash.getCoins()), true);
 
-        skyclashEmbed.addField("Coins : ", String.valueOf(skyclash.getCoins()), true);
-
-        return skyclashEmbed;
-    }
+		return skyclashEmbed;
+	}
 }

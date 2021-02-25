@@ -36,70 +36,69 @@ import java.util.concurrent.TimeUnit;
 
 public class WikipediaSearchCommand extends ListenerAdapter {
 
-    @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+	@Override
+	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
 
-        final Message message = event.getMessage();
-        final String[] args = message.getContentRaw().split("\\s+");
-        final TextChannel channel = (TextChannel) event.getChannel();
+		final Message message = event.getMessage();
+		final String[] args = message.getContentRaw().split("\\s+");
+		final TextChannel channel = (TextChannel) event.getChannel();
 
-        if (args[0].equalsIgnoreCase(Config.WIKIPEDIA_PREFIX + "search")) {
+		if(args[0].equalsIgnoreCase(Config.WIKIPEDIA_PREFIX + "search")) {
 
-            message.delete().queue();
+			message.delete().queue();
 
-            if (args.length < 2) {
+			if(args.length < 2) {
 
-                channel.sendMessage("You must specify an article to search !").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				channel.sendMessage("You must specify an article to search !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-            } else {
+			Gson gson = new Gson();
 
-                Gson gson = new Gson();
+			try {
 
-                try {
+				ArrayList<String> research = new ArrayList<>(Arrays.asList(args));
+				research.remove(0);
+				StringBuilder finalResearch = new StringBuilder();
 
-                    ArrayList<String> research = new ArrayList<>(Arrays.asList(args));
-                    research.remove(0);
-                    StringBuilder finalResearch = new StringBuilder();
+				for(String s : research) {
+					finalResearch.append(s).append("_");
+				}
+				final String url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + finalResearch;
+				WikipediaContent content = gson.fromJson(JsonUtilities.readJson(new URL(url)), WikipediaContent.class);
 
-                    for (String s : research) {
-                        finalResearch.append(s).append("_");
-                    }
-                    final String url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + finalResearch;
-                    WikipediaContent content = gson.fromJson(JsonUtilities.readJson(new URL(url)), WikipediaContent.class);
+				channel.sendMessage(getContentPage(content).build()).queue();
 
-                    channel.sendMessage(getContentPage(content).build()).queue();
+			} catch(MalformedURLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+	private EmbedBuilder getContentPage(WikipediaContent content) {
+		EmbedBuilder wikiEmbed = new EmbedBuilder();
+		wikiEmbed.setAuthor("Wikipedia Search", null, "https://upload.wikimedia.org/wikipedia/commons/0/06/Wikipedia-logo_ka.png");
+		wikiEmbed.setColor(Color.BLACK);
+		wikiEmbed.setThumbnail(content.thumbnail.source);
+		wikiEmbed.setTitle(content.title + " Wikipedia Page");
+		wikiEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG, "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-    private EmbedBuilder getContentPage(WikipediaContent content) {
-        EmbedBuilder wikiEmbed = new EmbedBuilder();
-        wikiEmbed.setAuthor("Wikipedia Search", null, "https://upload.wikimedia.org/wikipedia/commons/0/06/Wikipedia-logo_ka.png");
-        wikiEmbed.setColor(Color.BLACK);
-        wikiEmbed.setThumbnail(content.thumbnail.source);
-        wikiEmbed.setTitle(content.title + " Wikipedia Page");
-        wikiEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG, "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128" );
+		wikiEmbed.addField("Description : ", content.description, false);
+		wikiEmbed.addField("Article Content : ", content.extract, false);
 
-        wikiEmbed.addField("Description : ", content.description, false);
-        wikiEmbed.addField("Article Content : ", content.extract, false);
+		return wikiEmbed;
+	}
 
-        return wikiEmbed;
-    }
+	static class Image {
+		String source;
+	}
 
-    static class Image {
-        String source;
-    }
-
-    static class WikipediaContent {
-        String title;
-        Image thumbnail;
-        String description;
-        String extract;
-    }
+	static class WikipediaContent {
+		String title;
+		Image thumbnail;
+		String description;
+		String extract;
+	}
 }

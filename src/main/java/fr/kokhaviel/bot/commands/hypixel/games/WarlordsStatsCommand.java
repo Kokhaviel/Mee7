@@ -33,44 +33,45 @@ import static fr.kokhaviel.bot.Mee7.sloth;
 
 public class WarlordsStatsCommand extends ListenerAdapter {
 
-    @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+	@Override
+	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
 
-        final Message message = event.getMessage();
-        final String[] args = message.getContentRaw().split("\\s+");
-        final TextChannel channel = (TextChannel) event.getChannel();
+		final Message message = event.getMessage();
+		final String[] args = message.getContentRaw().split("\\s+");
+		final TextChannel channel = (TextChannel) event.getChannel();
 
 
-        if (args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "warlords")) {
+		if(args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "warlords")) {
 
-            if (args.length == 1) {
-                channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "warlords <Player>").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else {
-                if (!args[1].matches("^\\w{3,16}$")) {
-                    channel.sendMessage("You must specify a valid Minecraft username !").queue(
-                            delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-                } else {
+			if(args.length == 1) {
+				channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "warlords <Player>").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-                    message.delete().queue();
-                    final Player player = sloth.getPlayer(args[1]);
-                    final Warlords warlords = player.getStats().getWarlords();
-                    channel.sendMessage(getWarlordsStats(player, warlords).build()).queue();
-                }
-            }
-        }
-    }
+			if(!args[1].matches("^\\w{3,16}$")) {
+				channel.sendMessage("You must specify a valid Minecraft username !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-    private EmbedBuilder getWarlordsStats(Player player, Warlords warlords) {
-        EmbedBuilder warlordsEmbed = new EmbedBuilder();
-        warlordsEmbed.setAuthor("Warlords Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
-        warlordsEmbed.setColor(Color.BLACK);
-        warlordsEmbed.setTitle(player.getUsername() + " Stats");
-        warlordsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
+			message.delete().queue();
+			final Player player = sloth.getPlayer(args[1]);
+			final Warlords warlords = player.getStats().getWarlords();
+			channel.sendMessage(getWarlordsStats(player, warlords).build()).queue();
+		}
+	}
 
-        warlordsEmbed.addField("Coins : ", String.valueOf(warlords.getCoins()), true);
+	private EmbedBuilder getWarlordsStats(Player player, Warlords warlords) {
+		EmbedBuilder warlordsEmbed = new EmbedBuilder();
+		warlordsEmbed.setAuthor("Warlords Stats", null, "https://cdn.discordapp.com/icons/489529070913060867/b8fe7468a1feb1020640c200313348b0.webp?size=128");
+		warlordsEmbed.setColor(Color.BLACK);
+		warlordsEmbed.setTitle(player.getUsername() + " Stats");
+		warlordsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI by SlothPixel (docs.slothpixel.me)");
 
-        return warlordsEmbed;
-    }
+		warlordsEmbed.addField("Coins : ", String.valueOf(warlords.getCoins()), true);
+
+		return warlordsEmbed;
+	}
 }

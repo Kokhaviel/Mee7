@@ -34,113 +34,113 @@ import java.util.concurrent.TimeUnit;
 
 public class SurvivalStatsCommand extends ListenerAdapter {
 
-    @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+	@Override
+	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-        final Message message = event.getMessage();
-        final String[] args = message.getContentRaw().split("\\s+");
-        final TextChannel channel = (TextChannel) event.getChannel();
+		final Message message = event.getMessage();
+		final String[] args = message.getContentRaw().split("\\s+");
+		final TextChannel channel = (TextChannel) event.getChannel();
 
-        if(args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "survival")) {
+		if(args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "survival")) {
 
-            if(args.length < 2) {
+			if(args.length < 2) {
 
-                message.delete().queue();
+				message.delete().queue();
 
-                channel.sendMessage("Missing Arguments : Please Specify A Player !").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				channel.sendMessage("Missing Arguments : Please Specify A Player !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-            } else {
+			if(!args[1].matches("^\\w{3,16}$")) {
+				channel.sendMessage("You must specify a valid Minecraft username !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-                if (!args[1].matches("^\\w{3,16}$")) {
-                    channel.sendMessage("You must specify a valid Minecraft username !").queue(
-                            delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-                } else {
+			final String url = "https://lordmorgoth.net/APIs/stats?key=" + Config.FUNCRAFT_API_KEY + "&joueur=" + args[1] + "&mode=survival&periode=always";
 
-                    final String url = "https://lordmorgoth.net/APIs/stats?key=" + Config.FUNCRAFT_API_KEY + "&joueur=" + args[1] + "&mode=survival&periode=always";
+			try {
+				message.delete().queue();
+				Gson gson = new Gson();
+				Survival survival = gson.fromJson(JsonUtilities.readJson(new URL(url)), Survival.class);
 
-                    try {
-                        message.delete().queue();
-                        Gson gson = new Gson();
-                        Survival survival = gson.fromJson(JsonUtilities.readJson(new URL(url)), Survival.class);
+				if(survival.exit_code.equals("0"))
+					channel.sendMessage(getSurvivalStats(survival, channel).build()).queue();
 
-                        if(survival.exit_code.equals("0")) channel.sendMessage(getSurvivalStats(survival, channel).build()).queue();
+			} catch(IOException e) {
 
-                    } catch (IOException e) {
+				channel.sendMessage("An exception occurred : File doesn't exist !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
-                        channel.sendMessage("An exception occurred : File doesn't exist !").queue(
-                                delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				e.printStackTrace();
+			}
+		}
+	}
 
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-    }
-    
-    private EmbedBuilder getSurvivalStats(Survival survival, TextChannel channel) {
-        
-        EmbedBuilder survivalEmbed = new EmbedBuilder();
+	private EmbedBuilder getSurvivalStats(Survival survival, TextChannel channel) {
 
-        if(survival.exit_code.equals("0")) {
-            survivalEmbed.setAuthor("Funcraft Player Stats", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
-            survivalEmbed.setColor(Color.RED);
-            survivalEmbed.setThumbnail(survival.skin);
-            survivalEmbed.setTitle(String.format("%s survival Stats", survival.pseudo));
-            survivalEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+		EmbedBuilder survivalEmbed = new EmbedBuilder();
 
-            survivalEmbed.addField("Rank : ", survival.rang, true);
+		if(survival.exit_code.equals("0")) {
+			survivalEmbed.setAuthor("Funcraft Player Stats", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
+			survivalEmbed.setColor(Color.RED);
+			survivalEmbed.setThumbnail(survival.skin);
+			survivalEmbed.setTitle(String.format("%s survival Stats", survival.pseudo));
+			survivalEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-            survivalEmbed.addBlankField(false);
-            survivalEmbed.addField("Points : ", survival.data.points, true);
-            survivalEmbed.addField("Games : ", survival.data.parties, true);
-            survivalEmbed.addField("Victories : ", survival.data.victoires, true);
-            survivalEmbed.addField("Defeats : ", survival.data.defaites, true);
-            survivalEmbed.addField("Played Time : ", survival.data.temps_jeu + " minutes", true);
-            survivalEmbed.addField("Kills : ", survival.data.kills, true);
-            survivalEmbed.addField("Deaths : ", survival.data.morts, true);
+			survivalEmbed.addField("Rank : ", survival.rang, true);
 
-            survivalEmbed.addBlankField(false);
-            survivalEmbed.addField("Winrate : ", survival.stats.winrate + "%", true);
-            survivalEmbed.addField("KDR : ", survival.stats.kd, true);
-            survivalEmbed.addField("Average Kills / Games : ", survival.stats.kills_game, true);
-            survivalEmbed.addField("Average Deaths / Games : ", survival.stats.morts_game, true);
-            survivalEmbed.addField("Average Time / Games : ", survival.stats.temps_partie + " s", true);
-        }
+			survivalEmbed.addBlankField(false);
+			survivalEmbed.addField("Points : ", survival.data.points, true);
+			survivalEmbed.addField("Games : ", survival.data.parties, true);
+			survivalEmbed.addField("Victories : ", survival.data.victoires, true);
+			survivalEmbed.addField("Defeats : ", survival.data.defaites, true);
+			survivalEmbed.addField("Played Time : ", survival.data.temps_jeu + " minutes", true);
+			survivalEmbed.addField("Kills : ", survival.data.kills, true);
+			survivalEmbed.addField("Deaths : ", survival.data.morts, true);
 
-        if(!survival.exit_code.equals("0")) {
-            channel.sendMessage(JsonUtilities.getErrorCode(survival.exit_code)).queue();
-        }
+			survivalEmbed.addBlankField(false);
+			survivalEmbed.addField("Winrate : ", survival.stats.winrate + "%", true);
+			survivalEmbed.addField("KDR : ", survival.stats.kd, true);
+			survivalEmbed.addField("Average Kills / Games : ", survival.stats.kills_game, true);
+			survivalEmbed.addField("Average Deaths / Games : ", survival.stats.morts_game, true);
+			survivalEmbed.addField("Average Time / Games : ", survival.stats.temps_partie + " s", true);
+		}
 
-        return survivalEmbed;
-    }
+		if(!survival.exit_code.equals("0")) {
+			channel.sendMessage(JsonUtilities.getErrorCode(survival.exit_code)).queue();
+		}
 
-    static class Data {
-        String points;
-        String parties;
-        String victoires;
-        String defaites;
-        String temps_jeu;
-        String kills;
-        String morts;
-    }
+		return survivalEmbed;
+	}
 
-    static class Stats {
-        String winrate;
-        String kd;
-        String kills_game;
-        String morts_game;
-        String temps_partie;
-    }
+	static class Data {
+		String points;
+		String parties;
+		String victoires;
+		String defaites;
+		String temps_jeu;
+		String kills;
+		String morts;
+	}
 
-    static class Survival {
-        String exit_code;
-        String pseudo;
-        String mode_jeu;
-        String rang;
-        Data data;
-        Stats stats;
-        String skin;
-    }
+	static class Stats {
+		String winrate;
+		String kd;
+		String kills_game;
+		String morts_game;
+		String temps_partie;
+	}
+
+	static class Survival {
+		String exit_code;
+		String pseudo;
+		String mode_jeu;
+		String rang;
+		Data data;
+		Stats stats;
+		String skin;
+	}
 
 }

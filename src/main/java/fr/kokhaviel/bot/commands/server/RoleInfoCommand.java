@@ -30,47 +30,50 @@ import java.util.concurrent.TimeUnit;
 
 public class RoleInfoCommand extends ListenerAdapter {
 
-    @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+	@Override
+	public void onMessageReceived(MessageReceivedEvent event) {
 
-        final Message message = event.getMessage();
-        final String[] args = message.getContentRaw().split("\\s+");
-        final MessageChannel channel = event.getChannel();
-        final Guild guild = event.getGuild();
-        final JDA jda = event.getJDA();
+		final Message message = event.getMessage();
+		final String[] args = message.getContentRaw().split("\\s+");
+		final MessageChannel channel = event.getChannel();
+		final Guild guild = event.getGuild();
+		final JDA jda = event.getJDA();
 
 
-        if (args[0].equalsIgnoreCase(Config.PREFIX + "roleinfo")) {
-            message.delete().queue();
-            if (args.length < 2) {
-                channel.sendMessage("Missing Arguments : Please Use " + Config.PREFIX + "roleinfo <@Role> !").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else if (args.length > 2) {
-                channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "roleinfo <@Role> !").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else {
-                List<Role> roleMentioned = message.getMentionedRoles();
-                Role target = roleMentioned.get(0);
+		if(args[0].equalsIgnoreCase(Config.PREFIX + "roleinfo")) {
+			message.delete().queue();
+			if(args.length < 2) {
+				channel.sendMessage("Missing Arguments : Please Use " + Config.PREFIX + "roleinfo <@Role> !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-                channel.sendMessage(getRoleInfo(guild, jda, target).build()).queue();
-            }
-        }
-    }
+			if(args.length > 2) {
+				channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "roleinfo <@Role> !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
+			List<Role> roleMentioned = message.getMentionedRoles();
+			Role target = roleMentioned.get(0);
 
-    private EmbedBuilder getRoleInfo(Guild guild, JDA jda, Role target) {
-        EmbedBuilder roleinfoEmbed = new EmbedBuilder();
+			channel.sendMessage(getRoleInfo(guild, jda, target).build()).queue();
+		}
+	}
 
-        roleinfoEmbed.setTitle(target.getName() + " Role Info")
-                .setColor(Color.CYAN)
-                .setThumbnail(guild.getIconUrl())
-                .setAuthor("User Info", null, jda.getSelfUser().getAvatarUrl());
+	private EmbedBuilder getRoleInfo(Guild guild, JDA jda, Role target) {
+		EmbedBuilder roleinfoEmbed = new EmbedBuilder();
 
-        roleinfoEmbed.addField("ID : ", target.getId(), false);
-        roleinfoEmbed.addField("Time Create : ", String.valueOf(target.getTimeCreated()), false);
-        roleinfoEmbed.addField("Color", target.getColor().toString().replace("java.awt.Color", ""), false);
-        roleinfoEmbed.addField("Hoist : ", String.valueOf(target.isHoisted()), false);
-        roleinfoEmbed.addField("Mentionable", String.valueOf(target.isMentionable()), false);
+		roleinfoEmbed.setTitle(target.getName() + " Role Info")
+				.setColor(Color.CYAN)
+				.setThumbnail(guild.getIconUrl())
+				.setAuthor("User Info", null, jda.getSelfUser().getAvatarUrl());
 
-        return roleinfoEmbed;
-    }
+		roleinfoEmbed.addField("ID : ", target.getId(), false);
+		roleinfoEmbed.addField("Time Create : ", String.valueOf(target.getTimeCreated()), false);
+		roleinfoEmbed.addField("Color", target.getColor().toString().replace("java.awt.Color", ""), false);
+		roleinfoEmbed.addField("Hoist : ", String.valueOf(target.isHoisted()), false);
+		roleinfoEmbed.addField("Mentionable", String.valueOf(target.isMentionable()), false);
+
+		return roleinfoEmbed;
+	}
 }

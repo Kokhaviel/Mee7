@@ -30,41 +30,48 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("ConstantConditions")
 public class VolumeCommand extends ListenerAdapter {
 
-    @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+	@Override
+	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-        final Message message = event.getMessage();
-        final String[] args = message.getContentRaw().split("\\s+");
-        final TextChannel channel = (TextChannel) event.getChannel();
-        final Member member = event.getMember();
-        final Guild guild = event.getGuild();
-        final Member selfMember = guild.getSelfMember();
+		final Message message = event.getMessage();
+		final String[] args = message.getContentRaw().split("\\s+");
+		final TextChannel channel = (TextChannel) event.getChannel();
+		final Member member = event.getMember();
+		final Guild guild = event.getGuild();
+		final Member selfMember = guild.getSelfMember();
 
-        if (args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "volume")) {
+		if(args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "volume")) {
 
-            final GuildVoiceState voiceState = member.getVoiceState();
-            final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
-            final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
-            final AudioPlayer audioPlayer = musicManager.audioPlayer;
+			final GuildVoiceState voiceState = member.getVoiceState();
+			final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
+			final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
+			final AudioPlayer audioPlayer = musicManager.audioPlayer;
 
-            if (args.length == 1) {
-                channel.sendMessageFormat("Current Music Volume : %d%% \n`Hint : 100%% is the default volume`", audioPlayer.getVolume()).queue();
-            }
-            if (!voiceState.inVoiceChannel()) {
-                channel.sendMessage("You need to be in a voice channel to this command works").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else if (!selfVoiceState.inVoiceChannel()) {
-                channel.sendMessage("I need to be in a voice channel to this command works !").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else if (!voiceState.getChannel().equals(selfVoiceState.getChannel())) {
-                channel.sendMessage("You need to be in the same voice channel as me for this command works !").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else {
-                audioPlayer.setVolume(Integer.parseInt(args[1]));
+			if(args.length == 1) {
+				channel.sendMessageFormat("Current Music Volume : %d%% \n`Hint : 100%% is the default volume`", audioPlayer.getVolume()).queue();
+			}
 
-                channel.sendMessageFormat("Music Volume is Now %s%% !", args[1]).queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            }
-        }
-    }
+			if(!voiceState.inVoiceChannel()) {
+				channel.sendMessage("You need to be in a voice channel to this command works").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
+
+			if(!selfVoiceState.inVoiceChannel()) {
+				channel.sendMessage("I need to be in a voice channel to this command works !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
+
+			if(!voiceState.getChannel().equals(selfVoiceState.getChannel())) {
+				channel.sendMessage("You need to be in the same voice channel as me for this command works !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
+			audioPlayer.setVolume(Integer.parseInt(args[1]));
+
+			channel.sendMessageFormat("Music Volume is Now %s%% !", args[1]).queue(
+					delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+		}
+	}
 }

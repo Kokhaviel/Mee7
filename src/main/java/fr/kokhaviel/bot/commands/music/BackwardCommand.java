@@ -30,39 +30,42 @@ import java.util.concurrent.TimeUnit;
 
 public class BackwardCommand extends ListenerAdapter {
 
-    @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+	@Override
+	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
 
-        final TextChannel channel = (TextChannel) event.getChannel();
-        final Guild guild = event.getGuild();
-        final Member member = event.getMember();
-        final Message message = event.getMessage();
-        final String[] args = message.getContentRaw().split("\\s+");
+		final TextChannel channel = (TextChannel) event.getChannel();
+		final Guild guild = event.getGuild();
+		final Member member = event.getMember();
+		final Message message = event.getMessage();
+		final String[] args = message.getContentRaw().split("\\s+");
 
-        if (args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "backward")) {
-            final GuildVoiceState memberVoiceState = member.getVoiceState();
-            message.delete().queue();
-            if (!memberVoiceState.inVoiceChannel()) {
-                channel.sendMessage("You Need To Be In A Voice Channel For This Command Works !").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else if(args.length < 2) {
-                channel.sendMessage("Missing Arguments : Specify a duration to move back in seconds").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else {
-                final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
-                final AudioPlayer audioPlayer = musicManager.audioPlayer;
-                final AudioTrack playingTrack = audioPlayer.getPlayingTrack();
+		if(args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "backward")) {
+			final GuildVoiceState memberVoiceState = member.getVoiceState();
+			message.delete().queue();
+			if(!memberVoiceState.inVoiceChannel()) {
+				channel.sendMessage("You Need To Be In A Voice Channel For This Command Works !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-                final int toBackward = Integer.parseInt(args[1]);
+			if(args.length < 2) {
+				channel.sendMessage("Missing Arguments : Specify a duration to move back in seconds").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
+			final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
+			final AudioPlayer audioPlayer = musicManager.audioPlayer;
+			final AudioTrack playingTrack = audioPlayer.getPlayingTrack();
 
-                if(toBackward < 10 ) {
-                    channel.sendMessage("Cannot Forward Less Than 10 seconds").queue(
-                            delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-                } else {
-                    playingTrack.setPosition(playingTrack.getPosition() - toBackward*1000L);
-                }
-            }
-        }
-    }
+			final int toBackward = Integer.parseInt(args[1]);
+
+			if(toBackward < 10) {
+				channel.sendMessage("Cannot Forward Less Than 10 seconds").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
+			playingTrack.setPosition(playingTrack.getPosition() - toBackward * 1000L);
+		}
+	}
 }

@@ -31,60 +31,66 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("ConstantConditions")
 public class NowPlayingCommand extends ListenerAdapter {
 
-    @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+	@Override
+	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-        final Message message = event.getMessage();
-        final String[] args = message.getContentRaw().split("\\s+");
-        final TextChannel channel = (TextChannel) event.getChannel();
-        final Member member = event.getMember();
-        final Guild guild = event.getGuild();
-        final Member selfMember = guild.getSelfMember();
+		final Message message = event.getMessage();
+		final String[] args = message.getContentRaw().split("\\s+");
+		final TextChannel channel = (TextChannel) event.getChannel();
+		final Member member = event.getMember();
+		final Guild guild = event.getGuild();
+		final Member selfMember = guild.getSelfMember();
 
-        if (args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "nowplaying")) {
+		if(args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "nowplaying")) {
 
-            final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
-            final GuildVoiceState voiceState = member.getVoiceState();
-            message.delete().queue();
+			final GuildVoiceState selfVoiceState = selfMember.getVoiceState();
+			final GuildVoiceState voiceState = member.getVoiceState();
+			message.delete().queue();
 
-            if (!voiceState.inVoiceChannel()) {
-                channel.sendMessage("You need to be in a voice channel to this command works").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else if (!selfVoiceState.inVoiceChannel()) {
-                channel.sendMessage("I need to be in a voice channel to this command works !").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else if (!voiceState.getChannel().equals(selfVoiceState.getChannel())) {
-                channel.sendMessage("You need to be in the same voice channel as me for this command works !").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-            } else {
+			if(!voiceState.inVoiceChannel()) {
+				channel.sendMessage("You need to be in a voice channel to this command works").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-                final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
-                final AudioPlayer audioPlayer = musicManager.audioPlayer;
-                final AudioTrack playingTrack = audioPlayer.getPlayingTrack();
-                final AudioTrackInfo trackInfo = playingTrack.getInfo();
+			if(!selfVoiceState.inVoiceChannel()) {
+				channel.sendMessage("I need to be in a voice channel to this command works !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-                if (playingTrack == null) {
-                    channel.sendMessage("THere is no track playing currently !").queue(
-                            delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-                } else {
-                    channel.sendMessage("Now Playing '" + trackInfo.title + "' by '" + trackInfo.author + "' !").queue();
+			if(!voiceState.getChannel().equals(selfVoiceState.getChannel())) {
+				channel.sendMessage("You need to be in the same voice channel as me for this command works !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-                    channel.sendMessageFormat(
-                            "Current Track Time Elapsed : `[%s]`\nCurrent Track Time Left : `[%s]`",
-                            timeFormat(playingTrack.getPosition()),
-                            timeFormat(playingTrack.getDuration() - playingTrack.getPosition())
-                    ).queue();
-                }
-            }
-        }
-    }
+			final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
+			final AudioPlayer audioPlayer = musicManager.audioPlayer;
+			final AudioTrack playingTrack = audioPlayer.getPlayingTrack();
+			final AudioTrackInfo trackInfo = playingTrack.getInfo();
 
-    private String timeFormat(long timeMillis) {
+			if(playingTrack == null) {
+				channel.sendMessage("THere is no track playing currently !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
+			channel.sendMessage("Now Playing '" + trackInfo.title + "' by '" + trackInfo.author + "' !").queue();
 
-        final long hours = timeMillis / TimeUnit.HOURS.toMillis(1);
-        final long minutes = timeMillis / TimeUnit.MINUTES.toMillis(1);
-        final long seconds = timeMillis % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1);
+			channel.sendMessageFormat(
+					"Current Track Time Elapsed : `[%s]`\nCurrent Track Time Left : `[%s]`",
+					timeFormat(playingTrack.getPosition()),
+					timeFormat(playingTrack.getDuration() - playingTrack.getPosition())
+			).queue();
+		}
+	}
 
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
-    }
+	private String timeFormat(long timeMillis) {
+
+		final long hours = timeMillis / TimeUnit.HOURS.toMillis(1);
+		final long minutes = timeMillis / TimeUnit.MINUTES.toMillis(1);
+		final long seconds = timeMillis % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1);
+
+		return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+	}
 }

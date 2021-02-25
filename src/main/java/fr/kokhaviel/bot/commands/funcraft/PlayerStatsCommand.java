@@ -38,114 +38,112 @@ import java.util.concurrent.TimeUnit;
 public class PlayerStatsCommand extends ListenerAdapter {
 
 
-    @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+	@Override
+	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
 
-        final Message message = event.getMessage();
-        final String[] args = message.getContentRaw().split("\\s+");
-        final TextChannel channel = (TextChannel) event.getChannel();
+		final Message message = event.getMessage();
+		final String[] args = message.getContentRaw().split("\\s+");
+		final TextChannel channel = (TextChannel) event.getChannel();
 
-        if(args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "stats")) {
+		if(args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "stats")) {
 
-            if(args.length < 2) {
+			if(args.length < 2) {
 
-                message.delete().queue();
+				message.delete().queue();
 
-                channel.sendMessage("Missing Arguments : Please Specify A Player !").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				channel.sendMessage("Missing Arguments : Please Specify A Player !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-            } else {
+			if(!args[1].matches("^\\w{3,16}$")) {
+				channel.sendMessage("You must specify a valid Minecraft username !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-                if (!args[1].matches("^\\w{3,16}$")) {
-                    channel.sendMessage("You must specify a valid Minecraft username !").queue(
-                            delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-                } else {
+			final String url = "https://lordmorgoth.net/APIs/infos?key=" + Config.FUNCRAFT_API_KEY + "&joueur=" + args[1];
 
-                    final String url = "https://lordmorgoth.net/APIs/infos?key=" + Config.FUNCRAFT_API_KEY + "&joueur=" + args[1];
+			try {
+				message.delete().queue();
+				Gson gson = new Gson();
+				Stats stats = gson.fromJson(JsonUtilities.readJson(new URL(url)), Stats.class);
+				channel.sendMessage(getFuncraftStats(stats).build()).queue();
+				channel.sendMessage(getPlayerFriends(stats).build()).queue();
 
-                    try {
+			} catch(IOException e) {
+				channel.sendMessage("An exception occurred : File doesn't exist !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
-                        message.delete().queue();
-                        Gson gson = new Gson();
-                        Stats stats = gson.fromJson(JsonUtilities.readJson(new URL(url)), Stats.class);
-                        channel.sendMessage(getFuncraftStats(stats).build()).queue();
-                        channel.sendMessage(getPlayerFriends(stats).build()).queue();
+				e.printStackTrace();
+			}
+		}
+	}
 
-                    } catch (IOException e) {
-                        channel.sendMessage("An exception occurred : File doesn't exist !").queue(
-                                delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+	private EmbedBuilder getFuncraftStats(Stats stats) {
 
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-    }
+		EmbedBuilder funcraftEmbed = new EmbedBuilder();
 
-    private EmbedBuilder getFuncraftStats(Stats stats) {
+		funcraftEmbed.setAuthor("Funcraft Player Stats", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
+		funcraftEmbed.setColor(Color.RED);
+		funcraftEmbed.setThumbnail(stats.skin);
+		funcraftEmbed.setTitle(String.format("[%s] %s Stats", stats.grade, stats.pseudo));
+		funcraftEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        EmbedBuilder funcraftEmbed = new EmbedBuilder();
+		funcraftEmbed.addField("Inscription : ", stats.inscription, true);
+		funcraftEmbed.addField("Last Connection : ", "Owo ... Not working for the moment", true);
+		//FIXME : Last Connection
+		funcraftEmbed.addField("Glories : ", String.valueOf(stats.gloires), true);
+		funcraftEmbed.addField("Games : ", stats.parties, true);
+		funcraftEmbed.addField("Points : ", stats.points, true);
+		funcraftEmbed.addField("Victories : ", stats.victoires, true);
+		funcraftEmbed.addField("Defeats : ", stats.defaites, true);
+		funcraftEmbed.addField("Played Time : ", stats.temps_jeu + " minutes", true);
+		funcraftEmbed.addField("Kills : ", stats.kills, true);
+		funcraftEmbed.addField("Deaths : ", stats.morts, true);
+		funcraftEmbed.addField("Ban : ", stats.ban, true);
 
-        funcraftEmbed.setAuthor("Funcraft Player Stats", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
-        funcraftEmbed.setColor(Color.RED);
-        funcraftEmbed.setThumbnail(stats.skin);
-        funcraftEmbed.setTitle(String.format("[%s] %s Stats", stats.grade, stats.pseudo));
-        funcraftEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+		return funcraftEmbed;
+	}
 
-        funcraftEmbed.addField("Inscription : ", stats.inscription, true);
-        funcraftEmbed.addField("Last Connection : ", "Owo ... Not working for the moment", true);
-        //FIXME : Last Connection
-        funcraftEmbed.addField("Glories : ", String.valueOf(stats.gloires), true);
-        funcraftEmbed.addField("Games : ", stats.parties, true);
-        funcraftEmbed.addField("Points : ", stats.points, true);
-        funcraftEmbed.addField("Victories : ", stats.victoires, true);
-        funcraftEmbed.addField("Defeats : ", stats.defaites, true);
-        funcraftEmbed.addField("Played Time : ", stats.temps_jeu + " minutes", true);
-        funcraftEmbed.addField("Kills : ", stats.kills, true);
-        funcraftEmbed.addField("Deaths : ", stats.morts, true);
-        funcraftEmbed.addField("Ban : ", stats.ban, true);
+	private EmbedBuilder getPlayerFriends(Stats stats) {
 
-        return funcraftEmbed;
-    }
+		EmbedBuilder friendsEmbed = new EmbedBuilder();
 
-    private EmbedBuilder getPlayerFriends(Stats stats) {
+		friendsEmbed.setAuthor("Funcraft Player Friends", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
+		friendsEmbed.setColor(Color.RED);
+		friendsEmbed.setThumbnail(stats.skin);
+		friendsEmbed.setTitle(String.format("[%s] %s Friends", stats.grade, stats.pseudo));
+		friendsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-        EmbedBuilder friendsEmbed = new EmbedBuilder();
+		for(Friend friend : stats.amis) {
+			friendsEmbed.addField(friend.nom, "Skin : [" + friend.nom + " Head](" + friend.skin + ")", false);
+		}
 
-        friendsEmbed.setAuthor("Funcraft Player Friends", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
-        friendsEmbed.setColor(Color.RED);
-        friendsEmbed.setThumbnail(stats.skin);
-        friendsEmbed.setTitle(String.format("[%s] %s Friends", stats.grade, stats.pseudo));
-        friendsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
-
-        for (Friend friend : stats.amis) {
-            friendsEmbed.addField(friend.nom, "Skin : [" + friend.nom + " Head](" + friend.skin + ")", false);
-        }
-
-        return friendsEmbed;
-    }
+		return friendsEmbed;
+	}
 
 
-    static class Friend {
-        String nom;
-        String skin;
-    }
+	static class Friend {
+		String nom;
+		String skin;
+	}
 
-    static class Stats {
-        String grade;
-        String pseudo;
-        String skin;
-        String inscription;
-        String gloires;
-        String parties;
-        String points;
-        String victoires;
-        String defaites;
-        String temps_jeu;
-        String kills;
-        String morts;
-        List<Friend> amis;
-        String ban;
-    }
+	static class Stats {
+		String grade;
+		String pseudo;
+		String skin;
+		String inscription;
+		String gloires;
+		String parties;
+		String points;
+		String victoires;
+		String defaites;
+		String temps_jeu;
+		String kills;
+		String morts;
+		List<Friend> amis;
+		String ban;
+	}
 }

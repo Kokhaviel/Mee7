@@ -34,113 +34,111 @@ import java.util.concurrent.TimeUnit;
 
 public class InfectedStatsCommand extends ListenerAdapter {
 
-    @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+	@Override
+	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-        final Message message = event.getMessage();
-        final String[] args = message.getContentRaw().split("\\s+");
-        final TextChannel channel = (TextChannel) event.getChannel();
+		final Message message = event.getMessage();
+		final String[] args = message.getContentRaw().split("\\s+");
+		final TextChannel channel = (TextChannel) event.getChannel();
 
-        if (args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "infected")) {
+		if(args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "infected")) {
 
-            if (args.length < 2) {
+			if(args.length < 2) {
+				message.delete().queue();
 
-                message.delete().queue();
+				channel.sendMessage("Missing Arguments : Please Specify A Player !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-                channel.sendMessage("Missing Arguments : Please Specify A Player !").queue(
-                        delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+			if(!args[1].matches("^\\w{3,16}$")) {
+				channel.sendMessage("You must specify a valid Minecraft username !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
 
-            } else {
+			final String url = "https://lordmorgoth.net/APIs/stats?key=" + Config.FUNCRAFT_API_KEY + "&joueur=" + args[1] + "&mode=infecte&periode=always";
 
-                if (!args[1].matches("^\\w{3,16}$")) {
-                    channel.sendMessage("You must specify a valid Minecraft username !").queue(
-                            delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-                } else {
+			try {
 
-                    final String url = "https://lordmorgoth.net/APIs/stats?key=" + Config.FUNCRAFT_API_KEY + "&joueur=" + args[1] + "&mode=infecte&periode=always";
+				message.delete().queue();
+				Gson gson = new Gson();
+				Infected infected = gson.fromJson(JsonUtilities.readJson(new URL(url)), Infected.class);
 
-                    try {
+				if(infected.exit_code.equals("0"))
+					channel.sendMessage(getInfectedStats(infected, channel).build()).queue();
 
-                        message.delete().queue();
-                        Gson gson = new Gson();
-                        Infected infected = gson.fromJson(JsonUtilities.readJson(new URL(url)), Infected.class);
+			} catch(IOException e) {
+				channel.sendMessage("An exception occurred : File doesn't exist !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
-                        if(infected.exit_code.equals("0")) channel.sendMessage(getInfectedStats(infected, channel).build()).queue();
+				e.printStackTrace();
+			}
+		}
+	}
 
-                    } catch (IOException e) {
+	private EmbedBuilder getInfectedStats(Infected infected, TextChannel channel) {
 
-                        channel.sendMessage("An exception occurred : File doesn't exist !").queue(
-                                delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+		EmbedBuilder infectedEmbed = new EmbedBuilder();
 
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-    }
+		if(infected.exit_code.equals("0")) {
+			infectedEmbed.setAuthor("Funcraft Player Stats", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
+			infectedEmbed.setColor(Color.RED);
+			infectedEmbed.setThumbnail(infected.skin);
+			infectedEmbed.setTitle(String.format("%s Infected Stats", infected.pseudo));
+			infectedEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
 
-    private EmbedBuilder getInfectedStats(Infected infected, TextChannel channel) {
+			infectedEmbed.addField("Rank : ", infected.rang, false);
 
-        EmbedBuilder infectedEmbed = new EmbedBuilder();
+			infectedEmbed.addBlankField(false);
+			infectedEmbed.addField("Points : ", infected.data.points, true);
+			infectedEmbed.addField("Games : ", infected.data.parties, true);
+			infectedEmbed.addField("Victories : ", infected.data.victoires, true);
+			infectedEmbed.addField("Defeats : ", infected.data.defaites, true);
+			infectedEmbed.addField("Played Time : ", infected.data.temps_jeu + " minutes", true);
+			infectedEmbed.addField("Kills : ", infected.data.kills, true);
+			infectedEmbed.addField("Deaths : ", infected.data.morts, true);
 
-        if (infected.exit_code.equals("0")) {
-            infectedEmbed.setAuthor("Funcraft Player Stats", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
-            infectedEmbed.setColor(Color.RED);
-            infectedEmbed.setThumbnail(infected.skin);
-            infectedEmbed.setTitle(String.format("%s Infected Stats", infected.pseudo));
-            infectedEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+			infectedEmbed.addBlankField(false);
+			infectedEmbed.addField("Winrate : ", infected.stats.winrate + "%", true);
+			infectedEmbed.addField("KDR : ", infected.stats.kd, true);
+			infectedEmbed.addField("Average Kills / Games : ", infected.stats.kills_game, true);
+			infectedEmbed.addField("Average Deaths / Games : ", infected.stats.morts_game, true);
+			infectedEmbed.addField("Average Time / Games : ", infected.stats.temps_partie + " s", true);
+		}
 
-            infectedEmbed.addField("Rank : ", infected.rang, false);
+		if(infected.exit_code.equals("0")) {
+			channel.sendMessage(JsonUtilities.getErrorCode(infected.exit_code)).queue();
+		}
 
-            infectedEmbed.addBlankField(false);
-            infectedEmbed.addField("Points : ", infected.data.points, true);
-            infectedEmbed.addField("Games : ", infected.data.parties, true);
-            infectedEmbed.addField("Victories : ", infected.data.victoires, true);
-            infectedEmbed.addField("Defeats : ", infected.data.defaites, true);
-            infectedEmbed.addField("Played Time : ", infected.data.temps_jeu + " minutes", true);
-            infectedEmbed.addField("Kills : ", infected.data.kills, true);
-            infectedEmbed.addField("Deaths : ", infected.data.morts, true);
+		return infectedEmbed;
+	}
 
-            infectedEmbed.addBlankField(false);
-            infectedEmbed.addField("Winrate : ", infected.stats.winrate + "%", true);
-            infectedEmbed.addField("KDR : ", infected.stats.kd, true);
-            infectedEmbed.addField("Average Kills / Games : ", infected.stats.kills_game, true);
-            infectedEmbed.addField("Average Deaths / Games : ", infected.stats.morts_game, true);
-            infectedEmbed.addField("Average Time / Games : ", infected.stats.temps_partie + " s", true);
-        }
+	static class Data {
+		String points;
+		String parties;
+		String victoires;
+		String defaites;
+		String temps_jeu;
+		String kills;
+		String morts;
+	}
 
-        if (infected.exit_code.equals("0")) {
-            channel.sendMessage(JsonUtilities.getErrorCode(infected.exit_code)).queue();
-        }
+	static class Stats {
+		String winrate;
+		String kd;
+		String kills_game;
+		String morts_game;
+		String temps_partie;
+	}
 
-        return infectedEmbed;
-    }
-
-    static class Data {
-        String points;
-        String parties;
-        String victoires;
-        String defaites;
-        String temps_jeu;
-        String kills;
-        String morts;
-    }
-
-    static class Stats {
-        String winrate;
-        String kd;
-        String kills_game;
-        String morts_game;
-        String temps_partie;
-    }
-
-    static class Infected {
-        String exit_code;
-        String pseudo;
-        String mode_jeu;
-        String rang;
-        Data data;
-        Stats stats;
-        String skin;
-    }
+	static class Infected {
+		String exit_code;
+		String pseudo;
+		String mode_jeu;
+		String rang;
+		Data data;
+		Stats stats;
+		String skin;
+	}
 }

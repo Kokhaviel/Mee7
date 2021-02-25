@@ -50,31 +50,29 @@ public class GiveawayCommands extends ListenerAdapter {
 		if(args[0].equalsIgnoreCase(Config.GIVEAWAYS_PREFIX + "create")) {
 
 			if(args.length > 1) {
-
 				message.delete().queue();
 
 				channel.sendMessage("Too Arguments ...").queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-
-			} else {
-
-
-				if(getCurrentGiveaways().contains(event.getGuild().getIdLong())) {
-
-					channel.sendMessage("You are already setting up a giveaway :tada:").queue();
-
-				} else {
-
-					giveaway = new Giveaways();
-
-					getCurrentGiveaways().add(event.getGuild().getIdLong());
-					giveaway.startSetup(giveaway, event);
-					this.giveawayUserCreate = event.getAuthor();
-					this.giveawayChannelCreate = (TextChannel) event.getChannel();
-					this.giveawayMessageCreate = event.getMessage();
-
-				}
+				return;
 			}
+
+
+			if(getCurrentGiveaways().contains(event.getGuild().getIdLong())) {
+
+				channel.sendMessage("You are already setting up a giveaway :tada:").queue();
+				return;
+			}
+
+			giveaway = new Giveaways();
+
+			getCurrentGiveaways().add(event.getGuild().getIdLong());
+			giveaway.startSetup(giveaway, event);
+			this.giveawayUserCreate = event.getAuthor();
+			this.giveawayChannelCreate = (TextChannel) event.getChannel();
+			this.giveawayMessageCreate = event.getMessage();
+
+
 		}
 
 		if(isSameUser(event) && giveaway.isWinnersSetUp() && !giveaway.isPrizeSetup()) {
