@@ -85,6 +85,9 @@ public class HelpCommand extends ListenerAdapter {
                     case "covid":
                         getCovidHelp(rd1, rd2, rd3, jda, event, channel, author, user);
                         break;
+                    case "minecraft":
+                        getMinecraftHelp(rd1, rd2, rd3, jda, event, channel, author, user);
+                        break;
                     default:
                         getHelp(rd1, rd2, rd3, event, jda, channel, author, user);
                         break;
@@ -172,7 +175,8 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("Say Command : ", Config.PREFIX + "say <Something To Say>", false)
                 .addField("8Ball Command : ", Config.PREFIX + "8ball <Question?>", false)
                 .addField("Reverse Command : ", Config.PREFIX + "reverse <Text>", false)
-                .addField("DameDane Command", Config.PREFIX + "damedane", false);
+                .addField("DameDane Command : ", Config.PREFIX + "damedane", false)
+                .addField("Meme Command : ", Config.PREFIX + "meme", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
@@ -371,6 +375,25 @@ public class HelpCommand extends ListenerAdapter {
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
         ((UserImpl) user).getPrivateChannel().sendMessage(giveawaysEmbed.build()).queue();
+
+    }
+
+    private void getMinecraftHelp(int rd1, int rd2, int rd3, JDA jda, MessageReceivedEvent event, TextChannel channel, User author, User user) {
+
+        EmbedBuilder minecraftEmbed = new EmbedBuilder();
+        minecraftEmbed.setTitle("Help Minecraft Commands")
+                .setColor(new Color(rd1, rd2, rd3))
+                .setAuthor("Help", null, jda.getSelfUser().getAvatarUrl())
+                .setDescription("Display all minecraft commands")
+                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+
+                .addField("Server Command : ", Config.MINECRAFT_PREFIX + "server <Server IP>", false)
+                .addField("Skin Command : ", Config.MINECRAFT_PREFIX + "skin <Username>", false)
+                .addField("Achievement Command : ", Config.MINECRAFT_PREFIX + "achievements\nAnd Follow Instructions Given", false);
+
+        channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
+        if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
+        ((UserImpl) user).getPrivateChannel().sendMessage(minecraftEmbed.build()).queue();
 
     }
 }
