@@ -31,7 +31,8 @@ import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class MemeCommand extends ListenerAdapter {
+public class LoveCommand extends ListenerAdapter {
+
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -40,9 +41,14 @@ public class MemeCommand extends ListenerAdapter {
 		final String[] args = message.getContentRaw().split("\\s+");
 		final TextChannel channel = (TextChannel) event.getChannel();
 
-		if(args[0].equalsIgnoreCase(Config.PREFIX + "meme")) {
+		if(args[0].equalsIgnoreCase(Config.PREFIX + "love")) {
 
-			final String url = "https://apis.duncte123.me/meme";
+			if(args.length > 3) {
+				channel.sendMessage("You must specify 2 people to form a loveship").queue();
+				return;
+			}
+
+			final String url = "https://apis.duncte123.me/love/" + args[1] + "/" + args[2];
 			JsonObject object = null;
 
 			try {
@@ -52,24 +58,25 @@ public class MemeCommand extends ListenerAdapter {
 			}
 
 			assert object != null;
-			channel.sendMessage(getMeme(object).build()).queue();
-
+			channel.sendMessage(getResult(object).build()).queue();
 		}
 	}
 
-	private EmbedBuilder getMeme(JsonObject object) {
+	private EmbedBuilder getResult(JsonObject object) {
+
 
 		JsonObject data = object.get("data").getAsJsonObject();
 
-		EmbedBuilder memeEmbed = new EmbedBuilder();
-		memeEmbed.setColor(new Color(20, 82, 217));
-		memeEmbed.setAuthor("Meme");
-		memeEmbed.setImage(data.get("image").getAsString());
-		memeEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI : https://docs.duncte123.com/", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
-		memeEmbed.setTitle(data.get("title").getAsString());
+		EmbedBuilder loveEmbed = new EmbedBuilder();
+		loveEmbed.setColor(new Color(217, 20, 200));
+		loveEmbed.setAuthor("Loveship");
+		loveEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI : https://docs.duncte123.com/", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+		loveEmbed.setTitle(data.get("names").getAsString() + " love <3");
 
-		memeEmbed.addField("Link : ", data.get("url").getAsString(), false);
+		loveEmbed.addField("Score : " + data.get("score_int").getAsString(), data.get("score").getAsString(), false);
+		loveEmbed.addField(" ", data.get("message").getAsString() + "\n ", false);
 
-		return memeEmbed;
+		return loveEmbed;
 	}
+
 }

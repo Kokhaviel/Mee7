@@ -117,6 +117,7 @@ public class Mee7 {
                     .addEventListeners(new KickCommand())
                     .addEventListeners(new LeaveCommand())
                     .addEventListeners(new Logs())
+                    .addEventListeners(new LoveCommand())
                     .addEventListeners(new MassBanCommand())
                     .addEventListeners(new MassKickCommand())
                     .addEventListeners(new MegaWallsStatsCommand())

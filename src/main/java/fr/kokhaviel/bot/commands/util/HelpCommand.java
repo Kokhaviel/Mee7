@@ -176,7 +176,8 @@ public class HelpCommand extends ListenerAdapter {
                 .addField("8Ball Command : ", Config.PREFIX + "8ball <Question?>", false)
                 .addField("Reverse Command : ", Config.PREFIX + "reverse <Text>", false)
                 .addField("DameDane Command : ", Config.PREFIX + "damedane", false)
-                .addField("Meme Command : ", Config.PREFIX + "meme", false);
+                .addField("Meme Command : ", Config.PREFIX + "meme", false)
+                .addField("Love Command : ", Config.PREFIX + "love <People 1> <People 2>", false);
 
         channel.sendMessage(author.getAsMention() + ", an help message will be send to your DM !").queue();
         if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
