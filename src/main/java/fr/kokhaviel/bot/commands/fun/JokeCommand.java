@@ -31,7 +31,8 @@ import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class MemeCommand extends ListenerAdapter {
+public class JokeCommand extends ListenerAdapter {
+
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -40,14 +41,14 @@ public class MemeCommand extends ListenerAdapter {
 		final String[] args = message.getContentRaw().split("\\s+");
 		final TextChannel channel = (TextChannel) event.getChannel();
 
-		if(args[0].equalsIgnoreCase(Config.PREFIX + "meme")) {
-			if(args.length > 1) {
-				channel.sendMessage("Too arguments : use " + Config.PREFIX + "meme").queue();
+		if(args[0].equalsIgnoreCase(Config.PREFIX + "joke")) {
+
+			if(args.length> 1) {
+				channel.sendMessage("Too Arguments : Use " + Config.PREFIX + "joke").queue();
 				return;
 			}
 
-
-			final String url = "https://apis.duncte123.me/meme";
+			final String url = "https://apis.duncte123.me/joke";
 			JsonObject object = null;
 
 			try {
@@ -57,24 +58,23 @@ public class MemeCommand extends ListenerAdapter {
 			}
 
 			assert object != null;
-			channel.sendMessage(getMeme(object).build()).queue();
-
+			channel.sendMessage(getJoke(object).build()).queue();
 		}
 	}
 
-	private EmbedBuilder getMeme(JsonObject object) {
+	private EmbedBuilder getJoke(JsonObject object) {
 
 		JsonObject data = object.get("data").getAsJsonObject();
 
-		EmbedBuilder memeEmbed = new EmbedBuilder();
-		memeEmbed.setColor(new Color(20, 82, 217));
-		memeEmbed.setAuthor("Meme");
-		memeEmbed.setImage(data.get("image").getAsString());
-		memeEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI : https://docs.duncte123.com/", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
-		memeEmbed.setTitle(data.get("title").getAsString());
+		EmbedBuilder jokeEmbed = new EmbedBuilder();
+		jokeEmbed.setColor(new Color(27, 209, 54));
+		jokeEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI : https://docs.duncte123.com/", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+		jokeEmbed.setTitle("Joke");
 
-		memeEmbed.addField("Link : ", data.get("url").getAsString(), false);
+		jokeEmbed.addField(data.get("title").getAsString(), data.get("body").getAsString(), false);
+		jokeEmbed.addField("Link : ", data.get("url").getAsString(), false);
 
-		return memeEmbed;
+		return jokeEmbed;
 	}
+
 }

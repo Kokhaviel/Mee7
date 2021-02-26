@@ -114,6 +114,7 @@ public class Mee7 {
                     .addEventListeners(new InfectedStatsCommand())
                     .addEventListeners(new InfoCommand())
                     .addEventListeners(new JoinCommand())
+                    .addEventListeners(new JokeCommand())
                     .addEventListeners(new KickCommand())
                     .addEventListeners(new LeaveCommand())
                     .addEventListeners(new Logs())
