@@ -121,6 +121,9 @@ public class GiveawayCommands extends ListenerAdapter {
 
 	@Override
 	public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
+
+		if(!giveaway.isGiveawayStarted()) return;
+
 		if(event.getMessageId().equals(giveaway.getGiveawayMessage().getId())) {
 			giveaway.getParticipants().add(event.getUser());
 		}
@@ -128,6 +131,9 @@ public class GiveawayCommands extends ListenerAdapter {
 
 	@Override
 	public void onMessageReactionRemove(@NotNull MessageReactionRemoveEvent event) {
+
+		if(!giveaway.isGiveawayStarted()) return;
+
 		if(event.getMessageId().equals(giveaway.getGiveawayMessage().getId())) {
 			giveaway.getParticipants().remove(event.getUser());
 		}
