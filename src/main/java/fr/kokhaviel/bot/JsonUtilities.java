@@ -24,6 +24,8 @@ import com.google.gson.JsonParser;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class JsonUtilities {
 
@@ -60,6 +62,21 @@ public class JsonUtilities {
             e.printStackTrace();
         }
         return JsonNull.INSTANCE;
+    }
+
+    public static JsonElement readJson(File file) {
+
+        JsonElement element;
+        String content = "";
+
+        try {
+            content = new String(Files.readAllBytes(Paths.get(file.getPath())));
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        element = JsonParser.parseString(content);
+        return element;
     }
 
     private static JsonElement readJson(InputStream inputStream) {

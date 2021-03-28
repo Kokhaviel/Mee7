@@ -17,25 +17,45 @@
 
 package fr.kokhaviel.bot.commands.music;
 
+import com.google.gson.JsonObject;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import fr.kokhaviel.bot.Config;
-import fr.kokhaviel.bot.music.*;
+import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Settings;
+import fr.kokhaviel.bot.music.GuildMusicManager;
+import fr.kokhaviel.bot.music.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.String.format;
+
 public class QueueCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+
+		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+				.getAsJsonObject().get(event.getGuild().getId())
+				.getAsJsonObject().get("music_prefix").getAsString();
+
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+		assert LANG_FILE != null;
+		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+		final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+		final JsonObject COMMANDS_OBJECT = LANG_OBJECT.get("commands").getAsJsonObject();
+		final JsonObject MUSIC_OBJECT = LANG_OBJECT.get("music").getAsJsonObject();
 
 		final Message message = event.getMessage();
 		final Guild guild = event.getGuild();
@@ -44,7 +64,7 @@ public class QueueCommand extends ListenerAdapter {
 		final String[] args = message.getContentRaw().split("\\s+");
 
 
-		if(args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "queue")) {
+		if(args[0].equalsIgnoreCase(prefix + "queue")) {
 
 			final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(guild);
 			final BlockingQueue<AudioTrack> queue = musicManager.scheduler.queue;
@@ -53,11 +73,11 @@ public class QueueCommand extends ListenerAdapter {
 			final List<AudioTrack> trackList = new ArrayList<>(queue);
 
 			if(queue.isEmpty()) {
-				channel.sendMessage("Queue is currently empty !").queue(
+				channel.sendMessage(MUSIC_OBJECT.get("empty_queue").getAsString()).queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
-			channel.sendMessage(getMusicQueue(event, iconUrl, trackCount, trackList).build()).queue();
+			channel.sendMessage(getMusicQueue(event, iconUrl, trackCount, trackList, GENERAL_OBJECT, COMMANDS_OBJECT,  MUSIC_OBJECT).build()).queue();
 		}
 	}
 
@@ -67,16 +87,16 @@ public class QueueCommand extends ListenerAdapter {
 		final long minutes = timeMillis / TimeUnit.MINUTES.toMillis(1);
 		final long seconds = timeMillis % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1);
 
-		return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+		return format("%02d:%02d:%02d", hours, minutes, seconds);
 	}
 
-	private EmbedBuilder getMusicQueue(MessageReceivedEvent event, String iconUrl, int trackCount, List<AudioTrack> trackList) {
+	private EmbedBuilder getMusicQueue(MessageReceivedEvent event, String iconUrl, int trackCount, List<AudioTrack> trackList, JsonObject generalObject, JsonObject commandsObject, JsonObject musicObject) {
 		EmbedBuilder queueEmbed = new EmbedBuilder();
 
-		queueEmbed.setTitle("Current Queue :");
+		queueEmbed.setTitle(musicObject.get("current_queue").getAsString());
 		queueEmbed.setColor(Color.ORANGE);
-		queueEmbed.setAuthor("Queue Command", null, iconUrl);
-		queueEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+		queueEmbed.setAuthor(format("%s %s",musicObject.get("queue").getAsString(),commandsObject.get("command").getAsString()), null, iconUrl);
+		queueEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\nApi : LavaPlayer by sedmelluq", Config.DEVELOPER_AVATAR);
 
 		for(int i = 0; i < trackCount; i++) {
 
@@ -88,7 +108,7 @@ public class QueueCommand extends ListenerAdapter {
 		}
 
 		if(trackList.size() > trackCount) {
-			queueEmbed.addField("And " + (trackList.size() - trackCount) + " More ...", "", false);
+			queueEmbed.addField(format("%s %d %s ...", musicObject.get("and").getAsString(), trackList.size() - trackCount, musicObject.get("more").getAsString()), "", false);
 		}
 
 		return queueEmbed;

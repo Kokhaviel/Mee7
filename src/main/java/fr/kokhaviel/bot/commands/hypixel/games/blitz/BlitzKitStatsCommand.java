@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games.blitz;
 
 import fr.kokhaviel.bot.Config;
+import fr.kokhaviel.bot.JsonUtilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -27,6 +28,7 @@ import zone.nora.slothpixel.player.Player;
 import zone.nora.slothpixel.player.stats.blitz.kits.BlitzKitsStats;
 
 import java.awt.*;
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import static fr.kokhaviel.bot.Mee7.sloth;
@@ -36,14 +38,18 @@ public class BlitzKitStatsCommand extends ListenerAdapter {
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
+		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+				.getAsJsonObject().get(event.getGuild().getId())
+				.getAsJsonObject().get("hypixel_prefix").getAsString();
+
 		final Message message = event.getMessage();
 		final String[] args = message.getContentRaw().split("\\s+");
 		final TextChannel channel = (TextChannel) event.getChannel();
 
-		if(args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "blitzstats") && args[1].equalsIgnoreCase("kitstats")) {
+		if(args[0].equalsIgnoreCase(prefix + "blitzstats") && args[1].equalsIgnoreCase("kitstats")) {
 
 			if(args.length == 2) {
-				channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "blitz kitstats <Player>").queue(
+				channel.sendMessage("You need to specify a player : " + prefix + "blitz kitstats <Player>").queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}

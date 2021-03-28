@@ -17,10 +17,13 @@
 
 package fr.kokhaviel.bot;
 
+import com.google.gson.Gson;
 import fr.kokhaviel.bot.commands.covid.CovidCommand;
 import fr.kokhaviel.bot.commands.fun.*;
 import fr.kokhaviel.bot.commands.funcraft.games.*;
 import fr.kokhaviel.bot.commands.giveaways.GiveawayCommands;
+import fr.kokhaviel.bot.commands.guild.LanguageCommand;
+import fr.kokhaviel.bot.commands.guild.PrefixCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.*;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitLevelCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitStatsCommand;
@@ -42,7 +45,6 @@ import fr.kokhaviel.bot.event.logs.Logs;
 import fr.kokhaviel.bot.event.moderation.AutoModerator;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import zone.nora.slothpixel.Slothpixel;
@@ -61,7 +63,9 @@ public class Mee7 {
 
     public static JDA jda;
 
-    private static final Set<Long> currentGiveaways = new HashSet<>();
+	public static Gson gson = new Gson();
+
+	private static final Set<Long> currentGiveaways = new HashSet<>();
 
     private static final Set<Long> currentAchievements = new HashSet<>();
 
@@ -168,8 +172,10 @@ public class Mee7 {
                     .addEventListeners(new WallsStatsCommand())
                     .addEventListeners(new WarlordsStatsCommand())
 
+                    .addEventListeners(new LanguageCommand())
+                    .addEventListeners(new PrefixCommand())
+                    .addEventListeners(new Settings())
                     //.addEventListeners(new ThatPersonDoesNotExistCommand())
-                    .setActivity(Activity.watching("la doc avant de poser une question..."))
 
                     .build();
 

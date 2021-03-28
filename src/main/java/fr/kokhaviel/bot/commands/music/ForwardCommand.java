@@ -17,21 +17,37 @@
 
 package fr.kokhaviel.bot.commands.music;
 
+import com.google.gson.JsonObject;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import fr.kokhaviel.bot.Config;
-import fr.kokhaviel.bot.music.*;
+import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Settings;
+import fr.kokhaviel.bot.music.GuildMusicManager;
+import fr.kokhaviel.bot.music.PlayerManager;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
+
+import static java.lang.String.format;
 
 public class ForwardCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+
+		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+				.getAsJsonObject().get(event.getGuild().getId())
+				.getAsJsonObject().get("music_prefix").getAsString();
+
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+		assert LANG_FILE != null;
+		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+		final JsonObject COMMANDS_OBJECT = LANG_OBJECT.get("commands").getAsJsonObject();
+		final JsonObject MUSIC_OBJECT = LANG_OBJECT.get("music").getAsJsonObject();
 
 		final TextChannel channel = (TextChannel) event.getChannel();
 		final Guild guild = event.getGuild();
@@ -39,20 +55,23 @@ public class ForwardCommand extends ListenerAdapter {
 		final Message message = event.getMessage();
 		final String[] args = message.getContentRaw().split("\\s+");
 
-		if(args[0].equalsIgnoreCase(Config.MUSIC_PREFIX + "forward")) {
+		if(args[0].equalsIgnoreCase(prefix + "forward")) {
 
 			final GuildVoiceState memberVoiceState = member.getVoiceState();
 			message.delete().queue();
 
 			if(!memberVoiceState.inVoiceChannel()) {
-				channel.sendMessage("You Need To Be In A Voice Channel For This Command Works !").queue(
+				channel.sendMessage(MUSIC_OBJECT.get("not_in_a_voice_channel").getAsString()).queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
 
 			if(args.length < 2) {
-				channel.sendMessage("Missing Arguments : Specify a duration to advance in seconds").queue(
-						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				channel.sendMessage(format("%s : %s",
+						COMMANDS_OBJECT.get("missing_arguments").getAsString(),
+						MUSIC_OBJECT.get("forward_no_duration").getAsString()))
+						.queue(
+							delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
 
@@ -63,7 +82,7 @@ public class ForwardCommand extends ListenerAdapter {
 			final int toForward = Integer.parseInt(args[1]);
 
 			if(toForward < 10) {
-				channel.sendMessage("Cannot Forward Less Than 10 seconds").queue(
+				channel.sendMessage(MUSIC_OBJECT.get("forward_less_10").getAsString()).queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}

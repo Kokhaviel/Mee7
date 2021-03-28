@@ -17,16 +17,21 @@
 
 package fr.kokhaviel.bot.commands.fun;
 
-import fr.kokhaviel.bot.Config;
+import com.google.gson.JsonObject;
+import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
+import static java.lang.String.format;
 
 public class EightBallCommand extends ListenerAdapter {
 
@@ -43,7 +48,7 @@ public class EightBallCommand extends ListenerAdapter {
 			"Outlook good.",
 			"Better not tell you now.",
 			"My sources say no.",
-			"Yes – definitely.",
+			"Yes - definitely.",
 			"Yes.",
 			"Cannot predict now.",
 			"Outlook not so good.",
@@ -55,21 +60,31 @@ public class EightBallCommand extends ListenerAdapter {
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {
 
+		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+				.getAsJsonObject().get(event.getGuild().getId())
+				.getAsJsonObject().get("prefix").getAsString();
+
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+		assert LANG_FILE != null;
+		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+		final JsonObject COMMANDS_OBJECT = LANG_OBJECT.get("commands").getAsJsonObject();
+
 		final Message message = event.getMessage();
 		final String[] args = message.getContentRaw().split("\\s+");
 		final MessageChannel channel = event.getChannel();
 
-		if(args[0].equalsIgnoreCase(Config.PREFIX + "8ball")) {
+		if(args[0].equalsIgnoreCase(prefix + "8ball")) {
 
 			if(args.length < 2) {
 
-				message.delete().queue();
-				channel.sendMessage("Missing Argument : Please Use " + Config.PREFIX + "8ball <Question?>").queue(
-						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				channel.sendMessage(format("%s : %s ",
+						COMMANDS_OBJECT.get("missing_arguments").getAsString(),
+						COMMANDS_OBJECT.get("please_use").getAsString()) + prefix + "8ball <Question?>")
+							.queue(
+								delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
 			int ballRandom = new Random().nextInt(20);
-			message.delete().queue();
 			channel.sendMessage(answer.get(ballRandom)).queue();
 
 		}

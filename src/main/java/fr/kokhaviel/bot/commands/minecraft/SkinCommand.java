@@ -18,17 +18,20 @@
 package fr.kokhaviel.bot.commands.minecraft;
 
 import com.google.gson.JsonObject;
-import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Base64;
+
+import static java.lang.String.format;
 
 public class SkinCommand extends ListenerAdapter {
 
@@ -36,15 +39,24 @@ public class SkinCommand extends ListenerAdapter {
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
+		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+				.getAsJsonObject().get(event.getGuild().getId())
+				.getAsJsonObject().get("minecraft_prefix").getAsString();
+
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+		assert LANG_FILE != null;
+		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+		final JsonObject MINECRAFT_OBJECT = LANG_OBJECT.get("minecraft").getAsJsonObject();
+
 		final Message message = event.getMessage();
 		final String[] args = message.getContentRaw().split("\\s+");
 		final TextChannel channel = (TextChannel) event.getChannel();
 
-		if(args[0].equalsIgnoreCase(Config.MINECRAFT_PREFIX + "skin")) {
+		if(args[0].equalsIgnoreCase(prefix + "skin")) {
 
 			if(args.length < 2) {
 
-				channel.sendMessage("You must specify a Minecraft player username !").queue();
+				channel.sendMessage(MINECRAFT_OBJECT.get("no_mc_username").getAsString()).queue();
 				return;
 			}
 
@@ -54,8 +66,10 @@ public class SkinCommand extends ListenerAdapter {
 				JsonObject object = JsonUtilities.readJson(new URL(url)).getAsJsonObject();
 				final String image = object.get("skin").getAsString();
 				byte[] decoded = Base64.getDecoder().decode(image);
-				channel.sendMessage("Here is the " + args[1] + " skin !").addFile(decoded, "Skin.png").queue();
-
+				channel.sendMessage(format("%s %s %s !", MINECRAFT_OBJECT.get("here_is").getAsString(),
+						args[1],
+						MINECRAFT_OBJECT.get("skin").getAsString()
+				)).addFile(decoded, "skin.png").queue();
 			} catch(IOException e) {
 				e.printStackTrace();
 			}

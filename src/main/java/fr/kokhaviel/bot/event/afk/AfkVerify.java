@@ -17,16 +17,21 @@
 
 package fr.kokhaviel.bot.event.afk;
 
-import java.awt.Color;
-import java.util.List;
-
-import fr.kokhaviel.bot.*;
+import com.google.gson.JsonObject;
+import fr.kokhaviel.bot.Config;
+import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Mee7;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import java.awt.*;
+import java.io.File;
+import java.util.List;
 
 public class AfkVerify extends ListenerAdapter {
 
@@ -38,17 +43,23 @@ public class AfkVerify extends ListenerAdapter {
         final Guild guild = event.getGuild();
         final List<Member> members = event.getMessage().getMentionedMembers();
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject AFK_OBJECT = LANG_OBJECT.get("afk").getAsJsonObject();
+
         for (Member member : members) {
             if (Mee7.afkIDs.contains(member.getId())) {
                 EmbedBuilder afkMentionEmbed = new EmbedBuilder();
 
-                afkMentionEmbed.setTitle("Afk Member Mention")
-                        .setDescription("This user is afk ...")
+                afkMentionEmbed.setTitle(AFK_OBJECT.get("afk_embed_title").getAsString())
+                        .setDescription(AFK_OBJECT.get("afk_embed_description").getAsString())
                         .setColor(Color.RED)
                         .setThumbnail(member.getUser().getAvatarUrl())
-                        .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + guild.getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                        .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + guild.getName(), Config.DEVELOPER_AVATAR)
 
-                        .addField("Member Mentioned : ", member.getUser().getAsTag(), false);
+                        .addField(AFK_OBJECT.get("afk_member_mentioned").getAsString(), member.getUser().getAsTag(), false);
 
                 channel.sendMessage(afkMentionEmbed.build()).queue();
             }

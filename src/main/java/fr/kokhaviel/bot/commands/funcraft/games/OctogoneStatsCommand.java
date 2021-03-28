@@ -17,9 +17,11 @@
 
 package fr.kokhaviel.bot.commands.funcraft.games;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Mee7;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -28,32 +30,49 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
+
+import static java.lang.String.format;
 
 public class OctogoneStatsCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
+		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+				.getAsJsonObject().get(event.getGuild().getId())
+				.getAsJsonObject().get("funcraft_prefix").getAsString();
+
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+		assert LANG_FILE != null;
+		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+		final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+		final JsonObject COMMANDS_OBJECT = LANG_OBJECT.get("commands").getAsJsonObject();
+		final JsonObject FUNCRAFT_OBJECT = LANG_OBJECT.get("funcraft").getAsJsonObject();
+
 		final Message message = event.getMessage();
 		final String[] args = message.getContentRaw().split("\\s+");
 		final TextChannel channel = (TextChannel) event.getChannel();
 
-		if(args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "octogone")) {
+		if(args[0].equalsIgnoreCase(prefix + "octogone")) {
 
 			if(args.length < 2) {
 
 				message.delete().queue();
 
-				channel.sendMessage("Missing Arguments : Please Specify A Player !").queue(
-						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				channel.sendMessage(format("%s : %s !",
+						COMMANDS_OBJECT.get("missing_arguments").getAsString(),
+						FUNCRAFT_OBJECT.get("no_player_specified").getAsString()))
+						.queue(
+							delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
 
 			if(!args[1].matches("^\\w{3,16}$")) {
-				channel.sendMessage("You must specify a valid Minecraft username !").queue(
+				channel.sendMessage(FUNCRAFT_OBJECT.get("not_valid_username").getAsString()).queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
@@ -62,45 +81,44 @@ public class OctogoneStatsCommand extends ListenerAdapter {
 
 			try {
 				message.delete().queue();
-				Gson gson = new Gson();
-				Octogone octogone = gson.fromJson(JsonUtilities.readJson(new URL(url)), Octogone.class);
+				Octogone octogone = Mee7.gson.fromJson(JsonUtilities.readJson(new URL(url)), Octogone.class);
 
 				if(octogone.exit_code.equals("0"))
-					channel.sendMessage(getOctogoneStats(octogone, channel).build()).queue();
+					channel.sendMessage(getOctogoneStats(octogone, channel, GENERAL_OBJECT, FUNCRAFT_OBJECT).build()).queue();
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	private EmbedBuilder getOctogoneStats(Octogone octogone, TextChannel channel) {
+	private EmbedBuilder getOctogoneStats(Octogone octogone, TextChannel channel, JsonObject generalObject, JsonObject funcraftObject) {
 
 		EmbedBuilder octogoneEmbed = new EmbedBuilder();
 
 		if(octogone.exit_code.equals("0")) {
-			octogoneEmbed.setAuthor("Funcraft Player Stats", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
+			octogoneEmbed.setAuthor("Funcraft Player Stats", null, Config.FUNCRAFT_ICON);
 			octogoneEmbed.setColor(Color.RED);
 			octogoneEmbed.setThumbnail(octogone.skin);
-			octogoneEmbed.setTitle(String.format("%s Octogone Stats", octogone.pseudo));
-			octogoneEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+			octogoneEmbed.setTitle(format("%s Octogone Stats", octogone.pseudo));
+			octogoneEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", Config.DEVELOPER_AVATAR);
 
 			octogoneEmbed.addField("Rank : ", octogone.rang, true);
 
 			octogoneEmbed.addBlankField(false);
-			octogoneEmbed.addField("Points : ", octogone.data.points, true);
-			octogoneEmbed.addField("Games : ", octogone.data.parties, true);
-			octogoneEmbed.addField("Victories : ", octogone.data.victoires, true);
-			octogoneEmbed.addField("Defeats : ", octogone.data.defaites, true);
-			octogoneEmbed.addField("Played Time : ", octogone.data.temps_jeu + " minutes", true);
-			octogoneEmbed.addField("Kills : ", octogone.data.kills, true);
-			octogoneEmbed.addField("Deaths : ", octogone.data.morts, true);
+			octogoneEmbed.addField(format("%s : ", funcraftObject.get("points").getAsString()), octogone.data.points, true);
+			octogoneEmbed.addField(format("%s : ", funcraftObject.get("games").getAsString()), octogone.data.parties, true);
+			octogoneEmbed.addField(format("%s : ", funcraftObject.get("victories").getAsString()), octogone.data.victoires, true);
+			octogoneEmbed.addField(format("%s : ", funcraftObject.get("defeats").getAsString()), octogone.data.defaites, true);
+			octogoneEmbed.addField(format("%s : ", funcraftObject.get("played_time").getAsString()), octogone.data.temps_jeu + " minutes", true);
+			octogoneEmbed.addField(format("%s : ", funcraftObject.get("kills").getAsString()), octogone.data.kills, true);
+			octogoneEmbed.addField(format("%s : ", funcraftObject.get("deaths").getAsString()), octogone.data.morts, true);
 
 			octogoneEmbed.addBlankField(false);
-			octogoneEmbed.addField("Winrate : ", octogone.stats.winrate + "%", true);
+			octogoneEmbed.addField(format("%s : ", funcraftObject.get("winrate").getAsString()), octogone.stats.winrate + "%", true);
 			octogoneEmbed.addField("KDR : ", octogone.stats.kd, true);
-			octogoneEmbed.addField("Average Kills / Games : ", octogone.stats.kills_game, true);
-			octogoneEmbed.addField("Average Deaths / Games : ", octogone.stats.morts_game, true);
-			octogoneEmbed.addField("Average Time / Games : ", octogone.stats.temps_partie + "s", true);
+			octogoneEmbed.addField(format("%s / %s : ", funcraftObject.get("average_kills").getAsString(), funcraftObject.get("games").getAsString()), octogone.stats.kills_game, true);
+			octogoneEmbed.addField(format("%s / %s : ", funcraftObject.get("average_deaths").getAsString(), funcraftObject.get("games").getAsString()), octogone.stats.morts_game, true);
+			octogoneEmbed.addField(format("%s / %s : ", funcraftObject.get("average_time").getAsString(), funcraftObject.get("games").getAsString()), octogone.stats.temps_partie + "s", true);
 
 		}
 

@@ -17,10 +17,13 @@
 
 package fr.kokhaviel.bot.commands.minecraft;
 
-import net.dv8tion.jda.api.entities.Message;
+import com.google.gson.JsonObject;
+import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import static fr.kokhaviel.bot.Mee7.getCurrentAchievements;
+import static java.lang.String.format;
 
 public class Achievements {
 
@@ -71,7 +75,6 @@ public class Achievements {
 			"elytra", "totem_of_undying", "trident",
 			"campfire", "honey_bottle", "honeycomb"));
 
-	private Message giveawayMessage;
 	private TextChannel channel;
 	private String block;
 	private String title;
@@ -81,10 +84,15 @@ public class Achievements {
 	private boolean isBlockSetup;
 	private boolean isTitleSetup;
 	private boolean isStringSetup;
-	private boolean isAchieveCompleted;
 
-	public Message getGiveawayMessage() {
-		return giveawayMessage;
+	private final JsonObject ACHIEVEMENTS_OBJECT;
+
+	public Achievements(MessageReceivedEvent event) {
+
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+		assert LANG_FILE != null;
+		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+		this.ACHIEVEMENTS_OBJECT = LANG_OBJECT.get("minecraft").getAsJsonObject().get("achievements").getAsJsonObject();
 	}
 
 	public TextChannel getChannel() {
@@ -119,15 +127,6 @@ public class Achievements {
 		return isStringSetup;
 	}
 
-	public boolean isAchieveCompleted() {
-		return isAchieveCompleted;
-	}
-
-
-
-	public void setGiveawayMessage(Message giveawayMessage) {
-		this.giveawayMessage = giveawayMessage;
-	}
 
 	public void setChannel(TextChannel channel) {
 		this.channel = channel;
@@ -161,18 +160,14 @@ public class Achievements {
 		isStringSetup = StringSetup;
 	}
 
-	public void setAchieveCompleted(boolean achieveCompleted) {
-		isAchieveCompleted = achieveCompleted;
-	}
-
 	public void startSetup(Achievements achievements, MessageReceivedEvent event) {
 
 		event.getMessage().delete().queue();
 
-		event.getChannel().sendMessage("Ready to setup an achievement image !").queue(
+		event.getChannel().sendMessage(ACHIEVEMENTS_OBJECT.get("ready_setup").getAsString()).queue(
 				delete -> delete.delete().queueAfter(10, TimeUnit.SECONDS));
 
-		event.getChannel().sendMessage("Now Set a Minecraft Block for The Achievement !").queue(
+		event.getChannel().sendMessage(ACHIEVEMENTS_OBJECT.get("set_block").getAsString()).queue(
 				delete -> delete.delete().queueAfter(1, TimeUnit.MINUTES));
 
 		achievements.setSetupStarted(true);
@@ -180,16 +175,21 @@ public class Achievements {
 
 	public void blockSetup(Achievements achievements, MessageReceivedEvent event) {
 
+		final String GITHUB_URL = "https://github.com/Kokhaviel/Mee7/blob/master/src/main/java/fr/kokhaviel/bot/commands/minecraft/Achievements.java#L38";
+
 		if(!supportedItems.contains(event.getMessage().getContentRaw())) {
-			event.getChannel().sendMessage("This item isn't supported ... \nComplete list at https://github.com/Kokhaviel/Mee7/blob/master/src/main/java/fr/kokhaviel/bot/commands/minecraft/Achievements.java#L34").queue();
+			event.getChannel().sendMessage(format("%s \n%s %s",
+					ACHIEVEMENTS_OBJECT.get("item_not_supported").getAsString(),
+					ACHIEVEMENTS_OBJECT.get("complete_list").getAsString(),
+					GITHUB_URL)).queue();
 			achievements.cancelSetup(achievements, event);
 			return;
 		}
 
-		event.getChannel().sendMessage("Successfully Set the Block To " + event.getMessage().getContentRaw()).queue(
+		event.getChannel().sendMessage( format("%s %s !", ACHIEVEMENTS_OBJECT.get("success_set_block").getAsString(), event.getMessage().getContentRaw())).queue(
 				delete -> delete.delete().queueAfter(1, TimeUnit.MINUTES));
 
-		event.getChannel().sendMessage("Now Let's Set a Title !").queue(
+		event.getChannel().sendMessage(ACHIEVEMENTS_OBJECT.get("set_title").getAsString()).queue(
 				delete -> delete.delete().queueAfter(1, TimeUnit.MINUTES));
 
 		achievements.setBlock(event.getMessage().getContentRaw());
@@ -201,15 +201,15 @@ public class Achievements {
 		final Pattern titlePattern = Pattern.compile("^[A-Za-z0-9_\\s]+$");
 
 		if(!event.getMessage().getContentRaw().matches(titlePattern.pattern())) {
-			event.getChannel().sendMessage("Please use only A-Z, a-z and 0-9 characters !").queue();
+			event.getChannel().sendMessage(ACHIEVEMENTS_OBJECT.get("invalid_char").getAsString()).queue();
 			achievements.cancelSetup(achievements, event);
 			return;
 		}
 
-		event.getChannel().sendMessage("Successfully Set the Title : " + event.getMessage().getContentRaw() + " !").queue(
+		event.getChannel().sendMessage( format("%s %s !", ACHIEVEMENTS_OBJECT.get("success_set_title").getAsString(), event.getMessage().getContentRaw())).queue(
 				delete -> delete.delete().queueAfter(1, TimeUnit.MINUTES));
 
-		event.getChannel().sendMessage("Now Let's Set the Text of The Image !").queue(
+		event.getChannel().sendMessage(ACHIEVEMENTS_OBJECT.get("set_text").getAsString()).queue(
 				delete -> delete.delete().queueAfter(1, TimeUnit.MINUTES));
 
 		achievements.setTitle(event.getMessage().getContentRaw().replace(" ", ".."));
@@ -221,12 +221,12 @@ public class Achievements {
 		final Pattern titlePattern = Pattern.compile("^[A-Za-z0-9_\\s]+$");
 
 		if(!event.getMessage().getContentRaw().matches(titlePattern.pattern())) {
-			event.getChannel().sendMessage("Please use only A-Z, a-z and 0-9 characters !").queue();
+			event.getChannel().sendMessage(ACHIEVEMENTS_OBJECT.get("invalid_char").getAsString()).queue();
 			achievements.cancelSetup(achievements, event);
 			return;
 		}
 
-		event.getChannel().sendMessage("Successfully Set the Text !").queue(
+		event.getChannel().sendMessage(ACHIEVEMENTS_OBJECT.get("success_set_text").getAsString()).queue(
 				delete -> delete.delete().queueAfter(1, TimeUnit.MINUTES));
 
 		achievements.setString(event.getMessage().getContentRaw().replace(" ", ".."));
@@ -261,5 +261,8 @@ public class Achievements {
 		achievements.setTitleSetup(false);
 		achievements.setStringSetup(false);
 
+		event.getChannel().sendMessage("Achievement Setup Cancelled").queue(
+				delete -> delete.delete().queueAfter(10, TimeUnit.SECONDS)
+		);
 	}
 }

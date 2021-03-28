@@ -17,7 +17,9 @@
 
 package fr.kokhaviel.bot.commands.giveaways;
 
-import fr.kokhaviel.bot.Config;
+import com.google.gson.JsonObject;
+import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -27,10 +29,12 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.text.ParseException;
 import java.util.concurrent.TimeUnit;
 
 import static fr.kokhaviel.bot.Mee7.getCurrentGiveaways;
+import static java.lang.String.format;
 
 
 public class GiveawayCommands extends ListenerAdapter {
@@ -43,35 +47,43 @@ public class GiveawayCommands extends ListenerAdapter {
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
+		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+				.getAsJsonObject().get(event.getGuild().getId())
+				.getAsJsonObject().get("giveaways_prefix").getAsString();
+
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+		assert LANG_FILE != null;
+		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+		final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+		final JsonObject COMMANDS_OBJECT = LANG_OBJECT.get("commands").getAsJsonObject();
+		final JsonObject GIVEAWAYS_OBJECT = LANG_OBJECT.get("giveaways").getAsJsonObject();
+
 		final Message message = event.getMessage();
 		final String[] args = message.getContentRaw().split("\\s+");
 		final TextChannel channel = (TextChannel) event.getChannel();
 
-		if(args[0].equalsIgnoreCase(Config.GIVEAWAYS_PREFIX + "create")) {
+		if(args[0].equalsIgnoreCase(prefix + "create")) {
 
 			if(args.length > 1) {
 				message.delete().queue();
 
-				channel.sendMessage("Too Arguments ...").queue(
+				channel.sendMessage(format("%s ...", COMMANDS_OBJECT.get("too_arguments").getAsString())).queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
 
-
 			if(getCurrentGiveaways().contains(event.getGuild().getIdLong())) {
-
-				channel.sendMessage("You are already setting up a giveaway :tada:").queue();
+				channel.sendMessage(format("%s :tada: !", GIVEAWAYS_OBJECT.get("already_setting_up").getAsString())).queue();
 				return;
 			}
 
-			giveaway = new Giveaways();
+			giveaway = new Giveaways(event);
 
 			getCurrentGiveaways().add(event.getGuild().getIdLong());
 			giveaway.startSetup(giveaway, event);
 			this.giveawayUserCreate = event.getAuthor();
 			this.giveawayChannelCreate = (TextChannel) event.getChannel();
 			this.giveawayMessageCreate = event.getMessage();
-
 
 		}
 
@@ -96,17 +108,17 @@ public class GiveawayCommands extends ListenerAdapter {
 		}
 
 
-		if(args[0].equalsIgnoreCase(Config.GIVEAWAYS_PREFIX + "cancel")) {
+		if(args[0].equalsIgnoreCase(prefix + "cancel")) {
 
 			giveaway.cancelGiveaway(giveaway, event);
 		}
 
-		if(args[0].equalsIgnoreCase(Config.GIVEAWAYS_PREFIX + "end")) {
+		if(args[0].equalsIgnoreCase(prefix + "end")) {
 
 			giveaway.forceEnd(giveaway, event);
 		}
 
-		if(args[0].equalsIgnoreCase(Config.GIVEAWAYS_PREFIX + "reroll")) {
+		if(args[0].equalsIgnoreCase(prefix + "reroll")) {
 
 			giveaway.rerollGiveaway(giveaway, event);
 		}
@@ -122,7 +134,7 @@ public class GiveawayCommands extends ListenerAdapter {
 	@Override
 	public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
 
-		if(!giveaway.isGiveawayStarted()) return;
+		if(!getCurrentGiveaways().contains(event.getGuild().getIdLong())) return;
 
 		if(event.getMessageId().equals(giveaway.getGiveawayMessage().getId())) {
 			giveaway.getParticipants().add(event.getUser());
@@ -132,7 +144,7 @@ public class GiveawayCommands extends ListenerAdapter {
 	@Override
 	public void onMessageReactionRemove(@NotNull MessageReactionRemoveEvent event) {
 
-		if(!giveaway.isGiveawayStarted()) return;
+		if(!getCurrentGiveaways().contains(event.getGuild().getIdLong())) return;
 
 		if(event.getMessageId().equals(giveaway.getGiveawayMessage().getId())) {
 			giveaway.getParticipants().remove(event.getUser());

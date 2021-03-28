@@ -23,17 +23,23 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.io.File;
+
 public class ShutdownCommand extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+
+        String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+                .getAsJsonObject().get(event.getGuild().getId())
+                .getAsJsonObject().get("prefix").getAsString();
 
         final Message message = event.getMessage();
         final String[] args = message.getContentRaw().split("\\s+");
         final User author = message.getAuthor();
         final JDA jda = event.getJDA();
 
-        if (args[0].equalsIgnoreCase(Config.PREFIX + "shutdown") && author.getId().equals(Config.OWNER_ID)) {
+        if (args[0].equalsIgnoreCase(prefix + "shutdown") && author.getId().equals(Config.OWNER_ID)) {
             message.delete().queue();
             jda.shutdown();
         }

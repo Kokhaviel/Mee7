@@ -17,9 +17,11 @@
 
 package fr.kokhaviel.bot.commands.wikipedia;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Mee7;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -28,34 +30,45 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.String.format;
+
 public class WikipediaSearchCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
+		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+				.getAsJsonObject().get(event.getGuild().getId())
+				.getAsJsonObject().get("wikipedia_prefix").getAsString();
+
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+		assert LANG_FILE != null;
+		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+		final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+		final JsonObject COMMANDS_OBJECT = LANG_OBJECT.get("commands").getAsJsonObject();
+		final JsonObject WIKIPEDIA_OBJECT = LANG_OBJECT.get("wikipedia").getAsJsonObject();
 
 		final Message message = event.getMessage();
 		final String[] args = message.getContentRaw().split("\\s+");
 		final TextChannel channel = (TextChannel) event.getChannel();
 
-		if(args[0].equalsIgnoreCase(Config.WIKIPEDIA_PREFIX + "search")) {
+		if(args[0].equalsIgnoreCase(prefix + "search")) {
 
 			message.delete().queue();
 
 			if(args.length < 2) {
 
-				channel.sendMessage("You must specify an article to search !").queue(
+				channel.sendMessage(format("%s : %s", COMMANDS_OBJECT.get("missing_arguments").getAsString(), WIKIPEDIA_OBJECT.get("missing_arguments").getAsString())).queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
-
-			Gson gson = new Gson();
 
 			try {
 
@@ -66,10 +79,10 @@ public class WikipediaSearchCommand extends ListenerAdapter {
 				for(String s : research) {
 					finalResearch.append(s).append("_");
 				}
-				final String url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + finalResearch;
-				WikipediaContent content = gson.fromJson(JsonUtilities.readJson(new URL(url)), WikipediaContent.class);
+				final String URL = "https://en.wikipedia.org/api/rest_v1/page/summary/" + finalResearch;
+				WikipediaContent content = Mee7.gson.fromJson(JsonUtilities.readJson(new URL(URL)), WikipediaContent.class);
 
-				channel.sendMessage(getContentPage(content).build()).queue();
+				channel.sendMessage(getContentPage(content, GENERAL_OBJECT, COMMANDS_OBJECT, WIKIPEDIA_OBJECT).build()).queue();
 
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
@@ -77,16 +90,16 @@ public class WikipediaSearchCommand extends ListenerAdapter {
 		}
 	}
 
-	private EmbedBuilder getContentPage(WikipediaContent content) {
+	private EmbedBuilder getContentPage(WikipediaContent content, JsonObject generalObject, JsonObject commandObject, JsonObject wikipediaObject) {
 		EmbedBuilder wikiEmbed = new EmbedBuilder();
-		wikiEmbed.setAuthor("Wikipedia Search", null, "https://upload.wikimedia.org/wikipedia/commons/0/06/Wikipedia-logo_ka.png");
+		wikiEmbed.setAuthor(wikipediaObject.get("wikipedia_search").getAsString(), null, Config.WIKIPEDIA_ICON);
 		wikiEmbed.setColor(Color.BLACK);
 		wikiEmbed.setThumbnail(content.thumbnail.source);
-		wikiEmbed.setTitle(content.title + " Wikipedia Page");
-		wikiEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG, "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+		wikiEmbed.setTitle(format("%s %s", content.title, wikipediaObject.get("wikipedia_page").getAsString()));
+		wikiEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
 
-		wikiEmbed.addField("Description : ", content.description, false);
-		wikiEmbed.addField("Article Content : ", content.extract, false);
+		wikiEmbed.addField(format("%s %s : ", wikipediaObject.get("description").getAsString(), commandObject.get("command").getAsString()), content.description, false);
+		wikiEmbed.addField(format("%s %s : ", wikipediaObject.get("article_content").getAsJsonObject(), commandObject.get("command").getAsString()), content.extract, false);
 
 		return wikiEmbed;
 	}

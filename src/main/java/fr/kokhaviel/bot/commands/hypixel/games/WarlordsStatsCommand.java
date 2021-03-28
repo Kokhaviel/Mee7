@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import fr.kokhaviel.bot.Config;
+import fr.kokhaviel.bot.JsonUtilities;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -27,6 +28,7 @@ import zone.nora.slothpixel.player.Player;
 import zone.nora.slothpixel.player.stats.warlords.Warlords;
 
 import java.awt.*;
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import static fr.kokhaviel.bot.Mee7.sloth;
@@ -36,16 +38,20 @@ public class WarlordsStatsCommand extends ListenerAdapter {
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
+		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+				.getAsJsonObject().get(event.getGuild().getId())
+				.getAsJsonObject().get("hypixel_prefix").getAsString();
+
 
 		final Message message = event.getMessage();
 		final String[] args = message.getContentRaw().split("\\s+");
 		final TextChannel channel = (TextChannel) event.getChannel();
 
 
-		if(args[0].equalsIgnoreCase(Config.HYPIXEL_PREFIX + "warlords")) {
+		if(args[0].equalsIgnoreCase(prefix + "warlords")) {
 
 			if(args.length == 1) {
-				channel.sendMessage("You need to specify a player : " + Config.HYPIXEL_PREFIX + "warlords <Player>").queue(
+				channel.sendMessage("You need to specify a player : " + prefix + "warlords <Player>").queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}

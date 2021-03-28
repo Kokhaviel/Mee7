@@ -17,9 +17,11 @@
 
 package fr.kokhaviel.bot.event.logs;
 
+import com.google.gson.JsonObject;
 import fr.kokhaviel.bot.Config;
+import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.*;
 import net.dv8tion.jda.api.events.channel.category.*;
@@ -44,9 +46,12 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+
+import static java.lang.String.format;
 
 public class Logs extends ListenerAdapter {
 
@@ -58,25 +63,6 @@ public class Logs extends ListenerAdapter {
     @Override
     public void onShutdown(@NotNull ShutdownEvent event) {
         System.out.println("Bot Successfully Disconnected !");
-    }
-
-    @Override
-    public void onException(ExceptionEvent event) {
-        System.out.println("Exception : " + "\nClass : " + event.getClass().getName() + "\nCause : " + event.getCause());
-
-        List<TextChannel> textChannels = ((GuildChannel) event).getGuild().getTextChannelsByName("logs", true);
-        TextChannel logsChannel = textChannels.get(0);
-
-        EmbedBuilder exceptionEmbed = new EmbedBuilder();
-
-        exceptionEmbed.setTitle("An Exception Occurred")
-                .setColor(Color.RED)
-                .setThumbnail(event.getJDA().getSelfUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + ((GuildChannel) event).getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
-
-                .addField("Exception : ", event.getClass().getSimpleName() + "\n" + event.getCause(), false);
-
-        logsChannel.sendMessage(exceptionEmbed.build()).queue();
     }
 
     @Override
@@ -93,14 +79,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder catCreEmbed = new EmbedBuilder();
 
-        catCreEmbed.setTitle("Category Created")
+        catCreEmbed.setTitle(LOGS_OBJECT.get("category_created").getAsString())
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Category Created :", event.getCategory().getName() + "\nID : " + event.getId(), true);
+                .addField(LOGS_OBJECT.get("category_created").getAsString(), event.getCategory().getName() + "\nID : " + event.getId(), true);
 
         logsChannel.sendMessage(catCreEmbed.build()).queue();
     }
@@ -112,14 +104,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder catDelEmbed = new EmbedBuilder();
 
-        catDelEmbed.setTitle("Category Delete")
+        catDelEmbed.setTitle(LOGS_OBJECT.get("category_deleted").getAsString())
                 .setColor(Color.RED)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Category Deleted : ", event.getCategory().getName() + "\nID : " + event.getId(), false);
+                .addField(LOGS_OBJECT.get("category_deleted").getAsString(), event.getCategory().getName() + "\nID : " + event.getId(), false);
 
         logsChannel.sendMessage(catDelEmbed.build()).queue();
     }
@@ -131,14 +129,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder catNameUpdateEmbed = new EmbedBuilder();
 
-        catNameUpdateEmbed.setTitle("Category Name update")
+        catNameUpdateEmbed.setTitle(LOGS_OBJECT.get("category_name_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Category updated : ", event.getOldName() + " -> " + event.getNewName() + "\nID : " + event.getCategory().getId(), false);
+                .addField(LOGS_OBJECT.get("category_name_updated").getAsString(), event.getOldName() + " -> " + event.getNewName() + "\nID : " + event.getCategory().getId(), false);
 
         logsChannel.sendMessage(catNameUpdateEmbed.build()).queue();
     }
@@ -150,14 +154,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder emoteAddEmbed = new EmbedBuilder();
 
-        emoteAddEmbed.setTitle("Emote Add")
+        emoteAddEmbed.setTitle(LOGS_OBJECT.get("emote_added").getAsString())
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getEmote().getImageUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Emote Added : ", event.getEmote().getName() + "\n(ID : " + event.getEmote().getId() + ")", false);
+                .addField(LOGS_OBJECT.get("emote_added").getAsString(), event.getEmote().getName() + "\n(ID : " + event.getEmote().getId() + ")", false);
 
         logsChannel.sendMessage(emoteAddEmbed.build()).queue();
     }
@@ -169,14 +179,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder emoteRmEmbed = new EmbedBuilder();
 
-        emoteRmEmbed.setTitle("Emote Removed")
+        emoteRmEmbed.setTitle(LOGS_OBJECT.get("emote_removed").getAsString())
                 .setColor(Color.RED)
                 .setThumbnail(event.getEmote().getImageUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Emote Removed : ", event.getEmote().getName() + "\n(ID : " + event.getEmote().getId() + ")", false);
+                .addField(LOGS_OBJECT.get("emote_removed").getAsString(), event.getEmote().getName() + "\n(ID : " + event.getEmote().getId() + ")", false);
 
         logsChannel.sendMessage(emoteRmEmbed.build()).queue();
     }
@@ -188,14 +204,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder emoteUpdateNameEmbed = new EmbedBuilder();
 
-        emoteUpdateNameEmbed.setTitle("Emote Name Update")
+        emoteUpdateNameEmbed.setTitle(LOGS_OBJECT.get("emote_name_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getEmote().getImageUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Emote Updated : ", event.getOldName() + " -> " + event.getNewName() + "\n(ID : " + event.getEmote().getId(), false);
+                .addField(LOGS_OBJECT.get("emote_name_updated").getAsString(), event.getOldName() + " -> " + event.getNewName() + "\n(ID : " + event.getEmote().getId(), false);
 
         logsChannel.sendMessage(emoteUpdateNameEmbed.build()).queue();
     }
@@ -207,14 +229,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder emoteRolesEmbed = new EmbedBuilder();
 
-        emoteRolesEmbed.setTitle("Emote Roles Update")
+        emoteRolesEmbed.setTitle(LOGS_OBJECT.get("emote_roles_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Roles : ", event.getOldRoles() + " -> " + event.getNewRoles(), false);
+                .addField(LOGS_OBJECT.get("emote_roles_updated").getAsString(), event.getOldRoles() + " -> " + event.getNewRoles(), false);
 
         logsChannel.sendMessage(emoteRolesEmbed.build()).queue();
     }
@@ -226,14 +254,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder banEmbed = new EmbedBuilder();
 
-        banEmbed.setTitle("User Ban")
+        banEmbed.setTitle(LOGS_OBJECT.get("user_banned").getAsString())
                 .setColor(Color.RED)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("User Banned : ", event.getUser().getAsTag() + "\n(Member ID : " + event.getUser().getId() + ")", false);
+                .addField(LOGS_OBJECT.get("user_banned").getAsString(), event.getUser().getAsTag() + "\n(Member ID : " + event.getUser().getId() + ")", false);
 
         logsChannel.sendMessage(banEmbed.build()).queue();
     }
@@ -245,14 +279,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder inviteCreEmbed = new EmbedBuilder();
 
-        inviteCreEmbed.setTitle("Invite Create")
+        inviteCreEmbed.setTitle(LOGS_OBJECT.get("invite_created").getAsString())
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Invite Created : ", event.getUrl(), false);
+                .addField(LOGS_OBJECT.get("invite_created").getAsString(), event.getUrl(), false);
 
         logsChannel.sendMessage(inviteCreEmbed.build()).queue();
     }
@@ -264,14 +304,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder inviteDelEmbed = new EmbedBuilder();
 
-        inviteDelEmbed.setTitle("Invite Delete")
+        inviteDelEmbed.setTitle(LOGS_OBJECT.get("invite_deleted").getAsString())
                 .setColor(Color.RED)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Invite Deleted : ", event.getUrl(), false);
+                .addField(LOGS_OBJECT.get("invite_deleted").getAsString(), event.getUrl(), false);
 
         logsChannel.sendMessage(inviteDelEmbed.build()).queue();
     }
@@ -283,14 +329,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder joinEmbed = new EmbedBuilder();
 
-        joinEmbed.setTitle("User Join")
+        joinEmbed.setTitle(LOGS_OBJECT.get("member_joined").getAsString())
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("User Joined : ", event.getUser().getAsTag() + "\n(Member ID : " + event.getUser().getId() + ")", false);
+                .addField(LOGS_OBJECT.get("member_joined").getAsString(), event.getUser().getAsTag() + "\n(Member ID : " + event.getUser().getId() + ")", false);
 
         logsChannel.sendMessage(joinEmbed.build()).queue();
     }
@@ -302,14 +354,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder leaveEmbed = new EmbedBuilder();
 
-        leaveEmbed.setTitle("User Leave")
+        leaveEmbed.setTitle(LOGS_OBJECT.get("member_left").getAsString())
                 .setColor(Color.RED)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("User Left : ", event.getUser().getAsTag() + "\n(Member ID : " + event.getUser().getId() + ")", false);
+                .addField(LOGS_OBJECT.get("member_left").getAsString(), event.getUser().getAsTag() + "\n(Member ID : " + event.getUser().getId() + ")", false);
 
         logsChannel.sendMessage(leaveEmbed.build()).queue();
     }
@@ -321,14 +379,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder roleAddEmbed = new EmbedBuilder();
 
-        roleAddEmbed.setTitle("Role Add")
+        roleAddEmbed.setTitle(LOGS_OBJECT.get("role_added").getAsString())
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Role Added : ", event.getRoles() + "\nTo " + event.getUser().getAsTag(), false);
+                .addField(LOGS_OBJECT.get("role_added").getAsString(), event.getRoles() + "\n" + GENERAL_OBJECT.get("to").getAsString() + event.getUser().getAsTag(), false);
 
         logsChannel.sendMessage(roleAddEmbed.build()).queue();
     }
@@ -340,14 +404,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder roleRemEmbed = new EmbedBuilder();
 
-        roleRemEmbed.setTitle("Role Remove")
+        roleRemEmbed.setTitle(LOGS_OBJECT.get("role_removed").getAsString())
                 .setColor(Color.RED)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Role Removed : ", event.getRoles() + "\nTo " + event.getUser().getAsTag(), false);
+                .addField(LOGS_OBJECT.get("role_removed").getAsString(), event.getRoles() + "\n" + GENERAL_OBJECT.get("to").getAsString() + event.getUser().getAsTag(), false);
 
         logsChannel.sendMessage(roleRemEmbed.build()).queue();
     }
@@ -359,14 +429,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder boostTimeUpdateEmbed = new EmbedBuilder();
 
-        boostTimeUpdateEmbed.setTitle("Boost Time Update")
+        boostTimeUpdateEmbed.setTitle(LOGS_OBJECT.get("boost_time_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Boost Time : ", event.getOldTimeBoosted() + " -> " + event.getNewTimeBoosted() + "\nBy : " + event.getUser().getAsTag(), false);
+                .addField(LOGS_OBJECT.get("boost_time_update").getAsString(), event.getOldTimeBoosted() + " -> " + event.getNewTimeBoosted() + "\n" + GENERAL_OBJECT.get("by").getAsString() + event.getUser().getAsTag(), false);
 
         logsChannel.sendMessage(boostTimeUpdateEmbed.build()).queue();
     }
@@ -378,14 +454,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder nicknameUpdateEmbed = new EmbedBuilder();
 
-        nicknameUpdateEmbed.setTitle("NickName Update")
+        nicknameUpdateEmbed.setTitle(LOGS_OBJECT.get("nickname_updated").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Nickname Updated", event.getUser().getAsTag() + "\n" + event.getOldNickname() + " -> " + event.getNewNickname(), false);
+                .addField(LOGS_OBJECT.get("nickname_updated").getAsString(), event.getUser().getAsTag() + "\n" + event.getOldNickname() + " -> " + event.getNewNickname(), false);
 
         logsChannel.sendMessage(nicknameUpdateEmbed.build()).queue();
     }
@@ -399,12 +481,18 @@ public class Logs extends ListenerAdapter {
 		List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
 		TextChannel logsChannel = textChannels.get(0);
 
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
 		EmbedBuilder messageDeleteEmbed = new EmbedBuilder();
 
 		messageDeleteEmbed.setTitle("Message Delete")
 				.setColor(Color.RED)
 				.setThumbnail(event.getGuild().getIconUrl())
-				.setFooter("Developed by " + Config.DEVELOPER_TAG +"\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+				.setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
 			.addField("Message Deleted : ", event.getMessageId() + "\nIn : " + event.getChannel().getAsMention(), false);
 
@@ -424,14 +512,20 @@ public class Logs extends ListenerAdapter {
             List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
             TextChannel logsChannel = textChannels.get(0);
 
+            final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+            assert LANG_FILE != null;
+            final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+            final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+            final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
             EmbedBuilder messageUpdateEmbed = new EmbedBuilder();
 
-            messageUpdateEmbed.setTitle("Message Update")
+            messageUpdateEmbed.setTitle(LOGS_OBJECT.get("message_updated").getAsString())
                     .setColor(Color.ORANGE)
                     .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                    .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                    .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                    .addField("Message Updated : ", event.getMessage().getId() + " By " + event.getMember().getUser().getAsTag(), false);
+                    .addField(LOGS_OBJECT.get("message_updated").getAsString(), event.getMessage().getId() + GENERAL_OBJECT.get("by").getAsString() + event.getMember().getUser().getAsTag(), false);
 
             logsChannel.sendMessage(messageUpdateEmbed.build()).queue();
         }
@@ -444,14 +538,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder unbanEmbed = new EmbedBuilder();
 
-        unbanEmbed.setTitle("User Unban")
+        unbanEmbed.setTitle(LOGS_OBJECT.get("member_unbanned").getAsString())
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("User Unbanned : ", event.getUser().getAsTag(), false);
+                .addField(LOGS_OBJECT.get("member_unbanned").getAsString(), event.getUser().getAsTag(), false);
 
         logsChannel.sendMessage(unbanEmbed.build()).queue();
     }
@@ -463,14 +563,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder afkUpdateEmbed = new EmbedBuilder();
 
-        afkUpdateEmbed.setTitle("AFK Channel Update")
+        afkUpdateEmbed.setTitle(LOGS_OBJECT.get("afk_channel_updated").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("AFK Channel : ", event.getOldAfkChannel().getName() + " -> " + event.getNewAfkChannel().getName(), false);
+                .addField(LOGS_OBJECT.get("afk_channel_updated").getAsString(), event.getOldAfkChannel().getName() + " -> " + event.getNewAfkChannel().getName(), false);
 
         logsChannel.sendMessage(afkUpdateEmbed.build()).queue();
     }
@@ -482,14 +588,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder afkTOUpdateEmbed = new EmbedBuilder();
 
-        afkTOUpdateEmbed.setTitle("AFK Timeout Update")
+        afkTOUpdateEmbed.setTitle(LOGS_OBJECT.get("afk_timeout_updated").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("AFK Timeout : ", event.getOldAfkTimeout() + " -> " + event.getNewAfkTimeout(), false);
+                .addField(LOGS_OBJECT.get("afk_timeout_updated").getAsString(), event.getOldAfkTimeout() + " -> " + event.getNewAfkTimeout(), false);
 
         logsChannel.sendMessage(afkTOUpdateEmbed.build()).queue();
     }
@@ -501,14 +613,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder bannerUpdateEmbed = new EmbedBuilder();
 
-        bannerUpdateEmbed.setTitle("Banner Update")
+        bannerUpdateEmbed.setTitle(LOGS_OBJECT.get("banner_updated").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Banner Updated : ", "[Before]( " + event.getOldBannerUrl() + ")" + " -> " + "[After](" + event.getNewBannerUrl() + ")", false);
+                .addField(LOGS_OBJECT.get("banner_updated").getAsString(), format("[%s](%s) -> [%s](%s)", GENERAL_OBJECT.get("before").getAsString(),event.getOldBannerUrl(), GENERAL_OBJECT.get("after").getAsString(), event.getNewBannerUrl()), false);
 
         logsChannel.sendMessage(bannerUpdateEmbed.build()).queue();
     }
@@ -520,14 +638,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder boostCount = new EmbedBuilder();
 
-        boostCount.setTitle("Boost Count Update")
+        boostCount.setTitle(LOGS_OBJECT.get("boost_count_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Server Has Now ", event.getNewBoostCount() + " Boost !", false);
+                .addField(LOGS_OBJECT.get("server_has_now").getAsString(), event.getNewBoostCount() + LOGS_OBJECT.get("boosts").getAsString(), false);
 
         logsChannel.sendMessage(boostCount.build()).queue();
     }
@@ -539,14 +663,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder boostTierUpdate = new EmbedBuilder();
 
-        boostTierUpdate.setTitle("Boost Tier Update")
+        boostTierUpdate.setTitle(LOGS_OBJECT.get("boost_tier_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Boost Tier : ", event.getOldBoostTier() + " -> " + event.getNewBoostTier(), false);
+                .addField(LOGS_OBJECT.get("boost_tier").getAsString(), event.getOldBoostTier() + " -> " + event.getNewBoostTier(), false);
 
         logsChannel.sendMessage(boostTierUpdate.build()).queue();
     }
@@ -558,14 +688,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder descriptionUpdateEmbed = new EmbedBuilder();
 
-        descriptionUpdateEmbed.setTitle("Description Update")
+        descriptionUpdateEmbed.setTitle(LOGS_OBJECT.get("description_updated").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Description Updated : ", event.getOldDescription() + " -> " + event.getNewDescription(), false);
+                .addField(LOGS_OBJECT.get("description_updated").getAsString(), event.getOldDescription() + " -> " + event.getNewDescription(), false);
 
         logsChannel.sendMessage(descriptionUpdateEmbed.build()).queue();
     }
@@ -577,14 +713,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder iconUpdateEmbed = new EmbedBuilder();
 
-        iconUpdateEmbed.setTitle("Icon Update")
+        iconUpdateEmbed.setTitle(LOGS_OBJECT.get("icon_updated").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Icon Updated : ", "[Before](" + event.getOldIconUrl() + ")" + " -> " + "[After](" + event.getNewIconUrl() + ")", false);
+                .addField(LOGS_OBJECT.get("icon_updated").getAsString(), format("[%s](%s) -> [%s](%s)", GENERAL_OBJECT.get("before").getAsString(), event.getOldIconUrl(), GENERAL_OBJECT.get("after").getAsString(), event.getNewIconUrl()), false);
 
         logsChannel.sendMessage(iconUpdateEmbed.build()).queue();
     }
@@ -596,14 +738,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder nameUpdateEmbed = new EmbedBuilder();
 
-        nameUpdateEmbed.setTitle("Server Name Update")
+        nameUpdateEmbed.setTitle(LOGS_OBJECT.get("server_name_updated").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Name Updated : ", event.getOldName() + " -> " + event.getNewName(), false);
+                .addField(LOGS_OBJECT.get("server_name_updated").getAsString(), event.getOldName() + " -> " + event.getNewName(), false);
 
         logsChannel.sendMessage(nameUpdateEmbed.build()).queue();
     }
@@ -615,14 +763,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder ownerUpdateEmbed = new EmbedBuilder();
 
-        ownerUpdateEmbed.setTitle("Owner Update")
+        ownerUpdateEmbed.setTitle(LOGS_OBJECT.get("owner_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Owner : ", event.getOldOwner().getUser().getAsMention() + " -> " + event.getNewOwner().getUser().getAsMention(), false);
+                .addField(LOGS_OBJECT.get("owner_update").getAsString(), event.getOldOwner().getUser().getAsMention() + " -> " + event.getNewOwner().getUser().getAsMention(), false);
 
         logsChannel.sendMessage(ownerUpdateEmbed.build()).queue();
     }
@@ -634,14 +788,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder sysChannelEmbed = new EmbedBuilder();
 
-        sysChannelEmbed.setTitle("System Channel Update")
+        sysChannelEmbed.setTitle(LOGS_OBJECT.get("system_channel_updated").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Channel Updated : ", event.getOldSystemChannel().getAsMention() + " -> " + event.getNewSystemChannel().getAsMention(), false);
+                .addField(LOGS_OBJECT.get("system_channel_updated").getAsString(), event.getOldSystemChannel().getAsMention() + " -> " + event.getNewSystemChannel().getAsMention(), false);
 
         logsChannel.sendMessage(sysChannelEmbed.build()).queue();
     }
@@ -653,22 +813,28 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder deafenEmbed = new EmbedBuilder();
         EmbedBuilder undeafenEmbed = new EmbedBuilder();
 
-        deafenEmbed.setTitle("Voice User Deafen")
+        deafenEmbed.setTitle(LOGS_OBJECT.get("voice_user_deafen").getAsString())
                 .setColor(Color.RED)
                 .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("User Deafened : ", event.getMember().getUser().getAsTag() + " In : " + event.getVoiceState().getChannel().getName(), false);
+                .addField(LOGS_OBJECT.get("user_deafened").getAsString(), event.getMember().getUser().getAsTag() + GENERAL_OBJECT.get("in").getAsString() + event.getVoiceState().getChannel().getName(), false);
 
-        undeafenEmbed.setTitle("Voice User Undeafen")
+        undeafenEmbed.setTitle(LOGS_OBJECT.get("voice_user_undeafen").getAsString())
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("User Undeafened : ", event.getMember().getUser().getAsTag() + " In : " + event.getVoiceState().getChannel().getName(), false);
+                .addField(LOGS_OBJECT.get("user_undeafened").getAsString(), event.getMember().getUser().getAsTag() + GENERAL_OBJECT.get("in").getAsString() + event.getVoiceState().getChannel().getName(), false);
 
         if (event.isGuildDeafened()) logsChannel.sendMessage(deafenEmbed.build()).queue();
         if (!event.isGuildDeafened()) logsChannel.sendMessage(undeafenEmbed.build()).queue();
@@ -681,22 +847,28 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder muteEmbed = new EmbedBuilder();
         EmbedBuilder unmuteEmbed = new EmbedBuilder();
 
-        muteEmbed.setTitle("Voice User Mute")
+        muteEmbed.setTitle(LOGS_OBJECT.get("voice_user_mute").getAsString())
                 .setColor(Color.RED)
                 .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("User Muted : ", event.getMember().getUser().getAsTag() + " In : " + event.getVoiceState().getChannel().getName(), false);
+                .addField(LOGS_OBJECT.get("user_muted").getAsString(), event.getMember().getUser().getAsTag() + GENERAL_OBJECT.get("in").getAsString() + event.getVoiceState().getChannel().getName(), false);
 
-        unmuteEmbed.setTitle("Voice User Unmute")
+        unmuteEmbed.setTitle(LOGS_OBJECT.get("voice_user_unmute").getAsString())
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("User Unmuted : ", event.getMember().getUser().getAsTag() + " In : " + event.getVoiceState().getChannel().getName(), false);
+                .addField(LOGS_OBJECT.get("user_unmuted").getAsString(), event.getMember().getUser().getAsTag() + GENERAL_OBJECT.get("in").getAsString() + event.getVoiceState().getChannel().getName(), false);
 
         if (event.isGuildMuted()) logsChannel.sendMessage(muteEmbed.build()).queue();
         if (!event.isGuildMuted()) logsChannel.sendMessage(unmuteEmbed.build()).queue();
@@ -709,14 +881,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder moveEmbed = new EmbedBuilder();
 
-        moveEmbed.setTitle("Voice User Move")
+        moveEmbed.setTitle(LOGS_OBJECT.get("voice_user_move").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("User Moved : ", event.getMember().getUser().getAsTag() + "\n" + event.getChannelLeft() + " -> " + event.getChannelJoined(), false);
+                .addField(LOGS_OBJECT.get("user_moved").getAsString(), event.getMember().getUser().getAsTag() + "\n" + event.getChannelLeft() + " -> " + event.getChannelJoined(), false);
 
         logsChannel.sendMessage(moveEmbed.build()).queue();
     }
@@ -728,22 +906,28 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder streamEmbed = new EmbedBuilder();
         EmbedBuilder streamEndEmbed = new EmbedBuilder();
 
-        streamEmbed.setTitle("Stream Started")
+        streamEmbed.setTitle(LOGS_OBJECT.get("stream_started").getAsString())
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Stream : ", event.getMember().getUser().getAsTag() + "\nIn : " + event.getVoiceState().getChannel().getName(), false);
+                .addField(LOGS_OBJECT.get("stream_started").getAsString(), GENERAL_OBJECT.get("by").getAsString() + event.getMember().getUser().getAsTag() + "\n" + GENERAL_OBJECT.get("in").getAsString() + event.getVoiceState().getChannel().getName(), false);
 
-        streamEndEmbed.setTitle("Stream End")
+        streamEndEmbed.setTitle(LOGS_OBJECT.get("stream_ended").getAsString())
                 .setColor(Color.RED)
                 .setThumbnail(event.getMember().getUser().getAvatarUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Stream : ", event.getMember().getUser().getAsTag() + "\nIn : " + event.getVoiceState().getChannel().getName(), false);
+                .addField(LOGS_OBJECT.get("stream_ended").getAsString(), GENERAL_OBJECT.get("by").getAsString() + event.getMember().getUser().getAsTag() + "\n" + GENERAL_OBJECT.get("in").getAsString() + event.getVoiceState().getChannel().getName(), false);
 
         if (event.isStream()) logsChannel.sendMessage(streamEmbed.build()).queue();
         if (!event.isStream()) logsChannel.sendMessage(streamEndEmbed.build()).queue();
@@ -754,14 +938,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder roleCreateEmbed = new EmbedBuilder();
 
-        roleCreateEmbed.setTitle("Role Create")
+        roleCreateEmbed.setTitle(LOGS_OBJECT.get("role_created").getAsString())
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Role Created : ", event.getRole().getName(), false);
+                .addField(LOGS_OBJECT.get("role_created").getAsString(), event.getRole().getName(), false);
 
         logsChannel.sendMessage(roleCreateEmbed.build()).queue();
 
@@ -775,14 +965,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder roleDelEmbed = new EmbedBuilder();
 
-        roleDelEmbed.setTitle("Role Delete")
+        roleDelEmbed.setTitle(LOGS_OBJECT.get("role_deleted").getAsString())
                 .setColor(Color.RED)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Role Deleted : ", event.getRole().getName(), false);
+                .addField(LOGS_OBJECT.get("role_deleted").getAsString(), event.getRole().getName(), false);
 
         logsChannel.sendMessage(roleDelEmbed.build()).queue();
     }
@@ -794,14 +990,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder roleColorEmbed = new EmbedBuilder();
 
-        roleColorEmbed.setTitle("Role Color Update")
+        roleColorEmbed.setTitle(LOGS_OBJECT.get("role_color_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Role Updated : ", event.getRole().getName() + "\nColor : " + event.getOldColor() + " -> " + event.getNewColor(), false);
+                .addField(LOGS_OBJECT.get("role_updated").getAsString(), event.getRole().getName() + "\n" + event.getOldColor() + " -> " + event.getNewColor(), false);
 
         logsChannel.sendMessage(roleColorEmbed.build()).queue();
     }
@@ -813,14 +1015,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder roleHoistedEmbed = new EmbedBuilder();
 
-        roleHoistedEmbed.setTitle("Role Hoist Update")
+        roleHoistedEmbed.setTitle(LOGS_OBJECT.get("role_hoist_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Role Updated : ", event.getRole().getName() + "\n" + (event.getOldValue() ? "Yes" : "No") + " -> " + (event.getNewValue() ? "Yes" : "No"), false);
+                .addField(LOGS_OBJECT.get("role_updated").getAsString(), event.getRole().getName() + "\n" + (event.getOldValue() ? GENERAL_OBJECT.get("yes").getAsString() : GENERAL_OBJECT.get("no").getAsString()) + " -> " + (event.getNewValue() ? GENERAL_OBJECT.get("yes").getAsString() : LOGS_OBJECT.get("no").getAsString()), false);
 
         logsChannel.sendMessage(roleHoistedEmbed.build()).queue();
     }
@@ -832,14 +1040,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder roleMentionEmbed = new EmbedBuilder();
 
-        roleMentionEmbed.setTitle("Role Mentionable Update")
+        roleMentionEmbed.setTitle(LOGS_OBJECT.get("role_mentionable_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Role Updated : ", event.getRole().getName() + "\n" + (event.getOldValue() ? "Yes" : "No") + " -> " + (event.getNewValue() ? "Yes" : "No"), false);
+                .addField(LOGS_OBJECT.get("role_updated").getAsString(), event.getRole().getName() + "\n" + (event.getOldValue() ? GENERAL_OBJECT.get("yes").getAsString() : GENERAL_OBJECT.get("no").getAsString()) + " -> " + (event.getNewValue() ? GENERAL_OBJECT.get("yes").getAsString() : GENERAL_OBJECT.get("no").getAsString()), false);
 
         logsChannel.sendMessage(roleMentionEmbed.build()).queue();
     }
@@ -851,14 +1065,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder roleNameUpdate = new EmbedBuilder();
 
-        roleNameUpdate.setTitle("Role Name Update")
+        roleNameUpdate.setTitle(LOGS_OBJECT.get("role_name_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Role Updated : ", event.getRole().getName() + "\n" + event.getOldName() + " -> " + event.getNewName(), false);
+                .addField(LOGS_OBJECT.get("role_updated").getAsString(), event.getRole().getName() + "\n" + event.getOldName() + " -> " + event.getNewName(), false);
 
         logsChannel.sendMessage(roleNameUpdate.build()).queue();
     }
@@ -870,14 +1090,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder textCreEmbed = new EmbedBuilder();
 
-        textCreEmbed.setTitle("Text Channel Create")
+        textCreEmbed.setTitle(LOGS_OBJECT.get("text_channel_created").getAsString())
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Channel Created : ", event.getChannel().getName() + "\n(ID : " + event.getChannel().getId() + ")", false);
+                .addField(LOGS_OBJECT.get("text_channel_created").getAsString(), event.getChannel().getName() + "\n(ID : " + event.getChannel().getId() + ")", false);
 
         logsChannel.sendMessage(textCreEmbed.build()).queue();
     }
@@ -889,14 +1115,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder textDelEmbed = new EmbedBuilder();
 
-        textDelEmbed.setTitle("Text Channel Delete")
+        textDelEmbed.setTitle(LOGS_OBJECT.get("text_channel_deleted").getAsString())
                 .setColor(Color.RED)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Channel Deleted : ", event.getChannel().getName() + "\n(ID : " + event.getChannel().getId() + ")", false);
+                .addField(LOGS_OBJECT.get("text_channel_deleted").getAsString(), event.getChannel().getName() + "\n(ID : " + event.getChannel().getId() + ")", false);
 
         logsChannel.sendMessage(textDelEmbed.build()).queue();
     }
@@ -908,14 +1140,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder textNameUpdateEmbed = new EmbedBuilder();
 
-        textNameUpdateEmbed.setTitle("Text Channel Name Update")
+        textNameUpdateEmbed.setTitle(LOGS_OBJECT.get("text_channel_name_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Channel Updated : ", event.getChannel().getAsMention() + "\n" + event.getOldName() + " -> " + event.getNewName(), false);
+                .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getAsMention() + "\n" + event.getOldName() + " -> " + event.getNewName(), false);
 
         logsChannel.sendMessage(textNameUpdateEmbed.build()).queue();
     }
@@ -927,14 +1165,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder textNewsUpdateEmbed = new EmbedBuilder();
 
-        textNewsUpdateEmbed.setTitle("Text Channel Update News")
+        textNewsUpdateEmbed.setTitle(LOGS_OBJECT.get("text_channel_news_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Channel Updated : ", event.getChannel().getName() + "\n" + event.getOldValue() + " -> " + event.getNewValue(), false);
+                .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getName() + "\n" + event.getOldValue() + " -> " + event.getNewValue(), false);
 
         logsChannel.sendMessage(textNewsUpdateEmbed.build()).queue();
     }
@@ -946,14 +1190,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder textNSFWUpdateEmbed = new EmbedBuilder();
 
-        textNSFWUpdateEmbed.setTitle("Text Channel NSFW Update")
+        textNSFWUpdateEmbed.setTitle(LOGS_OBJECT.get("text_channel_nsfw_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Channel Updated : ", event.getChannel().getName() + "\n" + (event.getOldValue() ? "Yes" : "No") + " -> " + (event.getNewValue() ? "Yes" : "No"), false);
+                .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getName() + "\n" + (event.getOldValue() ? GENERAL_OBJECT.get("yes").getAsString() : GENERAL_OBJECT.get("no").getAsString()) + " -> " + (event.getNewValue() ? GENERAL_OBJECT.get("yes").getAsString() : GENERAL_OBJECT.get("no").getAsString()), false);
 
         logsChannel.sendMessage(textNSFWUpdateEmbed.build()).queue();
     }
@@ -965,14 +1215,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder textSMUpdateEmbed = new EmbedBuilder();
 
-        textSMUpdateEmbed.setTitle("Text Channel SlowMode Update")
+        textSMUpdateEmbed.setTitle(LOGS_OBJECT.get("text_channel_slowmode_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Channel Updated : ", event.getChannel().getName() + "\n" + event.getOldSlowmode() + " s -> " + event.getNewSlowmode() + "s", false);
+                .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getName() + "\n" + event.getOldSlowmode() + " s -> " + event.getNewSlowmode() + "s", false);
 
         logsChannel.sendMessage(textSMUpdateEmbed.build()).queue();
     }
@@ -984,14 +1240,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder textTopicUpdateEmbed = new EmbedBuilder();
 
-        textTopicUpdateEmbed.setTitle("Text Channel Topic Update")
+        textTopicUpdateEmbed.setTitle(LOGS_OBJECT.get("text_channel_topic_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Channel Updated : ", event.getChannel().getName() + "\n" + event.getOldTopic() + " -> " + event.getNewTopic(), false);
+                .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getName() + "\n" + event.getOldTopic() + " -> " + event.getNewTopic(), false);
 
         logsChannel.sendMessage(textTopicUpdateEmbed.build()).queue();
     }
@@ -1006,12 +1268,19 @@ public class Logs extends ListenerAdapter {
                     delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
         } else {
             TextChannel logsChannel = textChannels.get(0);
+
+            final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+            assert LANG_FILE != null;
+            final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+            final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+            final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
             EmbedBuilder activityStartEmbed = new EmbedBuilder();
 
-            activityStartEmbed.setTitle("Activity Started")
+            activityStartEmbed.setTitle(LOGS_OBJECT.get("activity_started").getAsString())
                     .setColor(Color.GREEN)
                     .setThumbnail(event.getUser().getAvatarUrl())
-                    .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                    .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
                     .addField(event.getUser().getName(), event.getUser().getAsTag() + " : " + event.getNewActivity().getName(), false);
 
@@ -1029,12 +1298,19 @@ public class Logs extends ListenerAdapter {
                     delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
         } else {
             TextChannel logsChannel = textChannels.get(0);
+
+            final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+            assert LANG_FILE != null;
+            final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+            final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+            final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
             EmbedBuilder activityEndEmbed = new EmbedBuilder();
 
-            activityEndEmbed.setTitle("Activity Ended")
+            activityEndEmbed.setTitle(LOGS_OBJECT.get("activity_ended").getAsString())
                     .setColor(Color.RED)
                     .setThumbnail(event.getUser().getAvatarUrl())
-                    .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                    .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
                     .addField(event.getUser().getName(), event.getUser().getAsTag() + " : " + event.getOldActivity().getName(), false);
 
@@ -1049,14 +1325,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder voiceCreEmbed = new EmbedBuilder();
 
-        voiceCreEmbed.setTitle("Voice Channel Create")
+        voiceCreEmbed.setTitle(LOGS_OBJECT.get("voice_channel_created").getAsString())
                 .setColor(Color.GREEN)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Channel Updated : ", event.getChannel().getName() + "(ID : " + event.getChannel().getId() + ")", false);
+                .addField(LOGS_OBJECT.get("voice_channel_created").getAsString(), event.getChannel().getName() + "(ID : " + event.getChannel().getId() + ")", false);
 
         logsChannel.sendMessage(voiceCreEmbed.build()).queue();
     }
@@ -1068,14 +1350,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder voiceDelEmbed = new EmbedBuilder();
 
-        voiceDelEmbed.setTitle("Voice Channel Delete")
+        voiceDelEmbed.setTitle(LOGS_OBJECT.get("voice_channel_deleted").getAsString())
                 .setColor(Color.RED)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Channel Updated : ", event.getChannel().getName() + "(ID : " + event.getChannel().getId() + ")", false);
+                .addField(LOGS_OBJECT.get("voice_channel_deleted").getAsString(), event.getChannel().getName() + "(ID : " + event.getChannel().getId() + ")", false);
 
         logsChannel.sendMessage(voiceDelEmbed.build()).queue();
     }
@@ -1087,14 +1375,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder voiceBitRateUpdateEmbed = new EmbedBuilder();
 
-        voiceBitRateUpdateEmbed.setTitle("Voice Channel Bitrate Update")
+        voiceBitRateUpdateEmbed.setTitle(LOGS_OBJECT.get("voice_channel_bitrate_updated").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Channel Updated : ", event.getChannel().getName() + "\n" + event.getOldBitrate() + " bps -> " + event.getNewBitrate() + " bps", false);
+                .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getName() + "\n" + event.getOldBitrate() + " bps -> " + event.getNewBitrate() + " bps", false);
 
         logsChannel.sendMessage(voiceBitRateUpdateEmbed.build()).queue();
     }
@@ -1106,14 +1400,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder voiceNameUpdateEmbed = new EmbedBuilder();
 
-        voiceNameUpdateEmbed.setTitle("Voice Channel Name Update")
+        voiceNameUpdateEmbed.setTitle(LOGS_OBJECT.get("voice_channel_name_updated").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Channel Updated : ", event.getChannel().getName() + "\n" + event.getOldName() + " -> " + event.getNewName(), false);
+                .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getName() + "\n" + event.getOldName() + " -> " + event.getNewName(), false);
 
         logsChannel.sendMessage(voiceNameUpdateEmbed.build()).queue();
     }
@@ -1125,14 +1425,20 @@ public class Logs extends ListenerAdapter {
         List<TextChannel> textChannels = event.getGuild().getTextChannelsByName("logs", true);
         TextChannel logsChannel = textChannels.get(0);
 
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+        final JsonObject LOGS_OBJECT = LANG_OBJECT.get("logs").getAsJsonObject();
+
         EmbedBuilder voiceUserLimitUpdateEmbed = new EmbedBuilder();
 
-        voiceUserLimitUpdateEmbed.setTitle("Voice Channel User Limit Update")
+        voiceUserLimitUpdateEmbed.setTitle(LOGS_OBJECT.get("voice_channel_user_limit_updated").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + event.getGuild().getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128")
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField("Channel Updated : ", event.getChannel().getName() + "\n" + event.getOldUserLimit() + " user(s) -> " + event.getNewUserLimit() + " user(s)", false);
+                .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getName() + "\n" + event.getOldUserLimit() + GENERAL_OBJECT.get("user").getAsString() + "  -> " + event.getNewUserLimit() + GENERAL_OBJECT.get("user").getAsString(), false);
 
         logsChannel.sendMessage(voiceUserLimitUpdateEmbed.build()).queue();
     }

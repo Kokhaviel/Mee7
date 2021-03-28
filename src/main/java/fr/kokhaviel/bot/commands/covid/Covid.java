@@ -17,84 +17,106 @@
 
 package fr.kokhaviel.bot.commands.covid;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Mee7;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.awt.*;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Covid {
+import static java.lang.String.format;
 
+public class Covid {
 
 	public Covid(MessageReceivedEvent event, String[] args) throws MalformedURLException {
 
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+		assert LANG_FILE != null;
+		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+		final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+		final JsonObject COVID_OBJECT = LANG_OBJECT.get("covid").getAsJsonObject();
+
 		if(args.length == 1) {
 
-			final String url = "https://api.covid19api.com/summary";
-			JsonObject object = JsonUtilities.readJson(new URL(url)).getAsJsonObject();
-			JsonObject globalObject = object.getAsJsonObject("Global");
+			final String URL = "https://api.covid19api.com/summary";
+			final JsonObject OBJECT = JsonUtilities.readJson(new URL(URL)).getAsJsonObject();
+			final JsonObject GLOBAL_OBJECT = OBJECT.getAsJsonObject("Global");
 
-			final String update = globalObject.get("Date").getAsString().replace("T", " ").substring(0, 19);
+			final String update = GLOBAL_OBJECT.get("Date").getAsString().replace("T", " ").substring(0, 19);
 
 			EmbedBuilder globalEmbed = new EmbedBuilder();
 
-			globalEmbed.setAuthor("Covid Stats", null, "https://static.data.gouv.fr/avatars/30/3624ff029d41908d4b3d2c11dfa349.png");
+			globalEmbed.setAuthor("Covid Stats", null, Config.COVID_ICON);
 			globalEmbed.setColor(Color.RED);
-			globalEmbed.setThumbnail("https://media.npr.org/assets/img/2013/03/06/bluemarble3k-smaller-nasa_custom-644f0b7082d6d0f6814a9e82908569c07ea55ccb-s800-c85.jpg");
-			globalEmbed.setTitle("Covid Global Stats");
-			globalEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nSource : https://api.covid19api.com/summary\nUpdated On : " + update, "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+			globalEmbed.setThumbnail(Config.EARTH_ICON);
+			globalEmbed.setTitle(COVID_OBJECT.get("covid_global_stats").getAsString());
+			globalEmbed.setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG
+					+ "\nSource : https://api.covid19api.com/summary\n" + COVID_OBJECT.get("updated_at").getAsString()
+					+ " : " + update, Config.DEVELOPER_AVATAR);
 
-			globalEmbed.addField("New Confirmed : ", globalObject.get("NewConfirmed").getAsString(), false);
-			globalEmbed.addField("New Deaths : ", globalObject.get("NewDeaths").getAsString(), false);
-			globalEmbed.addField("New Recovered : ", globalObject.get("NewRecovered").getAsString(), false);
+			globalEmbed.addField(format("%s : ", COVID_OBJECT.get("new_confirmed").getAsString()), GLOBAL_OBJECT.get("NewConfirmed").getAsString(), false);
+			globalEmbed.addField(format("%s : ", COVID_OBJECT.get("new_deaths").getAsString()), GLOBAL_OBJECT.get("NewDeaths").getAsString(), false);
+			globalEmbed.addField(format("%s : ", COVID_OBJECT.get("new_recovered").getAsString()), GLOBAL_OBJECT.get("NewRecovered").getAsString(), false);
 
 			globalEmbed.addBlankField(false);
-			globalEmbed.addField("Total Confirmed : ", globalObject.get("TotalConfirmed").getAsString(), false);
-			globalEmbed.addField("Total Deaths : ", globalObject.get("TotalDeaths").getAsString(), false);
-			globalEmbed.addField("Total Recovered : ", globalObject.get("TotalRecovered").getAsString(), false);
+			globalEmbed.addField(format("%s : ", COVID_OBJECT.get("total_confirmed").getAsString()), GLOBAL_OBJECT.get("TotalConfirmed").getAsString(), false);
+			globalEmbed.addField(format("%s : ", COVID_OBJECT.get("total_deaths").getAsString()), GLOBAL_OBJECT.get("TotalDeaths").getAsString(), false);
+			globalEmbed.addField(format("%s : ", COVID_OBJECT.get("total_recovered").getAsString()), GLOBAL_OBJECT.get("TotalRecovered").getAsString(), false);
 
 			event.getChannel().sendMessage(globalEmbed.build()).queue();
 
 		}
 
 		if(args.length == 2) {
-				Gson gson = new Gson();
-				final String url = "https://api.covid19api.com/summary";
-				JsonObject object = JsonUtilities.readJson(new URL(url)).getAsJsonObject();
-				JsonArray countriesArray = object.getAsJsonArray("Countries");
-				JsonObject country = countriesArray.get(getCountry(getArg(args))).getAsJsonObject();
-
-				CountryStats stats = gson.fromJson(country, CountryStats.class);
+				final String URL = "https://api.covid19api.com/summary";
+				final JsonObject OBJECT = JsonUtilities.readJson(new URL(URL)).getAsJsonObject();
+				final JsonArray COUNTRIES_ARRAY = OBJECT.getAsJsonArray("Countries");
+				JsonObject COUNTRY = null;
 				try {
-					event.getChannel().sendMessage(getStats(stats).build()).queue();
+					COUNTRY = COUNTRIES_ARRAY.get(getCountry(getArg(args))).getAsJsonObject();
 				} catch(ArrayIndexOutOfBoundsException e) {
-					event.getChannel().sendMessage("Country Specified Doesn't Exist ...").queue();
+					event.getChannel().sendMessage(format("%s : ", COVID_OBJECT.get("country_doesnt_exist").getAsString()) + getArg(args)).queue();
+				}
+
+				assert COUNTRY != null;
+				CountryStats stats = Mee7.gson.fromJson(COUNTRY, CountryStats.class);
+				try {
+					event.getChannel().sendMessage(getStats(stats, GENERAL_OBJECT, COVID_OBJECT).build()).queue();
+				} catch(ArrayIndexOutOfBoundsException e) {
+					event.getChannel().sendMessageFormat("%s ...", COVID_OBJECT.get("country_doesnt_exist").getAsString()).queue();
 				}
 		}
 	}
 
-	private EmbedBuilder getStats(CountryStats stats) {
+	private EmbedBuilder getStats(CountryStats stats, JsonObject generalObject, JsonObject covidObject) {
 		EmbedBuilder statsEmbed = new EmbedBuilder();
 
-		statsEmbed.setAuthor("Covid Stats", null, "https://static.data.gouv.fr/avatars/30/3624ff029d41908d4b3d2c11dfa349.png");
+		String updated_at = null;
+		try {
+			updated_at = stats.Date.replace("T", " ").substring(0, 19);
+		} catch(NullPointerException ignored) {}
+
+		assert updated_at != null;
+		statsEmbed.setAuthor("Covid Stats", null, Config.COVID_ICON);
 		statsEmbed.setColor(Color.RED);
 		statsEmbed.setTitle(String.format("Covid %s Stats", stats.Country));
-		statsEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nSource : https://api.covid19api.com/summary\nUpdated On : " + stats.Date.replace("T", " ").substring(0, 19), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+		statsEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG
+				+ "\nSource : https://api.covid19api.com/summary\n" + covidObject.get("updated_at").getAsString()
+				+ " : " + updated_at, Config.DEVELOPER_AVATAR);
 
-		statsEmbed.addField("Total Confirmed : ", stats.TotalConfirmed, true);
-		statsEmbed.addField("Total Deaths : ", stats.TotalDeaths, true);
-		statsEmbed.addField("Total Recovered : ", stats.TotalRecovered, true);
-
-		statsEmbed.addField("Update At : ", stats.Date.replace("T", " ").substring(0, 19), false);
+		statsEmbed.addField(format("%s : ", covidObject.get("total_confirmed").getAsString()), stats.TotalConfirmed, true);
+		statsEmbed.addField(format("%s : ", covidObject.get("total_deaths").getAsString()), stats.TotalDeaths, true);
+		statsEmbed.addField(format("%s : ", covidObject.get("total_recovered").getAsString()), stats.TotalRecovered, true);
 
 		return statsEmbed;
 	}

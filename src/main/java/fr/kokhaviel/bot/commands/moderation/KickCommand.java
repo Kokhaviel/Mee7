@@ -17,7 +17,9 @@
 
 package fr.kokhaviel.bot.commands.moderation;
 
-import fr.kokhaviel.bot.Config;
+import com.google.gson.JsonObject;
+import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -26,14 +28,27 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static java.lang.String.format;
 
 public class KickCommand extends ListenerAdapter {
 
 
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {
+
+		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+				.getAsJsonObject().get(event.getGuild().getId())
+				.getAsJsonObject().get("prefix").getAsString();
+
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+		assert LANG_FILE != null;
+		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+		final JsonObject COMMANDS_OBJECT = LANG_OBJECT.get("commands").getAsJsonObject();
+		final JsonObject MODERATION_OBJECT = LANG_OBJECT.get("moderation").getAsJsonObject();
 
 		final Message message = event.getMessage();
 		final String[] args = message.getContentRaw().split("\\s+");
@@ -43,42 +58,55 @@ public class KickCommand extends ListenerAdapter {
 
 		List<Member> mentionedMembers = message.getMentionedMembers();
 
-		if(args[0].equalsIgnoreCase(Config.PREFIX + "kick")) {
+		if(args[0].equalsIgnoreCase(prefix + "kick")) {
+
+			message.delete().queue();
 
 			if(args.length < 3) {
 				message.delete().queue();
-				channel.sendMessage("Missing Arguments : Please Use " + Config.PREFIX + "kick <@User> <Reason>").queue(
-						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				channel.sendMessage( format("%s : %s",
+						COMMANDS_OBJECT.get("missing_arguments").getAsString(),
+						COMMANDS_OBJECT.get("please_use").getAsString()) + prefix + "kick <@User> <Reason>")
+						.queue(
+							delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
 
 			if(args.length > 3) {
 				message.delete().queue();
-				channel.sendMessage("Too Arguments : Please Use " + Config.PREFIX + "kick <@User> <Reason>").queue(
-						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
-				return;
-			}
-
-			message.delete().queue();
-
-			assert author != null;
-			if(!author.hasPermission(Permission.KICK_MEMBERS)) {
-				channel.sendMessage("You don't have the permission to kick member !").queue(
-						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				channel.sendMessage( format("%s : %s",
+						COMMANDS_OBJECT.get("too_arguments").getAsString(),
+						COMMANDS_OBJECT.get("please_use").getAsString()) + prefix + "kick <@User> <Reason>")
+						.queue(
+							delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
 
 			if(mentionedMembers.isEmpty()) {
-				channel.sendMessage("You must mention the member you want to kick !").queue(
+				channel.sendMessage(MODERATION_OBJECT.get("no_kick_mention").getAsString()).queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
+
+			assert author != null;
+			if(!author.hasPermission(Permission.KICK_MEMBERS)) {
+				channel.sendMessage(MODERATION_OBJECT.get("no_kick_perm").getAsString()).queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
 
 			Member target = mentionedMembers.get(0);
+
+			if(author.getRoles().get(0).getPosition() <= target.getRoles().get(0).getPosition()) {
+				channel.sendMessage(MODERATION_OBJECT.get("cannot_kick_member").getAsString()).queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				return;
+			}
+
 			guild.kick(target, args[2]).queue(
-					success -> channel.sendMessage("Successfully Kicked " + target.getUser().getAsTag()).queue(
+					success -> channel.sendMessage(format("%s : %s", MODERATION_OBJECT.get("success_kick").getAsString(), target.getUser().getAsTag())).queue(
 							delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)),
-					error -> channel.sendMessage("Unable To Kick " + target.getUser().getAsTag()).queue(
+					error -> channel.sendMessage(format("%s : %s", MODERATION_OBJECT.get("unable_kick").getAsString(), target.getUser().getAsTag())).queue(
 							delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS))
 			);
 		}

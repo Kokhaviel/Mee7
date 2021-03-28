@@ -17,9 +17,11 @@
 
 package fr.kokhaviel.bot.commands.funcraft.games;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Mee7;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -28,32 +30,49 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
+
+import static java.lang.String.format;
 
 public class SurvivalStatsCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
+		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+				.getAsJsonObject().get(event.getGuild().getId())
+				.getAsJsonObject().get("funcraft_prefix").getAsString();
+
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+		assert LANG_FILE != null;
+		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+		final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+		final JsonObject COMMANDS_OBJECT = LANG_OBJECT.get("commands").getAsJsonObject();
+		final JsonObject FUNCRAFT_OBJECT = LANG_OBJECT.get("funcraft").getAsJsonObject();
+
 		final Message message = event.getMessage();
 		final String[] args = message.getContentRaw().split("\\s+");
 		final TextChannel channel = (TextChannel) event.getChannel();
 
-		if(args[0].equalsIgnoreCase(Config.FUNCRAFT_PREFIX + "survival")) {
+		if(args[0].equalsIgnoreCase(prefix + "survival")) {
 
 			if(args.length < 2) {
 
 				message.delete().queue();
 
-				channel.sendMessage("Missing Arguments : Please Specify A Player !").queue(
-						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				channel.sendMessage(format("%s : %s !",
+						COMMANDS_OBJECT.get("missing_arguments").getAsString(),
+						FUNCRAFT_OBJECT.get("no_player_specified").getAsString()))
+						.queue(
+							delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
 
 			if(!args[1].matches("^\\w{3,16}$")) {
-				channel.sendMessage("You must specify a valid Minecraft username !").queue(
+				channel.sendMessage(FUNCRAFT_OBJECT.get("not_valid_username").getAsString()).queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
@@ -62,50 +81,53 @@ public class SurvivalStatsCommand extends ListenerAdapter {
 
 			try {
 				message.delete().queue();
-				Gson gson = new Gson();
-				Survival survival = gson.fromJson(JsonUtilities.readJson(new URL(url)), Survival.class);
+				Survival survival = Mee7.gson.fromJson(JsonUtilities.readJson(new URL(url)), Survival.class);
 
 				if(survival.exit_code.equals("0"))
-					channel.sendMessage(getSurvivalStats(survival, channel).build()).queue();
+					channel.sendMessage(getSurvivalStats(survival, channel, GENERAL_OBJECT, FUNCRAFT_OBJECT).build()).queue();
 
 			} catch(IOException e) {
 
-				channel.sendMessage("An exception occurred : File doesn't exist !").queue(
-						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
+				channel.sendMessage(format("%s : %s !",
+						FUNCRAFT_OBJECT.get("exception").getAsString(),
+						FUNCRAFT_OBJECT.get("file_doesnt_exist").getAsString()))
+						.queue(
+							delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 
 				e.printStackTrace();
 			}
 		}
 	}
 
-	private EmbedBuilder getSurvivalStats(Survival survival, TextChannel channel) {
+	private EmbedBuilder getSurvivalStats(Survival survival, TextChannel channel, JsonObject generalObject, JsonObject funcraftObject) {
 
 		EmbedBuilder survivalEmbed = new EmbedBuilder();
 
 		if(survival.exit_code.equals("0")) {
-			survivalEmbed.setAuthor("Funcraft Player Stats", null, "https://pbs.twimg.com/profile_images/1083667374379855872/kSsOCKM7_400x400.jpg");
+			survivalEmbed.setAuthor("Funcraft Player Stats", null, Config.FUNCRAFT_ICON);
 			survivalEmbed.setColor(Color.RED);
 			survivalEmbed.setThumbnail(survival.skin);
-			survivalEmbed.setTitle(String.format("%s survival Stats", survival.pseudo));
-			survivalEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+			survivalEmbed.setTitle(format("%s survival Stats", survival.pseudo));
+			survivalEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\nFuncraft API by LordMorgoth (https://lordmorgoth.net/APIs/funcraft)", Config.DEVELOPER_AVATAR);
 
 			survivalEmbed.addField("Rank : ", survival.rang, true);
 
 			survivalEmbed.addBlankField(false);
-			survivalEmbed.addField("Points : ", survival.data.points, true);
-			survivalEmbed.addField("Games : ", survival.data.parties, true);
-			survivalEmbed.addField("Victories : ", survival.data.victoires, true);
-			survivalEmbed.addField("Defeats : ", survival.data.defaites, true);
-			survivalEmbed.addField("Played Time : ", survival.data.temps_jeu + " minutes", true);
-			survivalEmbed.addField("Kills : ", survival.data.kills, true);
-			survivalEmbed.addField("Deaths : ", survival.data.morts, true);
+			survivalEmbed.addField(format("%s : ", funcraftObject.get("points").getAsString()), survival.data.points, true);
+			survivalEmbed.addField(format("%s : ", funcraftObject.get("games").getAsString()), survival.data.parties, true);
+			survivalEmbed.addField(format("%s : ", funcraftObject.get("victories").getAsString()), survival.data.victoires, true);
+			survivalEmbed.addField(format("%s : ", funcraftObject.get("defeats").getAsString()), survival.data.defaites, true);
+			survivalEmbed.addField(format("%s : ", funcraftObject.get("played_time").getAsString()), survival.data.temps_jeu + " minutes", true);
+			survivalEmbed.addField(format("%s : ", funcraftObject.get("kills").getAsString()), survival.data.kills, true);
+			survivalEmbed.addField(format("%s : ", funcraftObject.get("deaths").getAsString()), survival.data.morts, true);
 
 			survivalEmbed.addBlankField(false);
-			survivalEmbed.addField("Winrate : ", survival.stats.winrate + "%", true);
+			survivalEmbed.addField(format("%s : ", funcraftObject.get("winrate").getAsString()), survival.stats.winrate + "%", true);
 			survivalEmbed.addField("KDR : ", survival.stats.kd, true);
-			survivalEmbed.addField("Average Kills / Games : ", survival.stats.kills_game, true);
-			survivalEmbed.addField("Average Deaths / Games : ", survival.stats.morts_game, true);
-			survivalEmbed.addField("Average Time / Games : ", survival.stats.temps_partie + " s", true);
+			survivalEmbed.addField(format("%s / %s : ", funcraftObject.get("average_kills").getAsString(), funcraftObject.get("games").getAsString()), survival.stats.kills_game, true);
+			survivalEmbed.addField(format("%s / %s : ", funcraftObject.get("average_deaths").getAsString(), funcraftObject.get("games").getAsString()), survival.stats.morts_game, true);
+			survivalEmbed.addField(format("%s / %s : ", funcraftObject.get("average_time").getAsString(), funcraftObject.get("games").getAsString()), survival.stats.temps_partie + "s", true);
+
 		}
 
 		if(!survival.exit_code.equals("0")) {

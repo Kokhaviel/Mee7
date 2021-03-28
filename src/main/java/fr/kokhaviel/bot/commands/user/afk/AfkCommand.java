@@ -17,14 +17,17 @@
 
 package fr.kokhaviel.bot.commands.user.afk;
 
-import fr.kokhaviel.bot.Config;
+import com.google.gson.JsonObject;
+import fr.kokhaviel.bot.JsonUtilities;
 import fr.kokhaviel.bot.Mee7;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 public class AfkCommand extends ListenerAdapter {
@@ -32,21 +35,30 @@ public class AfkCommand extends ListenerAdapter {
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {
 
+		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+				.getAsJsonObject().get(event.getGuild().getId())
+				.getAsJsonObject().get("prefix").getAsString();
+
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+		assert LANG_FILE != null;
+		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+		final JsonObject AFK_OBJECT = LANG_OBJECT.get("afk").getAsJsonObject();
+
 		final Message message = event.getMessage();
 		final String[] args = message.getContentRaw().split("\\s+");
 		final Member member = event.getMember();
 		final MessageChannel channel = event.getChannel();
 
-		if(args[0].equalsIgnoreCase(Config.PREFIX + "afk")) {
+		if(args[0].equalsIgnoreCase(prefix + "afk")) {
 			message.delete().queue();
 			assert member != null;
 			if(!Mee7.afkIDs.contains(member.getId())) {
 				Mee7.afkIDs.add(member.getId());
-				channel.sendMessage("Successfully Set Your AFK !").queue(delete -> delete.delete().queueAfter(2, TimeUnit.SECONDS));
+				channel.sendMessage(AFK_OBJECT.get("success_set_afk").getAsString()).queue(delete -> delete.delete().queueAfter(2, TimeUnit.SECONDS));
 				return;
 			}
 			Mee7.afkIDs.remove(member.getId());
-			channel.sendMessage("Successfully Removed Your AKF !").queue(delete -> delete.delete().queueAfter(2, TimeUnit.SECONDS));
+			channel.sendMessage(AFK_OBJECT.get("success_remove_afk").getAsString()).queue(delete -> delete.delete().queueAfter(2, TimeUnit.SECONDS));
 		}
 	}
 }

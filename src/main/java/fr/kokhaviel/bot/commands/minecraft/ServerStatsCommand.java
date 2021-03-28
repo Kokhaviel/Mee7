@@ -20,6 +20,7 @@ package fr.kokhaviel.bot.commands.minecraft;
 import com.google.gson.JsonObject;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -33,23 +34,37 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Objects;
+
+import static java.lang.String.format;
 
 public class ServerStatsCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
+		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+				.getAsJsonObject().get(event.getGuild().getId())
+				.getAsJsonObject().get("minecraft_prefix").getAsString();
+
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+		assert LANG_FILE != null;
+		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+		final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+		final JsonObject MINECRAFT_OBJECT = LANG_OBJECT.get("minecraft").getAsJsonObject();
+
 		final Message message = event.getMessage();
 		final String[] args = message.getContentRaw().split("\\s+");
 		final TextChannel channel = (TextChannel) event.getChannel();
 
-		if(args[0].equalsIgnoreCase(Config.MINECRAFT_PREFIX + "server")) {
+		if(args[0].equalsIgnoreCase(prefix + "server")) {
 
 			if(args.length < 2) {
 
-				channel.sendMessage("You must specify the ip address of the server (Ex : mc.hypixel.net) !").queue();
+				channel.sendMessage(format("%s %s !", MINECRAFT_OBJECT.get("no_ip_specified").getAsString(), "(Ex : mc.hypixel.net)")).queue();
 				return;
 			}
 
@@ -68,15 +83,14 @@ public class ServerStatsCommand extends ListenerAdapter {
 				File file = new File("server.png");
 				final Message[] serverMessage = new Message[1];
 
-				channel.sendMessage("Here is the server Icon ^^").addFile(file, "server.png").queue(message1 -> {
-					serverMessage[0] = message1;
-				});
+				channel.sendMessage("Here is the server Icon ^^").addFile(file, "server.png").queue(
+						message1 -> serverMessage[0] = message1);
 				Thread.sleep(1000);
-				channel.sendMessage(getStats(object, args, serverMessage[0]).build()).queue();
+				channel.sendMessage(getStats(object, GENERAL_OBJECT, MINECRAFT_OBJECT, args, serverMessage[0]).build()).queue();
 				Thread.sleep(100);
 				serverMessage[0].delete().queue();
 
-
+				Files.deleteIfExists(Paths.get("server.png"));
 
 			} catch(IOException | InterruptedException e) {
 				e.printStackTrace();
@@ -84,7 +98,7 @@ public class ServerStatsCommand extends ListenerAdapter {
 		}
 	}
 
-	private EmbedBuilder getStats(JsonObject object, String[] args, Message message) throws IOException {
+	private EmbedBuilder getStats(JsonObject object, JsonObject generalObject, JsonObject minecraftObject, String[] args, Message message) throws IOException {
 
 		JsonObject playersObj = object.get("players").getAsJsonObject();
 
@@ -97,17 +111,17 @@ public class ServerStatsCommand extends ListenerAdapter {
 
 
 		EmbedBuilder serverEmbed = new EmbedBuilder();
-		serverEmbed.setAuthor("Minecraft Server Stats", null, "https://assets.stickpng.com/images/580b57fcd9996e24bc43c2f5.png");
+		serverEmbed.setAuthor(format("Minecraft %s Stats", minecraftObject.get("server").getAsString()), null, Config.MINECRAFT_ICON);
 		serverEmbed.setColor(Color.GREEN);
 		serverEmbed.setThumbnail(message.getAttachments().get(0).getUrl());
-		serverEmbed.setTitle(String.format("%s Stats", args[1]));
-		serverEmbed.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAPI : https://minecraft-api.com/", "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+		serverEmbed.setTitle(format("%s Stats", args[1]));
+		serverEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\nAPI : https://minecraft-api.com/", Config.DEVELOPER_AVATAR);
 
-		serverEmbed.addField("Online Players : ", playersObj.get("online").getAsString(), false);
-		serverEmbed.addField("Maximum Players : ", playersObj.get("max").getAsString(), false);
+		serverEmbed.addField(minecraftObject.get("online_players").getAsString(), playersObj.get("online").getAsString(), false);
+		serverEmbed.addField(minecraftObject.get("max_players").getAsString(), playersObj.get("max").getAsString(), false);
 
 		serverEmbed.addBlankField(false);
-		serverEmbed.addField("Description : ", String.valueOf(Objects.nonNull(descObj)), false);
+		serverEmbed.addField(minecraftObject.get("description").getAsString(), String.valueOf(Objects.nonNull(descObj)), false);
 
 		return serverEmbed;
 	}

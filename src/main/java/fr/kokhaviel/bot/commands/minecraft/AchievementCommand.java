@@ -17,13 +17,17 @@
 
 package fr.kokhaviel.bot.commands.minecraft;
 
-import fr.kokhaviel.bot.Config;
+import com.google.gson.JsonObject;
+import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 
 import static fr.kokhaviel.bot.Mee7.getCurrentAchievements;
 
@@ -37,24 +41,35 @@ public class AchievementCommand extends ListenerAdapter {
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
+		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+				.getAsJsonObject().get(event.getGuild().getId())
+				.getAsJsonObject().get("minecraft_prefix").getAsString();
+
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+		assert LANG_FILE != null;
+		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+		final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+		final JsonObject COMMANDS_OBJECT = LANG_OBJECT.get("commands").getAsJsonObject();
+		final JsonObject ACHIEVEMENTS_OBJECT = LANG_OBJECT.get("minecraft").getAsJsonObject().get("achievements").getAsJsonObject();
+
 
 		final Message message = event.getMessage();
 		final String[] args = message.getContentRaw().split("\\s+");
 		final TextChannel channel = (TextChannel) event.getChannel();
 
-		if(args[0].equalsIgnoreCase(Config.MINECRAFT_PREFIX + "achievement")) {
+		if(args[0].equalsIgnoreCase(prefix + "achievement")) {
 
 			if(args.length > 1){
-				channel.sendMessage("Too Arguments ...").queue();
+				channel.sendMessage(COMMANDS_OBJECT.get("too_arguments").getAsString()).queue();
 				return;
 			}
 
 			if(getCurrentAchievements().contains(event.getGuild().getIdLong())) {
-				channel.sendMessage("You are already setting up an achievement image").queue();
+				channel.sendMessage(ACHIEVEMENTS_OBJECT.get("already_setting_up_achievement").getAsString()).queue();
 				return;
 			}
 
-			achievements = new Achievements();
+			achievements = new Achievements(event);
 			getCurrentAchievements().add(event.getGuild().getIdLong());
 			achievements.startSetup(achievements, event);
 			this.achieveUserCreate = event.getAuthor();

@@ -23,10 +23,16 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.io.File;
+
 public class RebootCommand extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+
+        String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
+                .getAsJsonObject().get(event.getGuild().getId())
+                .getAsJsonObject().get("prefix").getAsString();
 
         final Message message = event.getMessage();
         final String[] args = message.getContentRaw().split("\\s+");
@@ -34,7 +40,7 @@ public class RebootCommand extends ListenerAdapter {
         final JDA jda = event.getJDA();
 
 
-        if (args[0].equalsIgnoreCase(Config.PREFIX + "reboot") && author.getId().equals(Config.OWNER_ID)) {
+        if (args[0].equalsIgnoreCase(prefix + "reboot") && author.getId().equals(Config.OWNER_ID)) {
             message.delete().queue();
             jda.shutdown();
             new Mee7();

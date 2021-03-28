@@ -17,41 +17,58 @@
 
 package fr.kokhaviel.bot.event.moderation;
 
-import java.awt.Color;
-import java.util.*;
-
+import com.google.gson.JsonObject;
+import fr.kokhaviel.bot.Config;
+import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import fr.kokhaviel.bot.Config;
+
+import java.awt.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AutoModerator extends ListenerAdapter {
 
-    List<String> badWords = new ArrayList<>(Arrays.asList("Fuck", "fdp"));
+	List<String> badWords = new ArrayList<>(Arrays.asList("Fuck", "fdp"));
 
-    @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+	@Override
+	public void onMessageReceived(MessageReceivedEvent event) {
 
-        final Message message = event.getMessage();
-        final String[] args = message.getContentRaw().split("\\s+");
-        final MessageChannel channel = event.getChannel();
-        final Guild guild = event.getGuild();
+		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+		assert LANG_FILE != null;
+		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+		final JsonObject AUTOMOD_OBJECT = LANG_OBJECT.get("automoderator").getAsJsonObject();
 
-        for (String arg : args) {
-            if (badWords.contains(arg)) {
-                EmbedBuilder badwordDetect = new EmbedBuilder();
+		final Message message = event.getMessage();
+		final String[] args = message.getContentRaw().split("\\s+");
+		final MessageChannel channel = event.getChannel();
+		final Guild guild = event.getGuild();
 
-                badwordDetect.setTitle("Badword Detected :");
-                badwordDetect.setColor(Color.red);
-                badwordDetect.setThumbnail("https://cdn.discordapp.com/avatars/585419690411819060/4f6dc909ca93e98f8610dce9087ed747.webp?size=128");
-                badwordDetect.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + guild.getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+		for(String arg : args) {
+			for(String word : badWords) {
 
-                badwordDetect.addField("Badword : ", arg, false);
+				if(arg.equalsIgnoreCase(word)) {
 
-                channel.sendMessage(badwordDetect.build()).queue();
-                message.delete().queue();
-            }
-        }
-    }
+					EmbedBuilder badwordDetect = new EmbedBuilder();
+
+					badwordDetect.setTitle(AUTOMOD_OBJECT.get("automoderator_embed_title").getAsString());
+					badwordDetect.setColor(Color.red);
+					badwordDetect.setThumbnail(event.getAuthor().getAvatarUrl());
+					badwordDetect.setFooter("Developed by " + Config.DEVELOPER_TAG + "\nAction Generated on " + guild.getName(), "https://cdn.discordapp.com/avatars/560156789178368010/790bd41a9474a82b20ca813f2be49641.webp?size=128");
+
+					badwordDetect.addField(AUTOMOD_OBJECT.get("automoderator_badword_field").getAsString(), arg, false);
+
+					channel.sendMessage(badwordDetect.build()).queue();
+					message.delete().queue();
+				}
+			}
+		}
+	}
 }

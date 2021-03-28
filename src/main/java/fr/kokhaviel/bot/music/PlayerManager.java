@@ -17,6 +17,7 @@
 
 package fr.kokhaviel.bot.music;
 
+import com.google.gson.JsonObject;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
@@ -24,9 +25,13 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,17 +63,22 @@ public class PlayerManager {
         });
     }
 
-    public void loadAndPlay(TextChannel channel, String trackUrl) {
+    public void loadAndPlay(TextChannel channel, String trackUrl, MessageReceivedEvent event) {
         final GuildMusicManager musicManager = this.getMusicManager(channel.getGuild());
+
+        final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
+        assert LANG_FILE != null;
+        final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
+        final JsonObject MUSIC_OBJECT = LANG_OBJECT.get("music").getAsJsonObject();
 
         this.playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
                 musicManager.scheduler.queue(track);
 
-                channel.sendMessage("Adding to queue : '")
+                channel.sendMessage(MUSIC_OBJECT.get("single_music_added").getAsString())
                         .append(track.getInfo().title)
-                        .append("' by ")
+                        .append(MUSIC_OBJECT.get("single_music_added_author").getAsString())
                         .append(track.getInfo().author)
                         .queue(
                                 delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
@@ -79,9 +89,9 @@ public class PlayerManager {
             public void playlistLoaded(AudioPlaylist playlist) {
                 final List<AudioTrack> tracks = playlist.getTracks();
 
-                channel.sendMessage("Adding to queue : '")
+                channel.sendMessage(MUSIC_OBJECT.get("playlist_music_added").getAsString())
                         .append(String.valueOf(tracks.size()))
-                        .append("' tracks from playlist ")
+                        .append(MUSIC_OBJECT.get("playlist_music_from").getAsString())
                         .append(playlist.getName())
                         .queue(
                                 delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
