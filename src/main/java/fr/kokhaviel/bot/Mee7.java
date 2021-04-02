@@ -120,6 +120,7 @@ public class Mee7 {
                     .addEventListeners(new JoinCommand())
                     .addEventListeners(new JokeCommand())
                     .addEventListeners(new KickCommand())
+                    .addEventListeners(new LanguageCommand())
                     .addEventListeners(new LeaveCommand())
                     .addEventListeners(new Logs())
                     .addEventListeners(new LoveCommand())
@@ -138,6 +139,7 @@ public class Mee7 {
                     .addEventListeners(new PlayCommand())
                     .addEventListeners(new fr.kokhaviel.bot.commands.funcraft.PlayerStatsCommand())
                     .addEventListeners(new fr.kokhaviel.bot.commands.hypixel.player.PlayerStatsCommand())
+                    .addEventListeners(new PrefixCommand())
                     .addEventListeners(new PvpSmashStatsCommand())
                     .addEventListeners(new QuakeCraftStatsCommand())
                     .addEventListeners(new QueueCommand())
@@ -151,6 +153,7 @@ public class Mee7 {
                     .addEventListeners(new SayCommand())
                     .addEventListeners(new ServerInfoCommand())
                     .addEventListeners(new ServerStatsCommand())
+                    .addEventListeners(new Settings())
                     .addEventListeners(new ShootcraftStatsCommand())
                     .addEventListeners(new ShutdownCommand())
                     .addEventListeners(new SkinCommand())
@@ -172,11 +175,7 @@ public class Mee7 {
                     .addEventListeners(new WallsStatsCommand())
                     .addEventListeners(new WarlordsStatsCommand())
 
-                    .addEventListeners(new LanguageCommand())
-                    .addEventListeners(new PrefixCommand())
-                    .addEventListeners(new Settings())
                     //.addEventListeners(new ThatPersonDoesNotExistCommand())
-
                     .build();
 
         } catch (LoginException le) {
