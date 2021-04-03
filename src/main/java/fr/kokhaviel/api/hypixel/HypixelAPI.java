@@ -19,6 +19,7 @@ package fr.kokhaviel.api.hypixel;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.guild.GuildStats;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.recent.RecentGames;
 import fr.kokhaviel.api.hypixel.status.Status;
@@ -58,6 +59,15 @@ public class HypixelAPI {
 		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelUrl)).getAsJsonObject();
 
 		return gson.fromJson(hypixelObject, Status.class);
+	}
+
+	public GuildStats getGuildStats(String player) throws MalformedURLException {
+		String baseHypixelUrl = "https://api.hypixel.net/guild?player=";
+		String hypixelUrl = baseHypixelUrl + getMojangUUID(player) + "&key=" + Config.HYPIXEL_API_KEY;
+
+		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelUrl)).getAsJsonObject();
+
+		return gson.fromJson(hypixelObject, GuildStats.class);
 	}
 
 	private String getMojangUUID(String player) throws MalformedURLException {

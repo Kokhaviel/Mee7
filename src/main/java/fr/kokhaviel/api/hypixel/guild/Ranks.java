@@ -15,37 +15,45 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.kokhaviel.api.hypixel.recent;
+package fr.kokhaviel.api.hypixel.guild;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Games {
+public class Ranks {
 
-	@SerializedName("date")
-	long date = 0;
+	@SerializedName("name")
+	String name = "";
 
-	@SerializedName("gameType")
-	String game = "";
+	@SerializedName("default")
+	boolean default2 = false;
 
-	@SerializedName("mode")
-	String mode = "";
+	@SerializedName("tag")
+	String tag = "";
 
-	@SerializedName("map")
-	String map = "";
+	@SerializedName("created")
+	long created = 0;
 
-	public long getDate() {
-		return date;
+	@SerializedName("priority")
+	int priority = 0;
+
+
+	public String getName() {
+		return name;
 	}
 
-	public String getGame() {
-		return game;
+	public boolean isDefault2() {
+		return default2;
 	}
 
-	public String getMode() {
-		return mode;
+	public String getTag() {
+		return tag;
 	}
 
-	public String getMap() {
-		return map;
+	public long getCreated() {
+		return created;
+	}
+
+	public int getPriority() {
+		return priority;
 	}
 }

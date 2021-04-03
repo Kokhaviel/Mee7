@@ -15,37 +15,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.kokhaviel.api.hypixel.recent;
+package fr.kokhaviel.api.hypixel.guild;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Games {
+public class GuildStats {
 
-	@SerializedName("date")
-	long date = 0;
+	@SerializedName("success")
+	boolean success = false;
 
-	@SerializedName("gameType")
-	String game = "";
+	@SerializedName("guild")
+	Guild guild = new Guild();
 
-	@SerializedName("mode")
-	String mode = "";
 
-	@SerializedName("map")
-	String map = "";
-
-	public long getDate() {
-		return date;
+	public boolean isSuccess() {
+		return success;
 	}
 
-	public String getGame() {
-		return game;
-	}
-
-	public String getMode() {
-		return mode;
-	}
-
-	public String getMap() {
-		return map;
+	public Guild getGuild() {
+		return guild;
 	}
 }
