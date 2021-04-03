@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.recent.RecentGames;
+import fr.kokhaviel.api.hypixel.status.Status;
 import fr.kokhaviel.api.mojang.MojangUUID;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
@@ -33,15 +34,8 @@ public class HypixelAPI {
 	Gson gson = new Gson();
 
 	public PlayerData getData(String player) throws MalformedURLException {
-		String baseMojangUrl = "https://api.mojang.com/users/profiles/minecraft/";
 		String baseHypixelUrl = "https://api.hypixel.net/player?uuid=";
-		String mojangUrl = baseMojangUrl + player;
-
-		JsonObject mojangFile = JsonUtilities.readJson(new URL(mojangUrl)).getAsJsonObject();
-		MojangUUID mojangUUID = gson.fromJson(mojangFile, MojangUUID.class);
-		String uuid = mojangUUID.getId();
-
-		String hypixelURL = baseHypixelUrl + uuid + "&key=" + Config.HYPIXEL_API_KEY;
+		String hypixelURL = baseHypixelUrl + getMojangUUID(player) + "&key=" + Config.HYPIXEL_API_KEY;
 
 		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelURL)).getAsJsonObject();
 
@@ -49,19 +43,29 @@ public class HypixelAPI {
 	}
 
 	public RecentGames getRecentGames(String player) throws MalformedURLException {
-
-		String baseMojangUrl = "https://api.mojang.com/users/profiles/minecraft/";
 		String baseHypixelUrl = "https://api.hypixel.net/recentgames?uuid=";
-		String mojangUrl = baseMojangUrl + player;
-
-		JsonObject mojangFile = JsonUtilities.readJson(new URL(mojangUrl)).getAsJsonObject();
-		MojangUUID mojangUUID = gson.fromJson(mojangFile, MojangUUID.class);
-		String uuid = mojangUUID.getId();
-
-		String hypixelURL = baseHypixelUrl + uuid + "&key=" + Config.HYPIXEL_API_KEY;
+		String hypixelURL = baseHypixelUrl + getMojangUUID(player) + "&key=" + Config.HYPIXEL_API_KEY;
 
 		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelURL)).getAsJsonObject();
 
 		return gson.fromJson(hypixelObject, RecentGames.class);
+	}
+
+	public Status getStatus(String player) throws MalformedURLException {
+		String baseHypixelUrl = "https://api.hypixel.net/status?uuid=";
+		String hypixelUrl = baseHypixelUrl + getMojangUUID(player) + "&key=" + Config.HYPIXEL_API_KEY;
+
+		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelUrl)).getAsJsonObject();
+
+		return gson.fromJson(hypixelObject, Status.class);
+	}
+
+	private String getMojangUUID(String player) throws MalformedURLException {
+		String baseMojangUrl = "https://api.mojang.com/users/profiles/minecraft/";
+		String mojangUrl = baseMojangUrl + player;
+
+		JsonObject mojangFile = JsonUtilities.readJson(new URL(mojangUrl)).getAsJsonObject();
+		MojangUUID mojangUUID = gson.fromJson(mojangFile, MojangUUID.class);
+		return mojangUUID.getId();
 	}
 }

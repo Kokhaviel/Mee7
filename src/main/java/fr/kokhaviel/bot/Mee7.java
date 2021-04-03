@@ -50,7 +50,6 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import zone.nora.slothpixel.Slothpixel;
 
 import javax.security.auth.login.LoginException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -186,7 +185,7 @@ public class Mee7 {
     }
 
 
-    public static void main(String[] args) throws MalformedURLException {
+    public static void main(String[] args) {
         new Mee7();
     }
 
