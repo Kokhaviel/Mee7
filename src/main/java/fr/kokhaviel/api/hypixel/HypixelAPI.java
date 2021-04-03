@@ -18,31 +18,32 @@
 package fr.kokhaviel.api.hypixel;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.mojang.MojangUUID;
 import fr.kokhaviel.bot.Config;
+import fr.kokhaviel.bot.JsonUtilities;
 
-import java.util.UUID;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class HypixelAPI {
 
 	Gson gson = new Gson();
 
-	public PlayerData getData(String player) {
+	public PlayerData getData(String player) throws MalformedURLException {
 		String baseMojangUrl = "https://api.mojang.com/users/profiles/minecraft/";
+		String baseHypixelUrl = "https://api.hypixel.net/player?uuid=";
 		String mojangUrl = baseMojangUrl + player;
 
-		MojangUUID mojangUUID = gson.fromJson(mojangUrl, MojangUUID.class);
+		JsonObject mojangFile = JsonUtilities.readJson(new URL(mojangUrl)).getAsJsonObject();
+		MojangUUID mojangUUID = gson.fromJson(mojangFile, MojangUUID.class);
 		String uuid = mojangUUID.getId();
 
-		return getData(UUID.fromString(uuid));
-	}
+		String hypixelURL = baseHypixelUrl + uuid + "&key=" + Config.HYPIXEL_API_KEY;
 
+		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelURL)).getAsJsonObject();
 
-	public PlayerData getData(UUID uuid) {
-		String baseHypixelUrl = "https://api.hypixel.net/";
-		String hypixelUrl = baseHypixelUrl + uuid + "&key=" + Config.HYPIXEL_API_KEY;
-
-		return gson.fromJson(hypixelUrl, PlayerData.class);
+		return gson.fromJson(hypixelObject, PlayerData.class);
 	}
 }

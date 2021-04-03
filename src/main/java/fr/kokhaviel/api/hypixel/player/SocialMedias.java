@@ -23,6 +23,10 @@ public class SocialMedias {
 
 	@SerializedName("links")
 	Links links = new Links();
+
+	public Links getLinks() {
+		return links;
+	}
 }
 
 class Links {

@@ -67,7 +67,7 @@ public class Stats {
 	@SerializedName("SkyClash")
 	SkyClash skyClash = new SkyClash();
 
-	@SerializedName("Skywars")
+	@SerializedName("SkyWars")
 	Skywars skywars = new Skywars();
 
 	@SerializedName("SuperSmash")
