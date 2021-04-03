@@ -15,23 +15,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.kokhaviel.api.hypixel.player;
+package fr.kokhaviel.api.hypixel.recent;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PlayerData {
+import java.util.ArrayList;
+import java.util.List;
+
+public class RecentGames {
 
 	@SerializedName("success")
 	boolean success = false;
 
-	@SerializedName("player")
-	Player player = new Player();
+	@SerializedName("uuid")
+	String uuid = "";
+
+	@SerializedName("games")
+	List<Games> recentGames = new ArrayList<>();
 
 	public boolean isSuccess() {
 		return success;
 	}
 
-	public Player getPlayer() {
-		return player;
+	public String getUuid() {
+		return uuid;
+	}
+
+	public List<Games> getRecentGames() {
+		return recentGames;
 	}
 }

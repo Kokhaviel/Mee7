@@ -20,6 +20,7 @@ package fr.kokhaviel.api.hypixel;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
+import fr.kokhaviel.api.hypixel.recent.RecentGames;
 import fr.kokhaviel.api.mojang.MojangUUID;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
@@ -45,5 +46,22 @@ public class HypixelAPI {
 		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelURL)).getAsJsonObject();
 
 		return gson.fromJson(hypixelObject, PlayerData.class);
+	}
+
+	public RecentGames getRecentGames(String player) throws MalformedURLException {
+
+		String baseMojangUrl = "https://api.mojang.com/users/profiles/minecraft/";
+		String baseHypixelUrl = "https://api.hypixel.net/recentgames?uuid=";
+		String mojangUrl = baseMojangUrl + player;
+
+		JsonObject mojangFile = JsonUtilities.readJson(new URL(mojangUrl)).getAsJsonObject();
+		MojangUUID mojangUUID = gson.fromJson(mojangFile, MojangUUID.class);
+		String uuid = mojangUUID.getId();
+
+		String hypixelURL = baseHypixelUrl + uuid + "&key=" + Config.HYPIXEL_API_KEY;
+
+		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelURL)).getAsJsonObject();
+
+		return gson.fromJson(hypixelObject, RecentGames.class);
 	}
 }
