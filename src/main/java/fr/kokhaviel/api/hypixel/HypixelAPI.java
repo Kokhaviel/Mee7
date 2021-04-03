@@ -22,6 +22,7 @@ import com.google.gson.JsonObject;
 import fr.kokhaviel.api.hypixel.guild.GuildStats;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.recent.RecentGames;
+import fr.kokhaviel.api.hypixel.server.bans.Bans;
 import fr.kokhaviel.api.hypixel.server.count.PlayerCount;
 import fr.kokhaviel.api.hypixel.status.Status;
 import fr.kokhaviel.api.mojang.MojangUUID;
@@ -77,6 +78,14 @@ public class HypixelAPI {
 		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelUrl)).getAsJsonObject();
 
 		return gson.fromJson(hypixelObject, PlayerCount.class);
+	}
+
+	public Bans getBans() throws MalformedURLException {
+		String hypixelUrl = "https://api.hypixel.net/punishmentstats?key=" + Config.HYPIXEL_API_KEY;
+
+		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelUrl)).getAsJsonObject();
+
+		return gson.fromJson(hypixelObject, Bans.class);
 	}
 
 	private String getMojangUUID(String player) throws MalformedURLException {
