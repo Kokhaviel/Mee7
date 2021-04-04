@@ -24,6 +24,9 @@ public class PlayerCount {
 	@SerializedName("success")
 	boolean success = false;
 
+	@SerializedName("cause")
+	String cause = "";
+
 	@SerializedName("games")
 	GamesCount gamesCount = new GamesCount();
 
@@ -33,6 +36,10 @@ public class PlayerCount {
 
 	public boolean isSuccess() {
 		return success;
+	}
+
+	public String getCause() {
+		return cause;
 	}
 
 	public GamesCount getGamesCount() {

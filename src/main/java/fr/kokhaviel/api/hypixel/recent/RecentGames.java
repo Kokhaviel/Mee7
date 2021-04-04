@@ -27,6 +27,9 @@ public class RecentGames {
 	@SerializedName("success")
 	boolean success = false;
 
+	@SerializedName("cause")
+	String cause = "";
+
 	@SerializedName("uuid")
 	String uuid = "";
 

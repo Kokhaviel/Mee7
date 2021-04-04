@@ -24,6 +24,9 @@ public class Bans {
 	@SerializedName("success")
 	boolean success = false;
 
+	@SerializedName("cause")
+	String cause = "";
+
 	@SerializedName("watchdog_lastMinute")
 	int wdLastMinute = 0;
 
@@ -41,6 +44,10 @@ public class Bans {
 
 	public boolean isSuccess() {
 		return success;
+	}
+
+	public String getCause() {
+		return cause;
 	}
 
 	public int getWdLastMinute() {

@@ -24,6 +24,9 @@ public class GuildStats {
 	@SerializedName("success")
 	boolean success = false;
 
+	@SerializedName("cause")
+	String cause = "";
+
 	@SerializedName("guild")
 	Guild guild = new Guild();
 

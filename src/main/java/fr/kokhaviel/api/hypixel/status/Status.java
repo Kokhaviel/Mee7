@@ -24,6 +24,9 @@ public class Status {
 	@SerializedName("success")
 	boolean success = false;
 
+	@SerializedName("cause")
+	String cause = "";
+
 	@SerializedName("uuid")
 	String uuid = "";
 
@@ -33,6 +36,10 @@ public class Status {
 
 	public boolean isSuccess() {
 		return success;
+	}
+
+	public String getCause() {
+		return cause;
 	}
 
 	public String getUuid() {

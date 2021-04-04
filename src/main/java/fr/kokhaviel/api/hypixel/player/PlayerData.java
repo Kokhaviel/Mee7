@@ -24,11 +24,18 @@ public class PlayerData {
 	@SerializedName("success")
 	boolean success = false;
 
+	@SerializedName("cause")
+	String cause = "";
+
 	@SerializedName("player")
 	Player player = new Player();
 
 	public boolean isSuccess() {
 		return success;
+	}
+
+	public String getCause() {
+		return cause;
 	}
 
 	public Player getPlayer() {
