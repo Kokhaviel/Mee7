@@ -15,41 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.kokhaviel.api.hypixel.player.stats;
+package fr.kokhaviel.api.hypixel.player.stats.practice;
 
 import com.google.gson.annotations.SerializedName;
-import fr.kokhaviel.api.hypixel.player.stats.practice.Bridging;
-import fr.kokhaviel.api.hypixel.player.stats.practice.FireBall;
-import fr.kokhaviel.api.hypixel.player.stats.practice.MLG;
 
-public class Practice {
-
-	@SerializedName("selected")
-	String practiceSelected = "";
-
-	@SerializedName("bridging")
-	Bridging bridging = new Bridging();
-
-	@SerializedName("mlg")
-	MLG mlg = new MLG();
-
-	@SerializedName("fireball_jumping")
-	FireBall fireBall = new FireBall();
+public class MLG {
 
 
-	public String getPracticeSelected() {
-		return practiceSelected;
+	@SerializedName("successful_attempts")
+	int successAttempts = 0;
+
+	@SerializedName("failed_attempts")
+	int failAttempts = 0;
+
+
+	public int getSuccessAttempts() {
+		return successAttempts;
 	}
 
-	public Bridging getBridging() {
-		return bridging;
-	}
-
-	public MLG getMlg() {
-		return mlg;
-	}
-
-	public FireBall getFireBall() {
-		return fireBall;
+	public int getFailAttempts() {
+		return failAttempts;
 	}
 }

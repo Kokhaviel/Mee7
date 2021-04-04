@@ -24,11 +24,6 @@ import fr.kokhaviel.bot.commands.funcraft.games.*;
 import fr.kokhaviel.bot.commands.giveaways.GiveawayCommands;
 import fr.kokhaviel.bot.commands.guild.LanguageCommand;
 import fr.kokhaviel.bot.commands.guild.PrefixCommand;
-import fr.kokhaviel.bot.commands.hypixel.games.*;
-import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitLevelCommand;
-import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzKitStatsCommand;
-import fr.kokhaviel.bot.commands.hypixel.games.blitz.BlitzStatsCommand;
-import fr.kokhaviel.bot.commands.hypixel.server.BanStatsCommand;
 import fr.kokhaviel.bot.commands.minecraft.AchievementCommand;
 import fr.kokhaviel.bot.commands.minecraft.ServerStatsCommand;
 import fr.kokhaviel.bot.commands.minecraft.SkinCommand;
@@ -92,25 +87,14 @@ public class Mee7 {
                     .addEventListeners(new AchievementCommand())
                     .addEventListeners(new AfkCommand())
                     .addEventListeners(new AfkVerify())
-                    .addEventListeners(new ArcadeStatsCommand())
-                    .addEventListeners(new ArenaStatsCommand())
                     .addEventListeners(new AutoModerator())
                     .addEventListeners(new AvatarCommand())
                     .addEventListeners(new BackwardCommand())
                     .addEventListeners(new BanCommand())
-                    .addEventListeners(new BanStatsCommand())
-                    .addEventListeners(new BedwarsStatsCommand())
-                    .addEventListeners(new BlitzKitLevelCommand())
-                    .addEventListeners(new BlitzKitStatsCommand())
-                    .addEventListeners(new BlitzStatsCommand())
-                    .addEventListeners(new BuildBattleStatsCommand())
                     .addEventListeners(new ClearCommand())
-                    .addEventListeners(new CopsAndCrimsStatsCommand())
                     .addEventListeners(new CovidCommand())
-                    .addEventListeners(new CrazyWallsStatsCommand())
                     .addEventListeners(new GiveawayCommands())
                     .addEventListeners(new DameDaneCommand())
-                    .addEventListeners(new DuelsStatsCommand())
                     .addEventListeners(new EightBallCommand())
                     .addEventListeners(new ForwardCommand())
                     .addEventListeners(new HelpCommand())
@@ -126,22 +110,16 @@ public class Mee7 {
                     .addEventListeners(new LoveCommand())
                     .addEventListeners(new MassBanCommand())
                     .addEventListeners(new MassKickCommand())
-                    .addEventListeners(new MegaWallsStatsCommand())
                     .addEventListeners(new MemeCommand())
-                    .addEventListeners(new MurderMysteryStatsCommand())
                     .addEventListeners(new MuteCommand())
                     .addEventListeners(new NowPlayingCommand())
                     .addEventListeners(new OctogoneStatsCommand())
-                    .addEventListeners(new PaintballStatsCommand())
                     .addEventListeners(new PauseCommand())
                     .addEventListeners(new PingCommand())
-                    .addEventListeners(new PitStatsCommand())
                     .addEventListeners(new PlayCommand())
                     .addEventListeners(new fr.kokhaviel.bot.commands.funcraft.PlayerStatsCommand())
-                    .addEventListeners(new fr.kokhaviel.bot.commands.hypixel.player.PlayerStatsCommand())
                     .addEventListeners(new PrefixCommand())
                     .addEventListeners(new PvpSmashStatsCommand())
-                    .addEventListeners(new QuakeCraftStatsCommand())
                     .addEventListeners(new QueueCommand())
                     .addEventListeners(new RandomCommand())
                     .addEventListeners(new RebootCommand())
@@ -158,22 +136,12 @@ public class Mee7 {
                     .addEventListeners(new ShutdownCommand())
                     .addEventListeners(new SkinCommand())
                     .addEventListeners(new SkipCommand())
-                    .addEventListeners(new SkyClashStatsCommand())
-                    .addEventListeners(new fr.kokhaviel.bot.commands.hypixel.games.SkywarsStatsCommand())
                     .addEventListeners(new fr.kokhaviel.bot.commands.funcraft.games.SkywarsStatsCommand())
-                    .addEventListeners(new SmashStatsCommand())
-                    .addEventListeners(new SpeedUHCStatsCommand())
                     .addEventListeners(new StopCommand())
                     .addEventListeners(new SurvivalStatsCommand())
-                    .addEventListeners(new TntGamesStatsCommand())
-                    .addEventListeners(new TurboKartStatsCommand())
-                    .addEventListeners(new UHCStatsCommand())
                     .addEventListeners(new UnbanCommand())
                     .addEventListeners(new UnmuteCommand())
-                    .addEventListeners(new VampireZStatsCommand())
                     .addEventListeners(new VolumeCommand())
-                    .addEventListeners(new WallsStatsCommand())
-                    .addEventListeners(new WarlordsStatsCommand())
 
                     //.addEventListeners(new ThatPersonDoesNotExistCommand())
                     .build();

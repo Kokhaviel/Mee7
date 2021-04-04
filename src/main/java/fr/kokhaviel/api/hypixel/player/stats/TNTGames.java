@@ -33,7 +33,7 @@ public class TNTGames {
 	@SerializedName("kills_pvprun")
 	int pvprunKills = 0;
 
-	@SerializedName("kills_tnttag")
+	@SerializedName("kills_tntag")
 	int tnttagKills = 0;
 
 	@SerializedName("deaths_bowspleef")

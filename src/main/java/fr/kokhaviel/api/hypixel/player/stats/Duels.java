@@ -144,7 +144,7 @@ public class Duels {
 	@SerializedName("bowspleef_duel_rounds_played")
 	int bowspleefRoundsPlayed = 0;
 
-	@SerializedName("bowspleef_duel_bow_shoots")
+	@SerializedName("bowspleef_duel_bow_shots")
 	int bowspleefBowShots = 0;
 
 	@SerializedName("current_uhc_winstreak")
@@ -339,7 +339,7 @@ public class Duels {
 	@SerializedName("potion_duel_rounds_played")
 	int potionRoundsPlayed = 0;
 
-	@SerializedName("mw_duel_class")
+	@SerializedName("mw_duels_class")
 	String megaWallsClass = "";
 
 	@SerializedName("mw_duel_health_regenerated")

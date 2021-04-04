@@ -126,7 +126,7 @@ public class Bedwars {
 	@SerializedName("activeKillEffect")
 	String killEffect = "";
 
-	@SerializedName("activeKillMessage")
+	@SerializedName("activeKillMessages")
 	String killMessage = "";
 
 	@SerializedName("activeVictoryDance")
@@ -138,7 +138,7 @@ public class Bedwars {
 	@SerializedName("activeProjectileTrail")
 	String projectileTrail = "";
 
-	@SerializedName("Practice")
+	@SerializedName("practice")
 	Practice practice = new Practice();
 
 

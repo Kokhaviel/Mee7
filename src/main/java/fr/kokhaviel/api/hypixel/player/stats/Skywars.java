@@ -60,10 +60,10 @@ public class Skywars {
 	@SerializedName("time_played_solo")
 	int timePlayedSolo = 0;
 
-	@SerializedName("wins_teams")
+	@SerializedName("wins_team")
 	int teamWins = 0;
 
-	@SerializedName("games_teams")
+	@SerializedName("games_team")
 	int teamGames = 0;
 
 	@SerializedName("time_played_team")
@@ -141,7 +141,7 @@ public class Skywars {
 	@SerializedName("egg_thrown")
 	int eggThrown = 0;
 
-	@SerializedName("enderpearl_thrown")
+	@SerializedName("enderpearls_thrown")
 	int enderpearlThrown = 0;
 
 
@@ -200,10 +200,10 @@ public class Skywars {
 	@SerializedName("arrows_hit_lab")
 	int labArrowsHit = 0;
 
-	@SerializedName("egg_thrown_lag")
+	@SerializedName("egg_thrown_lab")
 	int labEggThrown = 0;
 
-	@SerializedName("enderpearl_thrown_lab")
+	@SerializedName("enderpearls_thrown_lab")
 	int labEnderpearlThrown = 0;
 
 
@@ -243,7 +243,7 @@ public class Skywars {
 	int heads = 0;
 
 	@SerializedName("heads_tasty")
-	int tastyHeads = 0;
+	int headsTasty = 0;
 
 	@SerializedName("heads_decent")
 	int headsDecent = 0;
@@ -605,8 +605,8 @@ public class Skywars {
 		return heads;
 	}
 
-	public int getTastyHeads() {
-		return tastyHeads;
+	public int getHeadsTasty() {
+		return headsTasty;
 	}
 
 	public int getHeadsDecent() {

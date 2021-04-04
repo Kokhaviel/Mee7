@@ -60,8 +60,8 @@ public class MurderMystery {
 	@SerializedName("longest_time_as_survivor")
 	int longestTimeSurvivor = 0;
 
-	@SerializedName("murder_chance")
-	int murderChance = 0;
+	@SerializedName("murderer_chance")
+	int murdererChance = 0;
 
 	@SerializedName("knife_kills")
 	int knifeKills = 0;
@@ -123,7 +123,7 @@ public class MurderMystery {
 	}
 
 	public int getMurderChance() {
-		return murderChance;
+		return murdererChance;
 	}
 
 	public int getKnifeKills() {
