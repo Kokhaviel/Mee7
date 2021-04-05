@@ -19,8 +19,7 @@ package fr.kokhaviel.bot.commands.hypixel.player;
 
 import com.google.gson.JsonObject;
 import fr.kokhaviel.api.hypixel.HypixelAPI;
-import fr.kokhaviel.api.hypixel.player.Player;
-import fr.kokhaviel.api.hypixel.player.PlayerData;
+import fr.kokhaviel.api.hypixel.player.*;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
 import fr.kokhaviel.bot.Settings;
@@ -52,7 +51,6 @@ public class PlayerStatsCommand extends ListenerAdapter {
 		assert LANG_FILE != null;
 		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
 		final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
-		final JsonObject COMMANDS_OBJECT = LANG_OBJECT.get("commands").getAsJsonObject();
 		final JsonObject HYPIXEL_OBJECT = LANG_OBJECT.get("hypixel").getAsJsonObject();
 
 
@@ -128,11 +126,15 @@ public class PlayerStatsCommand extends ListenerAdapter {
 		playerEmbed.addField(format("%s : ", hypixelObject.get("karma").getAsString()), String.valueOf(player.getKarma()), true);
 		playerEmbed.addField(format("%s : ", hypixelObject.get("lobby_gadget").getAsString()), player.getGadget(), true);
 		playerEmbed.addBlankField(false);
+		playerEmbed.addField("General Coins : ", String.valueOf(player.getAchievements().getGeneralCoins()), true);
+		playerEmbed.addField("General Wins : ", String.valueOf(player.getAchievements().getGeneralWins()), true);
+		playerEmbed.addBlankField(false);
 		playerEmbed.addField(format("%s : ", hypixelObject.get("reward_streak").getAsString()), String.valueOf(player.getRewardStreak()), true);
 		playerEmbed.addField(format("%s : ", hypixelObject.get("reward_score").getAsString()), String.valueOf(player.getRewardScore()), true);
 		playerEmbed.addField(format("%s : ", hypixelObject.get("reward_high_score").getAsString()), String.valueOf(player.getRewardHighScore()), true);
 		playerEmbed.addField(format("%s : ", hypixelObject.get("total_daily_rewards").getAsString()), String.valueOf(player.getTotalDailyRewards()), true);
 		playerEmbed.addField(format("%s : ", hypixelObject.get("total_rewards").getAsString()), String.valueOf(player.getTotalRewards()), true);
+
 		return playerEmbed;
 	}
 }

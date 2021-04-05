@@ -25,7 +25,7 @@ public class Achievements {
 	int bedwarsLevel = 0;
 
 	@SerializedName("general_coins")
-	int generealCoins = 0;
+	int generalCoins = 0;
 
 	@SerializedName("general_wins")
 	int generalWins = 0;
@@ -41,8 +41,8 @@ public class Achievements {
 		return bedwarsLevel;
 	}
 
-	public int getGenerealCoins() {
-		return generealCoins;
+	public int getGeneralCoins() {
+		return generalCoins;
 	}
 
 	public int getGeneralWins() {
