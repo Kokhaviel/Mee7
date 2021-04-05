@@ -26,6 +26,7 @@ import fr.kokhaviel.bot.commands.giveaways.GiveawayCommands;
 import fr.kokhaviel.bot.commands.guild.LanguageCommand;
 import fr.kokhaviel.bot.commands.guild.PrefixCommand;
 import fr.kokhaviel.bot.commands.hypixel.player.MediasCommand;
+import fr.kokhaviel.bot.commands.hypixel.player.OutfitCommand;
 import fr.kokhaviel.bot.commands.minecraft.AchievementCommand;
 import fr.kokhaviel.bot.commands.minecraft.ServerStatsCommand;
 import fr.kokhaviel.bot.commands.minecraft.SkinCommand;
@@ -119,6 +120,7 @@ public class Mee7 {
                     .addEventListeners(new MuteCommand())
                     .addEventListeners(new NowPlayingCommand())
                     .addEventListeners(new OctogoneStatsCommand())
+                    .addEventListeners(new OutfitCommand())
                     .addEventListeners(new PauseCommand())
                     .addEventListeners(new PingCommand())
                     .addEventListeners(new PlayCommand())
