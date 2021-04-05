@@ -235,7 +235,25 @@
     "skin": "Skin"
   },
   "hypixel": {
-
+    "no_username": "Vous devez spécifier un joueur",
+    "invalid_username": "Vous devez spécifier un nom d'utilisateur valide",
+    "stats": "Statistiques",
+    "username": "Nom d'utilisateur",
+    "first_login": "Premiere Connexion",
+    "last_login": "Derniere Connexion",
+    "last_logout": "Derniere Deconnexion",
+    "last_game": "Dernier Jeu",
+    "minecraft_version": "Version du jeu",
+    "language": "Langue",
+    "achievement_points": "Points d'achievements",
+    "network_exp": "Experience",
+    "karma": "Karma",
+    "lobby_gadget": "Lobby Gadget",
+    "reward_streak": "S\u00e9rie de r\u00e9compenses",
+    "reward_score": "Score de r\u00e9compense",
+    "reward_high_score": "Meilleur score de r\u00e9compenses",
+    "total_daily_rewards": "R\u00e9compenses quotidiennes totales",
+    "total_rewards": "R\u00e9compenses totales"
   },
   "giveaways": {
     "ready_setup": "Pr\u00eat \u00e0 setup un nouveau giveaway",

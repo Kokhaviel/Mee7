@@ -233,7 +233,25 @@
     "skin": "Skin"
   },
   "hypixel": {
-
+    "no_username": "You need to specify a player",
+    "invalid_username": "You must specify a valid Minecraft username",
+    "stats": "Stats",
+    "username": "Username",
+    "first_login": "First Login",
+    "last_login": "Last Login",
+    "last_logout": "Last Logout",
+    "last_game": "Last Game",
+    "minecraft_version": "Minecraft Version",
+    "language": "Language",
+    "achievement_points": "Achievements Points",
+    "network_exp": "Network Experience",
+    "karma": "Karma",
+    "lobby_gadget": "Lobby Gadget",
+    "reward_streak": "Reward Streak",
+    "reward_score": "Reward Score",
+    "reward_high_score": "Reward High Score",
+    "total_daily_rewards": "Total Daily Rewards",
+    "total_rewards": "Total Rewards"
   },
   "giveaways": {
     "ready_setup": "Ready to setup a giveaway",

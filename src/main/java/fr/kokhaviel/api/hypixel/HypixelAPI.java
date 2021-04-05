@@ -31,6 +31,9 @@ import fr.kokhaviel.bot.JsonUtilities;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.TimeZone;
 
 public class HypixelAPI {
 
@@ -95,5 +98,9 @@ public class HypixelAPI {
 		JsonObject mojangFile = JsonUtilities.readJson(new URL(mojangUrl)).getAsJsonObject();
 		MojangUUID mojangUUID = gson.fromJson(mojangFile, MojangUUID.class);
 		return mojangUUID.getId();
+	}
+
+	public static LocalDateTime convertTimestampToDateTime(long timestamp) {
+		return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), TimeZone.getDefault().toZoneId());
 	}
 }

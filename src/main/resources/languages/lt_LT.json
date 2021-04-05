@@ -235,7 +235,25 @@
     "skin": "Oda"
   },
   "hypixel": {
-
+    "no_username": "Turite nurodyti grotuv\u0105",
+    "invalid_username": "Turite nurodyti galiojant\u012f „Minecraft“ vartotojo vard\u0105",
+    "stats": "Statistika",
+    "username": "Vartotojo vardas",
+    "first_login": "Pirmasis prisijungimas",
+    "last_login": "Paskutinis prisijungimas",
+    "last_logout": "Paskutinis atsijungimas",
+    "last_game": "Paskutinis \u017eaidimas",
+    "minecraft_version": "„Minecraft“ versija",
+    "language": "Kalba",
+    "achievement_points": "Pasiekim\u0173 ta\u0161kai",
+    "network_exp": "Tinklo patirtis",
+    "karma": "Karma",
+    "lobby_gadget": "Vestibiulio program\u0117l\u0117",
+    "reward_streak": "Atlygio juosta",
+    "reward_score": "Atlygio balas",
+    "reward_high_score": "Apdovanoti auk\u0161\u010diausi\u0105 rezultat\u0105",
+    "total_daily_rewards": "Bendra dienos premija",
+    "total_rewards": "I\u0161 viso apdovanojimai"
   },
   "giveaways": {
     "ready_setup": "Parengta nustatyti nauj\u0105 dovan\u0105",

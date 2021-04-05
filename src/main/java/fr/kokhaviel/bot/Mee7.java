@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot;
 
 import com.google.gson.Gson;
+import fr.kokhaviel.api.hypixel.HypixelAPI;
 import fr.kokhaviel.bot.commands.covid.CovidCommand;
 import fr.kokhaviel.bot.commands.fun.*;
 import fr.kokhaviel.bot.commands.funcraft.games.*;
@@ -42,7 +43,6 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import zone.nora.slothpixel.Slothpixel;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
@@ -54,9 +54,12 @@ public class Mee7 {
 
     public static List<String> afkIDs = new ArrayList<>();
 
-    public static Slothpixel sloth = new Slothpixel();
-
     public static JDA jda;
+
+    public static HypixelAPI hypixelAPI = new HypixelAPI();
+
+
+    //TODO : TRANSLATE HYPIXEL
 
 	public static Gson gson = new Gson();
 
@@ -118,6 +121,7 @@ public class Mee7 {
                     .addEventListeners(new PingCommand())
                     .addEventListeners(new PlayCommand())
                     .addEventListeners(new fr.kokhaviel.bot.commands.funcraft.PlayerStatsCommand())
+                    .addEventListeners(new fr.kokhaviel.bot.commands.hypixel.player.PlayerStatsCommand())
                     .addEventListeners(new PrefixCommand())
                     .addEventListeners(new PvpSmashStatsCommand())
                     .addEventListeners(new QueueCommand())
