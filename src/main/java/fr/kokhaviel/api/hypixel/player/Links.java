@@ -19,12 +19,47 @@ package fr.kokhaviel.api.hypixel.player;
 
 import com.google.gson.annotations.SerializedName;
 
-public class SocialMedias {
+public class Links {
 
-	@SerializedName("links")
-	Links links = new Links();
+		@SerializedName("TWITTER")
+		String twitter = "";
 
-	public Links getLinks() {
-		return links;
-	}
+		@SerializedName("YOUTUBE")
+		String youtube = "";
+
+		@SerializedName("INSTAGRAM")
+		String instagram = "";
+
+		@SerializedName("TWITCH")
+		String twitch = "";
+
+		@SerializedName("DISCORD")
+		String discord = "";
+
+		@SerializedName("HYPIXEL")
+		String hypixel = "";
+
+		public String getTwitter() {
+			return twitter;
+		}
+
+		public String getYoutube() {
+			return youtube;
+		}
+
+		public String getInstagram() {
+			return instagram;
+		}
+
+		public String getTwitch() {
+			return twitch;
+		}
+
+		public String getDiscord() {
+			return discord;
+		}
+
+		public String getHypixel() {
+			return hypixel;
+		}
 }
