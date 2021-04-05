@@ -25,6 +25,7 @@ import fr.kokhaviel.bot.commands.funcraft.games.*;
 import fr.kokhaviel.bot.commands.giveaways.GiveawayCommands;
 import fr.kokhaviel.bot.commands.guild.LanguageCommand;
 import fr.kokhaviel.bot.commands.guild.PrefixCommand;
+import fr.kokhaviel.bot.commands.hypixel.player.MediasCommand;
 import fr.kokhaviel.bot.commands.minecraft.AchievementCommand;
 import fr.kokhaviel.bot.commands.minecraft.ServerStatsCommand;
 import fr.kokhaviel.bot.commands.minecraft.SkinCommand;
@@ -113,6 +114,7 @@ public class Mee7 {
                     .addEventListeners(new LoveCommand())
                     .addEventListeners(new MassBanCommand())
                     .addEventListeners(new MassKickCommand())
+					.addEventListeners(new MediasCommand())
                     .addEventListeners(new MemeCommand())
                     .addEventListeners(new MuteCommand())
                     .addEventListeners(new NowPlayingCommand())

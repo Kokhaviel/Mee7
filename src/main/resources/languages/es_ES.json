@@ -253,7 +253,8 @@
     "reward_score": "Puntuaci\u00f3n de recompensa",
     "reward_high_score": "Recompensa Puntaje alto",
     "total_daily_rewards": "Recompensas diarias totales",
-    "total_rewards": "Recompensas totales"
+    "total_rewards": "Recompensas totales",
+    "medias": "Medios"
   },
   "giveaways": {
     "ready_setup": "Listo para configurar un nuevo sorteo",
