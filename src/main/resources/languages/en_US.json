@@ -215,7 +215,7 @@
       "ready_setup": "Ready to setup an achievement image",
       "set_block": "Now Set a Minecraft Block for The Achievement",
       "set_title": "Now Let's Set a Title",
-      "set_image": "Now Let's Set the Text of The Image",
+      "set_text": "Now Let's Set the Text of The Image",
       "success_set_block": "Successfully Set the Block To",
       "success_set_title": "Successfully Set the Title",
       "success_set_text": "Successfully Set the Text",

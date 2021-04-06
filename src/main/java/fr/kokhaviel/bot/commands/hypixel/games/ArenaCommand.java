@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.kokhaviel.bot.commands.hypixel.player;
+package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
-import fr.kokhaviel.api.hypixel.player.Links;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
+import fr.kokhaviel.api.hypixel.player.stats.Arena;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
 import fr.kokhaviel.bot.Settings;
@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 import static fr.kokhaviel.bot.Mee7.hypixelAPI;
 import static java.lang.String.format;
 
-public class MediasCommand extends ListenerAdapter {
+public class ArenaCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -54,13 +54,14 @@ public class MediasCommand extends ListenerAdapter {
 		final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
 		final JsonObject HYPIXEL_OBJECT = LANG_OBJECT.get("hypixel").getAsJsonObject();
 
+
 		final Message message = event.getMessage();
 		final MessageChannel channel = event.getChannel();
 		final String[] args = message.getContentRaw().split("\\s+");
 
-		if(args[0].equalsIgnoreCase(prefix + "medias")) {
+		if(args[0].equalsIgnoreCase(prefix + "arena")) {
 			if(args.length < 2) {
-				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "medias <Player>").queue(
+				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "arena <Player>").queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
@@ -87,28 +88,35 @@ public class MediasCommand extends ListenerAdapter {
 			}
 
 			Player player = data.getPlayer();
-
-			channel.sendMessage(getMedias(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
+			channel.sendMessage(getArenaStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
 		}
 	}
 
+	private EmbedBuilder getArenaStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		Arena arena = player.getStats().getArena();
+		EmbedBuilder arenaEmbed = new EmbedBuilder();
+		arenaEmbed.setAuthor(format("Hypixel Arena %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
+		arenaEmbed.setColor(new Color(255, 170, 0));
+		arenaEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
+		arenaEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
 
-	private EmbedBuilder getMedias(Player player, JsonObject generalObject, JsonObject hypixelObject) {
-		Links links = player.getSocialMedias().getLinks();
+		arenaEmbed.addField("Coins : ", String.valueOf(arena.getCoins()), true);
+		arenaEmbed.addField("Keys : ", String.valueOf(arena.getKeys()), true);
+		arenaEmbed.addField("Magical Chest : ", String.valueOf(arena.getMagicalChest()), true);
+		arenaEmbed.addBlankField(false);
+		arenaEmbed.addField("Offensive : ", arena.getOffensive(), true);
+		arenaEmbed.addField("Utility : ", arena.getUtility(), true);
+		arenaEmbed.addField("Support : ", arena.getSupport(), true);
+		arenaEmbed.addField("Ultimate : ", arena.getUltimate(), true);
+		arenaEmbed.addField("Active Rune : ", arena.getActiveRune(), true);
+		arenaEmbed.addField("Selected Sword : ", arena.getSelectedSword(), true);
+		arenaEmbed.addBlankField(false);
+		arenaEmbed.addField("Rune Level Energy : ", String.valueOf(arena.getRuneLevelEnergy()), true);
+		arenaEmbed.addField("Damage Level : ", String.valueOf(arena.getLevelDamage()), true);
+		arenaEmbed.addField("Health Level : ", String.valueOf(arena.getLevelHealth()), true);
+		arenaEmbed.addField("Energy Level : ", String.valueOf(arena.getLevelEnergy()), true);
+		arenaEmbed.addField("Cooldown Level : ", String.valueOf(arena.getLevelCooldown()), true);
 
-		EmbedBuilder mediasEmbed = new EmbedBuilder();
-		mediasEmbed.setAuthor(format("Hypixel Player %s", hypixelObject.get("medias").getAsString()), null, Config.HYPIXEL_ICON);
-		mediasEmbed.setColor(new Color(123, 86, 169));
-		mediasEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("medias").getAsString()));
-		mediasEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
-
-		mediasEmbed.addField("Twitter : ", links.getTwitter(), false);
-		mediasEmbed.addField("Youtube : ", links.getYoutube(), false);
-		mediasEmbed.addField("Instagram : ", links.getInstagram(), false);
-		mediasEmbed.addField("Twitch : ", links.getTwitch(), false);
-		mediasEmbed.addField("Discord : ", links.getDiscord(), false);
-		mediasEmbed.addField("Hypixel Forums : ", links.getHypixel(), false);
-
-		return mediasEmbed;
+		return arenaEmbed;
 	}
 }

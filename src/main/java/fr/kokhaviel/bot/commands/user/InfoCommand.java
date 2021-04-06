@@ -97,8 +97,6 @@ public class InfoCommand extends ListenerAdapter {
 		userInfoEmbed.addField(userObject.get("joined_on").getAsString(), target.getTimeJoined().toString(), false);
 		userInfoEmbed.addField(userObject.get("account_created_on").getAsString(), target.getTimeCreated().toString(), false);
 		userInfoEmbed.addField(userObject.get("status").getAsString(), target.getOnlineStatus().getKey(), false);
-		target.getActivities().forEach(
-					activity -> userInfoEmbed.addField(userObject.get("activity").getAsString(), activity.getType() + activity.getName() + "\n" + activity.getUrl(), false));
 
 
 		return userInfoEmbed;

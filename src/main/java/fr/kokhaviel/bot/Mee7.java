@@ -25,6 +25,9 @@ import fr.kokhaviel.bot.commands.funcraft.games.*;
 import fr.kokhaviel.bot.commands.giveaways.GiveawayCommands;
 import fr.kokhaviel.bot.commands.guild.LanguageCommand;
 import fr.kokhaviel.bot.commands.guild.PrefixCommand;
+import fr.kokhaviel.bot.commands.hypixel.games.ArcadeCommand;
+import fr.kokhaviel.bot.commands.hypixel.games.ArenaCommand;
+import fr.kokhaviel.bot.commands.hypixel.games.WarlordCommand;
 import fr.kokhaviel.bot.commands.hypixel.player.MediasCommand;
 import fr.kokhaviel.bot.commands.hypixel.player.OutfitCommand;
 import fr.kokhaviel.bot.commands.minecraft.AchievementCommand;
@@ -92,6 +95,8 @@ public class Mee7 {
                     .addEventListeners(new AchievementCommand())
                     .addEventListeners(new AfkCommand())
                     .addEventListeners(new AfkVerify())
+                    .addEventListeners(new ArcadeCommand())
+                    .addEventListeners(new ArenaCommand())
                     .addEventListeners(new AutoModerator())
                     .addEventListeners(new AvatarCommand())
                     .addEventListeners(new BackwardCommand())
@@ -150,6 +155,7 @@ public class Mee7 {
                     .addEventListeners(new UnbanCommand())
                     .addEventListeners(new UnmuteCommand())
                     .addEventListeners(new VolumeCommand())
+                    .addEventListeners(new WarlordCommand())
 
                     //.addEventListeners(new ThatPersonDoesNotExistCommand())
                     .build();

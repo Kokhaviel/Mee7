@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.kokhaviel.bot.commands.hypixel.player;
+package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
-import fr.kokhaviel.api.hypixel.player.Links;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
+import fr.kokhaviel.api.hypixel.player.stats.Arcade;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
 import fr.kokhaviel.bot.Settings;
@@ -39,10 +39,11 @@ import java.util.concurrent.TimeUnit;
 import static fr.kokhaviel.bot.Mee7.hypixelAPI;
 import static java.lang.String.format;
 
-public class MediasCommand extends ListenerAdapter {
+public class ArcadeCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+
 
 		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
 				.getAsJsonObject().get(event.getGuild().getId())
@@ -54,13 +55,14 @@ public class MediasCommand extends ListenerAdapter {
 		final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
 		final JsonObject HYPIXEL_OBJECT = LANG_OBJECT.get("hypixel").getAsJsonObject();
 
+
 		final Message message = event.getMessage();
 		final MessageChannel channel = event.getChannel();
 		final String[] args = message.getContentRaw().split("\\s+");
 
-		if(args[0].equalsIgnoreCase(prefix + "medias")) {
+		if(args[0].equalsIgnoreCase(prefix + "arcade")) {
 			if(args.length < 2) {
-				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "medias <Player>").queue(
+				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "arcade <Player>").queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
@@ -72,7 +74,6 @@ public class MediasCommand extends ListenerAdapter {
 			}
 
 			message.delete().queue();
-
 			PlayerData data = null;
 			try {
 				data = hypixelAPI.getData(args[1]);
@@ -87,28 +88,34 @@ public class MediasCommand extends ListenerAdapter {
 			}
 
 			Player player = data.getPlayer();
-
-			channel.sendMessage(getMedias(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
+			channel.sendMessage(getArcadeStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
 		}
 	}
 
+	private EmbedBuilder getArcadeStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		Arcade arcade = player.getStats().getArcade();
+		EmbedBuilder arcadeEmbed = new EmbedBuilder();
+		arcadeEmbed.setAuthor(format("Hypixel Arcade %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
+		arcadeEmbed.setColor(new Color(133, 216, 148));
+		arcadeEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
+		arcadeEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
 
-	private EmbedBuilder getMedias(Player player, JsonObject generalObject, JsonObject hypixelObject) {
-		Links links = player.getSocialMedias().getLinks();
+		arcadeEmbed.addField("Coins : ", String.valueOf(arcade.getCoins()), true);
+		arcadeEmbed.addBlankField(false);
+		arcadeEmbed.addField("Wins Mini Walls : ", String.valueOf(arcade.getWinsMiniWalls()), true);
+		arcadeEmbed.addField("Wins Simon Says : ", String.valueOf(arcade.getWinsSimonSays()), true);
+		arcadeEmbed.addField("Wins Party : ", String.valueOf(arcade.getWinsParty()), true);
+		arcadeEmbed.addField("Wins Day One : ", String.valueOf(arcade.getWinsDaysone()), true);
+		arcadeEmbed.addField("Wins Farm Hunt : ", String.valueOf(arcade.getWinsFarmHunt()), true);
+		arcadeEmbed.addField("Wins Hole In The Wall : ", String.valueOf(arcade.getWinsHoleWall()), true);
+		arcadeEmbed.addField("Wins Soccer : ", String.valueOf(arcade.getWinsSoccer()), true);
+		arcadeEmbed.addField("Wins One In The Quiver : ", String.valueOf(arcade.getWinsOneQuiver()), true);
+		arcadeEmbed.addField("Wins Dragon Wars : ", String.valueOf(arcade.getWinsDragonWars()), true);
+		arcadeEmbed.addField("Wins Zombies : ", String.valueOf(arcade.getWinsZombies()), true);
+		arcadeEmbed.addField("Wins Pixel Painters : ", String.valueOf(arcade.getWinsDrawTheirThings()), true);
+		arcadeEmbed.addField("Wins Throw Out : ", String.valueOf(arcade.getWinsThrowOut()), true);
+		arcadeEmbed.addField("Wins Grinch Simulator : ", String.valueOf(arcade.getWinsGrinchSimul()), true);
 
-		EmbedBuilder mediasEmbed = new EmbedBuilder();
-		mediasEmbed.setAuthor(format("Hypixel Player %s", hypixelObject.get("medias").getAsString()), null, Config.HYPIXEL_ICON);
-		mediasEmbed.setColor(new Color(123, 86, 169));
-		mediasEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("medias").getAsString()));
-		mediasEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
-
-		mediasEmbed.addField("Twitter : ", links.getTwitter(), false);
-		mediasEmbed.addField("Youtube : ", links.getYoutube(), false);
-		mediasEmbed.addField("Instagram : ", links.getInstagram(), false);
-		mediasEmbed.addField("Twitch : ", links.getTwitch(), false);
-		mediasEmbed.addField("Discord : ", links.getDiscord(), false);
-		mediasEmbed.addField("Hypixel Forums : ", links.getHypixel(), false);
-
-		return mediasEmbed;
+		return arcadeEmbed;
 	}
 }
