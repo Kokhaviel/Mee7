@@ -49,7 +49,7 @@ public class Player {
 	String lastMcVersion = "";
 
 	@SerializedName("newPackageRank")
-	String serverRank = "";
+	String serverRank = "PLAYER";
 
 	@SerializedName("userLanguage")
 	String language = "";
