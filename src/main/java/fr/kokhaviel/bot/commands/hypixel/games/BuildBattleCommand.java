@@ -20,7 +20,7 @@ package fr.kokhaviel.bot.commands.hypixel.games;
 import com.google.gson.JsonObject;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
-import fr.kokhaviel.api.hypixel.player.stats.BattleGround;
+import fr.kokhaviel.api.hypixel.player.stats.BuildBattle;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
 import fr.kokhaviel.bot.Settings;
@@ -39,11 +39,10 @@ import java.util.concurrent.TimeUnit;
 import static fr.kokhaviel.bot.Mee7.hypixelAPI;
 import static java.lang.String.format;
 
-public class WarlordCommand extends ListenerAdapter {
+public class BuildBattleCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-
 
 		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
 				.getAsJsonObject().get(event.getGuild().getId())
@@ -60,9 +59,9 @@ public class WarlordCommand extends ListenerAdapter {
 		final MessageChannel channel = event.getChannel();
 		final String[] args = message.getContentRaw().split("\\s+");
 
-		if(args[0].equalsIgnoreCase(prefix + "warlord")) {
+		if(args[0].equalsIgnoreCase(prefix + "buildbattle")) {
 			if(args.length < 2) {
-				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "warlord <Player>").queue(
+				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "buildbattle <Player>").queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
@@ -89,37 +88,25 @@ public class WarlordCommand extends ListenerAdapter {
 			}
 
 			Player player = data.getPlayer();
-			channel.sendMessage(getWarlordStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
+			channel.sendMessage(getBuildBattleStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
 		}
 	}
 
-	//Warlord = BattleGround
-	private EmbedBuilder getWarlordStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
-		BattleGround battleGround = player.getStats().getBattleGround();
-		EmbedBuilder warlordEmbed = new EmbedBuilder();
-		warlordEmbed.setAuthor(format("Hypixel Warlord %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
-		warlordEmbed.setColor(new Color(152, 133, 193));
-		warlordEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
-		warlordEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+	private EmbedBuilder getBuildBattleStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		BuildBattle buildBattle = player.getStats().getBuildBattle();
+		EmbedBuilder bBEmbed = new EmbedBuilder();
+		bBEmbed.setAuthor(format("Hypixel Build Battle %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
+		bBEmbed.setColor(new Color(148, 120, 73));
+		bBEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
+		bBEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
 
-		warlordEmbed.addField("Coins : ", String.valueOf(battleGround.getCoins()), true);
-		warlordEmbed.addField("Chosen Class : ", battleGround.getChosenClass(), true);
-		warlordEmbed.addBlankField(false);
-		warlordEmbed.addField("Wins : ", String.valueOf(battleGround.getWins()), true);
-		warlordEmbed.addField("Win Streak : ", String.valueOf(battleGround.getWinStreak()), true);
-		warlordEmbed.addField("Play Streak : ", String.valueOf(battleGround.getPlayStreak()), true);
-		warlordEmbed.addField("Kills : ", String.valueOf(battleGround.getKills()), true);
-		warlordEmbed.addField("Assists : ", String.valueOf(battleGround.getAssists()), true);
-		warlordEmbed.addField("Heal : ", String.valueOf(battleGround.getHeal()), true);
-		warlordEmbed.addField("Losses : ", String.valueOf(battleGround.getLosses()), true);
-		warlordEmbed.addField("Deaths : ", String.valueOf(battleGround.getDeaths()), true);
-		warlordEmbed.addField("Damage : ", String.valueOf(battleGround.getDamage()), true);
-		warlordEmbed.addBlankField(false);
-		warlordEmbed.addField("Magic Dust : ", String.valueOf(battleGround.getMagicDust()), true);
-		warlordEmbed.addField("Void Shards : ", String.valueOf(battleGround.getVoidShards()), true);
-		warlordEmbed.addField("Crafted : ", String.valueOf(battleGround.getCrafted()), true);
-		warlordEmbed.addField("Repaired : ", String.valueOf(battleGround.getRepaired()), true);
+		bBEmbed.addField("Coins : ", String.valueOf(buildBattle.getCoins()), true);
+		bBEmbed.addField("Score : ", String.valueOf(buildBattle.getScore()), true);
+		bBEmbed.addField("Games Played : ", String.valueOf(buildBattle.getGamesPlayed()), true);
+		bBEmbed.addField("Total Votes : ", String.valueOf(buildBattle.getTotalVotes()), true);
+		bBEmbed.addField("Solo Most Points : ", String.valueOf(buildBattle.getTotalVotes()), true);
+		bBEmbed.addField("Team Most Points : ", String.valueOf(buildBattle.getTotalVotes()), true);
 
-		return warlordEmbed;
+		return bBEmbed;
 	}
 }

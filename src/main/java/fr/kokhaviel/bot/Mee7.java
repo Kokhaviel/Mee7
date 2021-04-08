@@ -25,9 +25,7 @@ import fr.kokhaviel.bot.commands.funcraft.games.*;
 import fr.kokhaviel.bot.commands.giveaways.GiveawayCommands;
 import fr.kokhaviel.bot.commands.guild.LanguageCommand;
 import fr.kokhaviel.bot.commands.guild.PrefixCommand;
-import fr.kokhaviel.bot.commands.hypixel.games.ArcadeCommand;
-import fr.kokhaviel.bot.commands.hypixel.games.ArenaCommand;
-import fr.kokhaviel.bot.commands.hypixel.games.WarlordCommand;
+import fr.kokhaviel.bot.commands.hypixel.games.*;
 import fr.kokhaviel.bot.commands.hypixel.player.MediasCommand;
 import fr.kokhaviel.bot.commands.hypixel.player.OutfitCommand;
 import fr.kokhaviel.bot.commands.minecraft.AchievementCommand;
@@ -64,7 +62,7 @@ public class Mee7 {
     public static HypixelAPI hypixelAPI = new HypixelAPI();
 
 
-    //TODO : TRANSLATE HYPIXEL
+    //TODO : Don't Forget Hypixel Quests
 
 	public static Gson gson = new Gson();
 
@@ -101,10 +99,13 @@ public class Mee7 {
                     .addEventListeners(new AvatarCommand())
                     .addEventListeners(new BackwardCommand())
                     .addEventListeners(new BanCommand())
+                    .addEventListeners(new BedwarsCommand())
+                    .addEventListeners(new BuildBattleCommand())
                     .addEventListeners(new ClearCommand())
                     .addEventListeners(new CovidCommand())
                     .addEventListeners(new GiveawayCommands())
                     .addEventListeners(new DameDaneCommand())
+                    .addEventListeners(new DuelsCommand())
                     .addEventListeners(new EightBallCommand())
                     .addEventListeners(new ForwardCommand())
                     .addEventListeners(new HelpCommand())
