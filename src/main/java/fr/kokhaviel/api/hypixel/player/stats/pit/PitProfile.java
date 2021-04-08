@@ -15,27 +15,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.kokhaviel.api.hypixel.player.stats;
+package fr.kokhaviel.api.hypixel.player.stats.pit;
 
 import com.google.gson.annotations.SerializedName;
-import fr.kokhaviel.api.hypixel.player.stats.pit.PitProfile;
-import fr.kokhaviel.api.hypixel.player.stats.pit.PitStats;
 
-public class Pit {
+public class PitProfile {
 
-	@SerializedName("profile")
-	PitProfile pitProfile = new PitProfile();
+	@SerializedName("cash")
+	int cash = 0;
 
-	@SerializedName("pit_stats_pt1")
-	PitStats pitStats = new PitStats();
+	@SerializedName("xp")
+	int xp = 0;
 
 
-	public PitProfile getPitProfile() {
-		return pitProfile;
+	public int getCash() {
+		return cash;
 	}
 
-	public PitStats getPitStats() {
-		return pitStats;
+	public int getXp() {
+		return xp;
 	}
 }
-
