@@ -45,6 +45,9 @@ public class Legacy {
 	@SerializedName("arena_tokens")
 	int arenaTokens = 0;
 
+	@SerializedName("quakecraft_tokens")
+	int quakeCraftTokens = 0;
+
 
 	public int getTokens() {
 		return tokens;
@@ -72,5 +75,9 @@ public class Legacy {
 
 	public int getArenaTokens() {
 		return arenaTokens;
+	}
+
+	public int getQuakeCraftTokens() {
+		return quakeCraftTokens;
 	}
 }
