@@ -60,7 +60,7 @@ public class ClassicGamesCommand extends ListenerAdapter {
 
 		if(args[0].equalsIgnoreCase(prefix + "classic")) {
 			if(args.length < 2) {
-				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "player <Player>").queue(
+				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "classic <Player>").queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
@@ -95,7 +95,7 @@ public class ClassicGamesCommand extends ListenerAdapter {
 		Legacy classicGames = player.getStats().getLegacy();
 		EmbedBuilder classicEmbed = new EmbedBuilder();
 		classicEmbed.setAuthor(format("Hypixel Classic Games %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
-		classicEmbed.setColor(new Color(240, 197, 85));
+		classicEmbed.setColor(new Color(146, 91, 73));
 		classicEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
 		classicEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
 

@@ -20,7 +20,7 @@ package fr.kokhaviel.bot.commands.hypixel.games;
 import com.google.gson.JsonObject;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
-import fr.kokhaviel.api.hypixel.player.stats.GingerBread;
+import fr.kokhaviel.api.hypixel.player.stats.McGo;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
 import fr.kokhaviel.bot.Settings;
@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 import static fr.kokhaviel.bot.Mee7.hypixelAPI;
 import static java.lang.String.format;
 
-public class TurboKartRacerCommand extends ListenerAdapter {
+public class McGoCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -59,9 +59,9 @@ public class TurboKartRacerCommand extends ListenerAdapter {
 		final MessageChannel channel = event.getChannel();
 		final String[] args = message.getContentRaw().split("\\s+");
 
-		if(args[0].equalsIgnoreCase(prefix + "tkr")) {
+		if(args[0].equalsIgnoreCase(prefix + "mcgo")) {
 			if(args.length < 2) {
-				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "tkr <Player>").queue(
+				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "mcgo <Player>").queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
@@ -88,31 +88,36 @@ public class TurboKartRacerCommand extends ListenerAdapter {
 			}
 
 			Player player = data.getPlayer();
-			channel.sendMessage(getTkrStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
+			channel.sendMessage(getMCGOStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
 		}
 	}
 
-	private EmbedBuilder getTkrStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
-		GingerBread tkr = player.getStats().getGingerBread();
-		EmbedBuilder tkrEmbed = new EmbedBuilder();
-		tkrEmbed.setAuthor(format("Hypixel Turbo Kart Racer %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
-		tkrEmbed.setColor(new Color(85, 255, 85));
-		tkrEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
-		tkrEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+	private EmbedBuilder getMCGOStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		McGo mcGo = player.getStats().getMcgo();
+		EmbedBuilder mcGoEmbed = new EmbedBuilder();
+		mcGoEmbed.setAuthor(format("Hypixel McGo %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
+		mcGoEmbed.setColor(new Color(240, 197, 85));
+		mcGoEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
+		mcGoEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
 
-		tkrEmbed.addField("Coins : ", String.valueOf(tkr.getCoins()), true);
-		tkrEmbed.addField("Coins Picked Up : ", String.valueOf(tkr.getCoinsPickedUp()), true);
-		tkrEmbed.addField("Box Picked Up : ", String.valueOf(tkr.getBoxPickups()), true);
-		tkrEmbed.addField("Wins : ", String.valueOf(tkr.getWins()), true);
-		tkrEmbed.addField("Laps : ", String.valueOf(tkr.getLaps()), true);
-		tkrEmbed.addField("Gold Trophies : ", String.valueOf(tkr.getGoldTrophies()), true);
-		tkrEmbed.addField("Silver Trophies : ", String.valueOf(tkr.getSilverTrophies()), true);
-		tkrEmbed.addField("Bronze Trophies : ", String.valueOf(tkr.getBronzeTrophies()), true);
-		tkrEmbed.addBlankField(false);
-		tkrEmbed.addField("Helmet : ", String.valueOf(tkr.getHelmet()), true);
-		tkrEmbed.addField("Jacket : ", String.valueOf(tkr.getJacket()), true);
-		tkrEmbed.addField("Pants : ", String.valueOf(tkr.getPants()), true);
-		tkrEmbed.addField("Shoes : ", String.valueOf(tkr.getShoes()), true);
-		return tkrEmbed;
+		mcGoEmbed.addField("Coins : ", String.valueOf(mcGo.getCoins()), true);
+		mcGoEmbed.addField("Wins : ", String.valueOf(mcGo.getWins()), true);
+		mcGoEmbed.addField("Deathmatch Wins : ", String.valueOf(mcGo.getDeathmatchWins()), true);
+		mcGoEmbed.addField("Rounds Wins : ", String.valueOf(mcGo.getRoundsWins()), true);
+		mcGoEmbed.addField("Games Played : ", String.valueOf(mcGo.getGamesPlayed()), true);
+		mcGoEmbed.addField("Kills : ", String.valueOf(mcGo.getKills()), true);
+		mcGoEmbed.addField("Deathmatch Kills : ", String.valueOf(mcGo.getDeathmatchKills()), true);
+		mcGoEmbed.addField("Headshot Kills : ", String.valueOf(mcGo.getHeadshotsKills()), true);
+		mcGoEmbed.addField("Cop Kills : ", String.valueOf(mcGo.getCopKills()), true);
+		mcGoEmbed.addField("Criminal Kills : ", String.valueOf(mcGo.getCriminalKills()), true);
+		mcGoEmbed.addField("Grenade Kills : ", String.valueOf(mcGo.getGrenadeKills()), true);
+		mcGoEmbed.addField("Deaths : ", String.valueOf(mcGo.getDeaths()), true);
+		mcGoEmbed.addField("Deathmatch Deaths : ", String.valueOf(mcGo.getDeathmatchDeaths()), true);
+		mcGoEmbed.addField("Assists : ", String.valueOf(mcGo.getAssists()), true);
+		mcGoEmbed.addField("Shots Fired : ", String.valueOf(mcGo.getShotsFired()), true);
+		mcGoEmbed.addField("Planted : ", String.valueOf(mcGo.getPlanted()), true);
+		mcGoEmbed.addField("Defused : ", String.valueOf(mcGo.getDefused()), true);
+
+		return mcGoEmbed;
 	}
 }
