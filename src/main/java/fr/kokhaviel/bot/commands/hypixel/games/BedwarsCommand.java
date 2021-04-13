@@ -102,6 +102,7 @@ public class BedwarsCommand extends ListenerAdapter {
 		bedwarsEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
 
 		bedwarsEmbed.addField("Coins : ", String.valueOf(bedwars.getCoins()), true);
+		bedwarsEmbed.addField("Level : ", String.valueOf(player.getAchievements().getBedwarsLevel()), true);
 		bedwarsEmbed.addField("Experience : ", String.valueOf(bedwars.getExperience()), true);
 		bedwarsEmbed.addBlankField(false);
 		bedwarsEmbed.addField("Death Cry : ", bedwars.getDeathCry().replace("deathcry_", ""), true);
@@ -116,14 +117,13 @@ public class BedwarsCommand extends ListenerAdapter {
 		bedwarsEmbed.addField("Win Streak : ", String.valueOf(bedwars.getWinstreak()), true);
 		bedwarsEmbed.addField("Losses : ", String.valueOf(bedwars.getLosses()), true);
 		bedwarsEmbed.addField("Games Played : ", String.valueOf(bedwars.getGamesPlayed()), true);
-		bedwarsEmbed.addField("Kills : ", String.valueOf(bedwars.getKills()), true);
-		bedwarsEmbed.addField("Deaths : ", String.valueOf(bedwars.getDeaths()), true);
 		bedwarsEmbed.addBlankField(false);
 		bedwarsEmbed.addField("Resources Collected : ", String.valueOf(bedwars.getResourcesCollected()), true);
 		bedwarsEmbed.addField("Iron Collected : ", String.valueOf(bedwars.getIronCollected()), true);
 		bedwarsEmbed.addField("Gold Collected : ", String.valueOf(bedwars.getGoldCollected()), true);
 		bedwarsEmbed.addField("Diamond Collected : ", String.valueOf(bedwars.getDiamondCollected()), true);
 		bedwarsEmbed.addField("Emerald Collected : ", String.valueOf(bedwars.getEmeraldCollected()), true);
+		bedwarsEmbed.addField("Items Purchased : ", String.valueOf(bedwars.getItemsPurchased()), true);
 
 		return bedwarsEmbed;
 	}
@@ -136,9 +136,10 @@ public class BedwarsCommand extends ListenerAdapter {
 		bedwarsEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
 		bedwarsEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
 
+		bedwarsEmbed.addField("Kills : ", String.valueOf(bedwars.getKills()), true);
+		bedwarsEmbed.addField("Deaths : ", String.valueOf(bedwars.getDeaths()), true);
 		bedwarsEmbed.addField("Beds Broken : ", String.valueOf(bedwars.getBedsBroken()), true);
 		bedwarsEmbed.addField("Beds Lost : ", String.valueOf(bedwars.getBedsLost()), true);
-		bedwarsEmbed.addField("Items Purchased : ", String.valueOf(bedwars.getItemsPurchased()), true);
 		bedwarsEmbed.addField("Final Kills : ", String.valueOf(bedwars.getFinalKills()), true);
 		bedwarsEmbed.addField("Final Deaths : ", String.valueOf(bedwars.getFinalDeaths()), true);
 		bedwarsEmbed.addField("Void Kills : ", String.valueOf(bedwars.getVoidKills()), true);

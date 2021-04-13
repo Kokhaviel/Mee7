@@ -18,9 +18,6 @@
 package fr.kokhaviel.api.hypixel.player.stats;
 
 import com.google.gson.annotations.SerializedName;
-import fr.kokhaviel.api.hypixel.player.stats.practice.Bridging;
-import fr.kokhaviel.api.hypixel.player.stats.practice.FireBall;
-import fr.kokhaviel.api.hypixel.player.stats.practice.MLG;
 
 public class Practice {
 
@@ -51,5 +48,69 @@ public class Practice {
 
 	public FireBall getFireBall() {
 		return fireBall;
+	}
+
+	public static class Bridging {
+
+		@SerializedName("successful_attempts")
+		int successAttempts = 0;
+
+		@SerializedName("failed_attempts")
+		int failAttempts = 0;
+
+		@SerializedName("blocks_placed")
+		int blocksPlaced = 0;
+
+
+		public int getSuccessAttempts() {
+			return successAttempts;
+		}
+
+		public int getFailAttempts() {
+			return failAttempts;
+		}
+
+		public int getBlocksPlaced() {
+			return blocksPlaced;
+		}
+
+	}
+
+	public static class FireBall {
+
+
+		@SerializedName("successful_attempts")
+		int successAttempts = 0;
+
+		@SerializedName("failed_attempts")
+		int failAttempts = 0;
+
+
+		public int getSuccessAttempts() {
+			return successAttempts;
+		}
+
+		public int getFailAttempts() {
+			return failAttempts;
+		}
+	}
+
+	public static class MLG {
+
+
+		@SerializedName("successful_attempts")
+		int successAttempts = 0;
+
+		@SerializedName("failed_attempts")
+		int failAttempts = 0;
+
+
+		public int getSuccessAttempts() {
+			return successAttempts;
+		}
+
+		public int getFailAttempts() {
+			return failAttempts;
+		}
 	}
 }

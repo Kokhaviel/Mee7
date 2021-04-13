@@ -61,7 +61,7 @@ public class MurderMysteryCommand extends ListenerAdapter {
 
 		if(args[0].equalsIgnoreCase(prefix + "murdermystery")) {
 			if(args.length < 2) {
-				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "player <Player>").queue(
+				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "murdermystery <Player>").queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}

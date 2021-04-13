@@ -62,7 +62,7 @@ public class Mee7 {
     public static HypixelAPI hypixelAPI = new HypixelAPI();
 
 
-    //TODO : Don't Forget Hypixel Quests
+    //TODO : Don't Forget Hypixel Quests + Time played
 
 	public static Gson gson = new Gson();
 
@@ -132,11 +132,14 @@ public class Mee7 {
                     .addEventListeners(new NowPlayingCommand())
                     .addEventListeners(new OctogoneStatsCommand())
                     .addEventListeners(new OutfitCommand())
+                    .addEventListeners(new PaintballCommand())
                     .addEventListeners(new PauseCommand())
                     .addEventListeners(new PingCommand())
+                    .addEventListeners(new PitCommand())
                     .addEventListeners(new PlayCommand())
                     .addEventListeners(new fr.kokhaviel.bot.commands.funcraft.PlayerStatsCommand())
                     .addEventListeners(new fr.kokhaviel.bot.commands.hypixel.player.PlayerStatsCommand())
+                    .addEventListeners(new PracticeCommand())
                     .addEventListeners(new PrefixCommand())
                     .addEventListeners(new PvpSmashStatsCommand())
                     .addEventListeners(new QueueCommand())
