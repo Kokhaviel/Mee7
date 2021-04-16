@@ -222,7 +222,7 @@ public class Logs extends ListenerAdapter {
         logsChannel.sendMessage(emoteUpdateNameEmbed.build()).queue();
     }
 
-    @Override
+   /* @Override
     public void onEmoteUpdateRoles(EmoteUpdateRolesEvent event) {
         System.out.println("Update Roles Emote : " + event.getOldRoles() + " -> " + event.getNewRoles());
 
@@ -245,7 +245,7 @@ public class Logs extends ListenerAdapter {
                 .addField(LOGS_OBJECT.get("emote_roles_updated").getAsString(), event.getOldRoles() + " -> " + event.getNewRoles(), false);
 
         logsChannel.sendMessage(emoteRolesEmbed.build()).queue();
-    }
+    }*/
 
     @Override
     public void onGuildBan(GuildBanEvent event) {

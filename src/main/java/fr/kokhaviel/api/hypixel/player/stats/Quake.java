@@ -84,7 +84,7 @@ public class Quake {
 		return barrel;
 	}
 
-	public String getCase2() {
+	public String getCase() {
 		return case2;
 	}
 

@@ -20,7 +20,7 @@ package fr.kokhaviel.bot.commands.hypixel.games;
 import com.google.gson.JsonObject;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
-import fr.kokhaviel.api.hypixel.player.stats.Quake;
+import fr.kokhaviel.api.hypixel.player.stats.TNTGames;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
 import fr.kokhaviel.bot.Settings;
@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 import static fr.kokhaviel.bot.Mee7.hypixelAPI;
 import static java.lang.String.format;
 
-public class QuakeCommand extends ListenerAdapter {
+public class TNTGamesCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -59,10 +59,9 @@ public class QuakeCommand extends ListenerAdapter {
 		final MessageChannel channel = event.getChannel();
 		final String[] args = message.getContentRaw().split("\\s+");
 
-		if(args[0].equalsIgnoreCase(prefix + "quake")) {
-
+		if(args[0].equalsIgnoreCase(prefix + "tnt")) {
 			if(args.length < 2) {
-				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "quake <Player>").queue(
+				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "tnt <Player>").queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
@@ -89,34 +88,31 @@ public class QuakeCommand extends ListenerAdapter {
 			}
 
 			Player player = data.getPlayer();
-			channel.sendMessage(getQuakeStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
+			channel.sendMessage(getTntStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
 		}
 	}
 
-	private EmbedBuilder getQuakeStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
-		Quake quake = player.getStats().getQuake();
-		EmbedBuilder quakeEmbed = new EmbedBuilder();
-		quakeEmbed.setAuthor(format("Hypixel Quake %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
-		quakeEmbed.setColor(new Color(255, 85, 255));
-		quakeEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
-		quakeEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+	private EmbedBuilder getTntStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		TNTGames tntGames = player.getStats().getTntGames();
+		EmbedBuilder tntEmbed = new EmbedBuilder();
+		tntEmbed.setAuthor(format("Hypixel Tnt Games %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
+		tntEmbed.setColor(new Color(210, 47, 26));
+		tntEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
+		tntEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
 
-		quakeEmbed.addField("Coins : ", String.valueOf(quake.getCoins()), true);
-		quakeEmbed.addField("Kills : ", String.valueOf(quake.getKills()), true);
-		quakeEmbed.addField("Highest Kill Streak: ", String.valueOf(quake.getHighestKillstreak()), true);
-		quakeEmbed.addField("Deaths : ", String.valueOf(quake.getDeaths()), true);
-		quakeEmbed.addField("Shots Fired : ", String.valueOf(quake.getShotsFired()), true);
-		quakeEmbed.addField("Meters Travelled : ", String.valueOf(quake.getTravelled()), true);
-		quakeEmbed.addBlankField(false);
-		quakeEmbed.addField("Kill Sound : ", quake.getKillSound(), true);
-		quakeEmbed.addField("Barrel : ", quake.getBarrel(), true);
-		quakeEmbed.addField("Case : ", quake.getCase(), true);
-		quakeEmbed.addField("Trigger : ", quake.getTrigger(), true);
-		quakeEmbed.addField("Sight : ", quake.getSight(), true);
-		quakeEmbed.addField("Muzzle : ", quake.getMuzzle(), true);
-		quakeEmbed.addField("Beam : ", quake.getBeam(), true);
-		quakeEmbed.addField("Dash : ", quake.getDash(), true);
+		tntEmbed.addField("Coins : ", String.valueOf(tntGames.getCoins()), true);
+		tntEmbed.addField("Wins : ", String.valueOf(tntGames.getWins()), true);
+		tntEmbed.addField("Winstreak : ", String.valueOf(tntGames.getWinstreak()), true);
+		tntEmbed.addField("Kills PvPRun : ", String.valueOf(tntGames.getPvprunKills()), true);
+		tntEmbed.addField("Kills TntTag : ", String.valueOf(tntGames.getTnttagKills()), true);
+		tntEmbed.addField("Deaths Bowspleef : ", String.valueOf(tntGames.getBowspleefDeaths()), true);
+		tntEmbed.addField("Deaths TntRun : ", String.valueOf(tntGames.getTntrunDeaths()), true);
+		tntEmbed.addField("Deaths PvPRun : ", String.valueOf(tntGames.getPvprunDeaths()), true);
+		tntEmbed.addField("Record TntRun : ", String.valueOf(tntGames.getTnttunRecord()), true);
+		tntEmbed.addField("Record PvPRun : ", String.valueOf(tntGames.getPvprunRecord()), true);
+		tntEmbed.addField("Potion Splashed : ", String.valueOf(tntGames.getPotionsSplashed()), true);
+		tntEmbed.addField("Tags Bowspleef : ", String.valueOf(tntGames.getBowspleefTags()), true);
 
-		return quakeEmbed;
+		return tntEmbed;
 	}
 }

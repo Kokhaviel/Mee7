@@ -20,7 +20,7 @@ package fr.kokhaviel.bot.commands.hypixel.games;
 import com.google.gson.JsonObject;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
-import fr.kokhaviel.api.hypixel.player.stats.Quake;
+import fr.kokhaviel.api.hypixel.player.stats.TrueCombat;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
 import fr.kokhaviel.bot.Settings;
@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 import static fr.kokhaviel.bot.Mee7.hypixelAPI;
 import static java.lang.String.format;
 
-public class QuakeCommand extends ListenerAdapter {
+public class CrazyWallsCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -59,10 +59,9 @@ public class QuakeCommand extends ListenerAdapter {
 		final MessageChannel channel = event.getChannel();
 		final String[] args = message.getContentRaw().split("\\s+");
 
-		if(args[0].equalsIgnoreCase(prefix + "quake")) {
-
+		if(args[0].equalsIgnoreCase(prefix + "crazywalls")) {
 			if(args.length < 2) {
-				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "quake <Player>").queue(
+				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "crazywalls <Player>").queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
@@ -89,34 +88,33 @@ public class QuakeCommand extends ListenerAdapter {
 			}
 
 			Player player = data.getPlayer();
-			channel.sendMessage(getQuakeStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
+			channel.sendMessage(getCrazyWallsStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
 		}
 	}
 
-	private EmbedBuilder getQuakeStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
-		Quake quake = player.getStats().getQuake();
-		EmbedBuilder quakeEmbed = new EmbedBuilder();
-		quakeEmbed.setAuthor(format("Hypixel Quake %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
-		quakeEmbed.setColor(new Color(255, 85, 255));
-		quakeEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
-		quakeEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+	private EmbedBuilder getCrazyWallsStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		TrueCombat trueCombat = player.getStats().getTrueCombat();
+		EmbedBuilder tCEmbed = new EmbedBuilder();
+		tCEmbed.setAuthor(format("Hypixel Crazy Walls %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
+		tCEmbed.setColor(new Color(240, 197, 85));
+		tCEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
+		tCEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
 
-		quakeEmbed.addField("Coins : ", String.valueOf(quake.getCoins()), true);
-		quakeEmbed.addField("Kills : ", String.valueOf(quake.getKills()), true);
-		quakeEmbed.addField("Highest Kill Streak: ", String.valueOf(quake.getHighestKillstreak()), true);
-		quakeEmbed.addField("Deaths : ", String.valueOf(quake.getDeaths()), true);
-		quakeEmbed.addField("Shots Fired : ", String.valueOf(quake.getShotsFired()), true);
-		quakeEmbed.addField("Meters Travelled : ", String.valueOf(quake.getTravelled()), true);
-		quakeEmbed.addBlankField(false);
-		quakeEmbed.addField("Kill Sound : ", quake.getKillSound(), true);
-		quakeEmbed.addField("Barrel : ", quake.getBarrel(), true);
-		quakeEmbed.addField("Case : ", quake.getCase(), true);
-		quakeEmbed.addField("Trigger : ", quake.getTrigger(), true);
-		quakeEmbed.addField("Sight : ", quake.getSight(), true);
-		quakeEmbed.addField("Muzzle : ", quake.getMuzzle(), true);
-		quakeEmbed.addField("Beam : ", quake.getBeam(), true);
-		quakeEmbed.addField("Dash : ", quake.getDash(), true);
+		tCEmbed.addField("Coins : ", String.valueOf(trueCombat.getCoins()), true);
+		tCEmbed.addField("Golden Skulls : ", String.valueOf(trueCombat.getGoldenSkulls()), true);
+		tCEmbed.addField("Enchanted Items : ", String.valueOf(trueCombat.getItemsEnchanted()), true);
+		tCEmbed.addField("Arrows Shot : ", String.valueOf(trueCombat.getArrowsShot()), true);
+		tCEmbed.addField("Arrows Hit : ", String.valueOf(trueCombat.getArrowsHit()), true);
+		tCEmbed.addField("Kills : ", String.valueOf(trueCombat.getKills()), true);
+		tCEmbed.addField("Deaths : ", String.valueOf(trueCombat.getDeaths()), true);
+		tCEmbed.addField("Survived Players : ", String.valueOf(trueCombat.getSurvivedPlayers()), true);
+		tCEmbed.addField("Skulls Gathered : ", String.valueOf(trueCombat.getSkullsGathered()), true);
+		tCEmbed.addField("Wins : ", String.valueOf(trueCombat.getWins()), true);
+		tCEmbed.addField("Winstreak : ", String.valueOf(trueCombat.getWinStreak()), true);
+		tCEmbed.addField("Losses : ", String.valueOf(trueCombat.getLosses()), true);
+		tCEmbed.addField("Games : ", String.valueOf(trueCombat.getGames()), true);
+		tCEmbed.addField("Gold Dust : ", String.valueOf(trueCombat.getGoldDust()), true);
 
-		return quakeEmbed;
+		return tCEmbed;
 	}
 }
