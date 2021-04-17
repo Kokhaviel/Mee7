@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.McGo;
@@ -76,9 +77,13 @@ public class McGoCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -89,6 +94,7 @@ public class McGoCommand extends ListenerAdapter {
 
 			Player player = data.getPlayer();
 			channel.sendMessage(getMCGOStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
+			channel.sendMessage(getMcGoQuests(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
 		}
 	}
 
@@ -96,7 +102,7 @@ public class McGoCommand extends ListenerAdapter {
 		McGo mcGo = player.getStats().getMcgo();
 		EmbedBuilder mcGoEmbed = new EmbedBuilder();
 		mcGoEmbed.setAuthor(format("Hypixel McGo %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
-		mcGoEmbed.setColor(new Color(240, 197, 85));
+		mcGoEmbed.setColor(new Color(158, 154, 171));
 		mcGoEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
 		mcGoEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
 
@@ -117,6 +123,22 @@ public class McGoCommand extends ListenerAdapter {
 		mcGoEmbed.addField("Shots Fired : ", String.valueOf(mcGo.getShotsFired()), true);
 		mcGoEmbed.addField("Planted : ", String.valueOf(mcGo.getPlanted()), true);
 		mcGoEmbed.addField("Defused : ", String.valueOf(mcGo.getDefused()), true);
+
+		return mcGoEmbed;
+	}
+
+	private EmbedBuilder getMcGoQuests(Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
+		EmbedBuilder mcGoEmbed = new EmbedBuilder();
+		mcGoEmbed.setAuthor(format("Hypixel McGo %s", hypixelObject.get("quests").getAsString()), null, Config.HYPIXEL_ICON);
+		mcGoEmbed.setColor(new Color(158, 154, 171));
+		mcGoEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("quests").getAsString()));
+		mcGoEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+
+		mcGoEmbed.addField("Pistol Challenge : ", String.valueOf(challenges.getMcgoPistolChallenge()), false);
+		mcGoEmbed.addField("Knife Challenge : ", String.valueOf(challenges.getMcgoKnifeChallenge()), false);
+		mcGoEmbed.addField("Grenade Challenge : ", String.valueOf(challenges.getMcgoGrenadeChallenge()), false);
+		mcGoEmbed.addField("Killing Spree Challenge : ", String.valueOf(challenges.getMcgoKillingSpreeChallenge()), false);
 
 		return mcGoEmbed;
 	}

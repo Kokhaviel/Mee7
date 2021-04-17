@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.BuildBattle;
@@ -76,9 +77,13 @@ public class BuildBattleCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -94,6 +99,7 @@ public class BuildBattleCommand extends ListenerAdapter {
 
 	private EmbedBuilder getBuildBattleStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
 		BuildBattle buildBattle = player.getStats().getBuildBattle();
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
 		EmbedBuilder bBEmbed = new EmbedBuilder();
 		bBEmbed.setAuthor(format("Hypixel Build Battle %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
 		bBEmbed.setColor(new Color(148, 120, 73));
@@ -106,6 +112,9 @@ public class BuildBattleCommand extends ListenerAdapter {
 		bBEmbed.addField("Total Votes : ", String.valueOf(buildBattle.getTotalVotes()), true);
 		bBEmbed.addField("Solo Most Points : ", String.valueOf(buildBattle.getTotalVotes()), true);
 		bBEmbed.addField("Team Most Points : ", String.valueOf(buildBattle.getTotalVotes()), true);
+		bBEmbed.addBlankField(false);
+		bBEmbed.addField("Top 3 Challenge : ", String.valueOf(challenges.getbBTop3Challenge()), false);
+		bBEmbed.addField("Guesser Challenge : ", String.valueOf(challenges.getbBGuesserChallenge()), false);
 
 		return bBEmbed;
 	}

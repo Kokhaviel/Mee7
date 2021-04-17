@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.HungerGames;
@@ -77,9 +78,13 @@ public class BlitzCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -106,7 +111,7 @@ public class BlitzCommand extends ListenerAdapter {
 		blitzEmbed.addField("Wins Solo Normal : ", String.valueOf(blitz.getWinsSoloNormal()), true);
 		blitzEmbed.addField("Wins Teams Normal : ", String.valueOf(blitz.getWinsTeamsNormal()), true);
 		blitzEmbed.addField("Games Played : ", String.valueOf(blitz.getGamesPlayed()), true);
-		blitzEmbed.addField("Time Played : ", String.valueOf(blitz.getTimePlayed()), true);
+		blitzEmbed.addField("Time Played : ", String.valueOf(blitz.getTimePlayed() + " minutes"), true);
 		blitzEmbed.addField("Kills : ", String.valueOf(blitz.getKills()), true);
 		blitzEmbed.addField("Kills Solo Normal : ", String.valueOf(blitz.getKillsSoloNormal()), true);
 		blitzEmbed.addField("Kills Teams Normal : ", String.valueOf(blitz.getKillsTeamsNormal()), true);
@@ -118,6 +123,22 @@ public class BlitzCommand extends ListenerAdapter {
 		blitzEmbed.addField("Potions Drunk : ", String.valueOf(blitz.getPotionsDrunk()), true);
 		blitzEmbed.addField("Potions Thrown : ", String.valueOf(blitz.getPotionsThrown()), true);
 		blitzEmbed.addField("AfterKill : ", blitz.getAfterKill(), true);
+
+		return blitzEmbed;
+	}
+
+	private EmbedBuilder getBlitzQuests(Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
+		EmbedBuilder blitzEmbed = new EmbedBuilder();
+		blitzEmbed.setAuthor(format("Hypixel Blitz %s", hypixelObject.get("quests").getAsString()), null, Config.HYPIXEL_ICON);
+		blitzEmbed.setColor(new Color(51, 235, 203));
+		blitzEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("quests").getAsString()));
+		blitzEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+
+		blitzEmbed.addField("Star Challenge : ", String.valueOf(challenges.getBlitzStarChallenge()), false);
+		blitzEmbed.addField("Iron Man Challenge : ", String.valueOf(challenges.getBlitzIronManChallenge()), false);
+		blitzEmbed.addField("Blitz Challenge : ", String.valueOf(challenges.getBlitzBlitzChallenge()), false);
+		blitzEmbed.addField("Resistance Challenge : ", String.valueOf(challenges.getBlitzResistanceChallenge()), false);
 
 		return blitzEmbed;
 	}

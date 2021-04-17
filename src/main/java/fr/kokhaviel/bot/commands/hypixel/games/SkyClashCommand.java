@@ -79,6 +79,10 @@ public class SkyClashCommand extends ListenerAdapter {
 				data = hypixelAPI.getData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;

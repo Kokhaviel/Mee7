@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.Arcade;
@@ -76,9 +77,13 @@ public class ArcadeCommand extends ListenerAdapter {
 			message.delete().queue();
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exist !").queue(
+						errorMessage -> errorMessage.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -89,6 +94,7 @@ public class ArcadeCommand extends ListenerAdapter {
 
 			Player player = data.getPlayer();
 			channel.sendMessage(getArcadeStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
+			channel.sendMessage(getArcadeQuests(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
 		}
 	}
 
@@ -115,6 +121,35 @@ public class ArcadeCommand extends ListenerAdapter {
 		arcadeEmbed.addField("Wins Pixel Painters : ", String.valueOf(arcade.getWinsDrawTheirThings()), true);
 		arcadeEmbed.addField("Wins Throw Out : ", String.valueOf(arcade.getWinsThrowOut()), true);
 		arcadeEmbed.addField("Wins Grinch Simulator : ", String.valueOf(arcade.getWinsGrinchSimul()), true);
+
+		return arcadeEmbed;
+	}
+
+	private EmbedBuilder getArcadeQuests(Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
+		EmbedBuilder arcadeEmbed = new EmbedBuilder();
+		arcadeEmbed.setAuthor(format("Hypixel Arcade %s", hypixelObject.get("quests").getAsString()), null, Config.HYPIXEL_ICON);
+		arcadeEmbed.setColor(new Color(133, 216, 148));
+		arcadeEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("quests").getAsString()));
+		arcadeEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+
+		arcadeEmbed.addField("Farm Hunt Challenge : ", String.valueOf(challenges.getArcadeFarmHuntChallenge()), false);
+		arcadeEmbed.addField("Blocking Dead Challenge : ", String.valueOf(challenges.getArcadeBlockingDeadChallenge()), false);
+		arcadeEmbed.addField("Bounty Hunter Challenge : ", String.valueOf(challenges.getArcadeBountyHunterChallenge()), false);
+		arcadeEmbed.addField("Creeper Attack Challenge : ", String.valueOf(challenges.getArcadeCreeperAttackChallenge()), false);
+		arcadeEmbed.addField("Dragon Wars Challenge : ", String.valueOf(challenges.getArcadeDragonWarsChallenge()), false);
+		arcadeEmbed.addField("Ender Spleef Challenge : ", String.valueOf(challenges.getArcadeEnderSpleefChallenge()), false);
+		arcadeEmbed.addField("Galaxy Wars Challenge : ", String.valueOf(challenges.getArcadeGalaxyWarsChallenge()), false);
+		arcadeEmbed.addField("Throw Out Challenge : ", String.valueOf(challenges.getArcadeThrowOutChallenge()), false);
+		arcadeEmbed.addField("Hole in the Wall Challenge : ", String.valueOf(challenges.getArcadeHoleInTheWallChallenge()), false);
+		arcadeEmbed.addField("Hypixel Says Challenge : ", String.valueOf(challenges.getArcadeHypixelSaysChallenge()), false);
+		arcadeEmbed.addField("Pixel Painters Challenge : ", String.valueOf(challenges.getArcadePixelPaintersChallenge()), false);
+		arcadeEmbed.addField("Party Games Challenge : ", String.valueOf(challenges.getArcadePartyGamesChallenge()), false);
+		arcadeEmbed.addField("Football Challenge : ", String.valueOf(challenges.getArcadeFootballChallenge()), false);
+		arcadeEmbed.addField("Mini Walls Challenge : ", String.valueOf(challenges.getArcadeMiniWallsChallenge()), false);
+		arcadeEmbed.addField("Capture the Wool Challenge : ", String.valueOf(challenges.getArcadeCaptureTheWoolChallenge()), false);
+		arcadeEmbed.addField("Zombies Challenge : ", String.valueOf(challenges.getArcadeZombiesChallenge()), false);
+		arcadeEmbed.addField("Hide and Seek Challenge : ", String.valueOf(challenges.getArcadeHideSeekChallenge()), false);
 
 		return arcadeEmbed;
 	}

@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.GingerBread;
@@ -76,9 +77,13 @@ public class TurboKartRacerCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -94,6 +99,7 @@ public class TurboKartRacerCommand extends ListenerAdapter {
 
 	private EmbedBuilder getTkrStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
 		GingerBread tkr = player.getStats().getGingerBread();
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
 		EmbedBuilder tkrEmbed = new EmbedBuilder();
 		tkrEmbed.setAuthor(format("Hypixel Turbo Kart Racer %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
 		tkrEmbed.setColor(new Color(85, 255, 85));
@@ -113,6 +119,11 @@ public class TurboKartRacerCommand extends ListenerAdapter {
 		tkrEmbed.addField("Jacket : ", String.valueOf(tkr.getJacket()), true);
 		tkrEmbed.addField("Pants : ", String.valueOf(tkr.getPants()), true);
 		tkrEmbed.addField("Shoes : ", String.valueOf(tkr.getShoes()), true);
+		tkrEmbed.addBlankField(false);
+		tkrEmbed.addField("Coin Challenge : ", String.valueOf(challenges.getGingerBreadCoinChallenge()), false);
+		tkrEmbed.addField("First Place Challenge : ", String.valueOf(challenges.getGingerBreadFirstPlaceChallenge()), false);
+		tkrEmbed.addField("Banana Challenge : ", String.valueOf(challenges.getGingerBreadBananaChallenge()), false);
+		tkrEmbed.addField("Leaderboard Challenge : ", String.valueOf(challenges.getGingerBreadLeaderboardChallenge()), false);
 		return tkrEmbed;
 	}
 }

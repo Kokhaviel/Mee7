@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.Walls;
@@ -76,9 +77,13 @@ public class WallsCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -94,6 +99,7 @@ public class WallsCommand extends ListenerAdapter {
 
 	private EmbedBuilder getWallsStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
 		Walls walls = player.getStats().getWalls();
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
 		EmbedBuilder wallsEmbed = new EmbedBuilder();
 		wallsEmbed.setAuthor(format("Hypixel Walls %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
 		wallsEmbed.setColor(new Color(255, 255, 85));
@@ -106,6 +112,11 @@ public class WallsCommand extends ListenerAdapter {
 		wallsEmbed.addField("Kills : ", String.valueOf(walls.getKills()), true);
 		wallsEmbed.addField("Deaths : ", String.valueOf(walls.getDeaths()), true);
 		wallsEmbed.addField("Assists : ", String.valueOf(walls.getAssists()), true);
+		wallsEmbed.addBlankField(false);
+		wallsEmbed.addField("First Blood Challenge : ", String.valueOf(challenges.getWallsFirstBloodChallenge()), false);
+		wallsEmbed.addField("Power House Challenge : ", String.valueOf(challenges.getWallsPowerHouseChallenge()), false);
+		wallsEmbed.addField("Looting Challenge : ", String.valueOf(challenges.getWallsLootingChallenge()), false);
+		wallsEmbed.addField("Double Kill Challenge : ", String.valueOf(challenges.getWallsDoubleKillChallenge()), false);
 
 		return wallsEmbed;
 	}

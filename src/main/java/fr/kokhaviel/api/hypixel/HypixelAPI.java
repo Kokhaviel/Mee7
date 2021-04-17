@@ -26,7 +26,6 @@ import fr.kokhaviel.api.hypixel.server.bans.Bans;
 import fr.kokhaviel.api.hypixel.server.count.PlayerCount;
 import fr.kokhaviel.api.hypixel.status.Status;
 import fr.kokhaviel.api.mojang.MojangUUID;
-import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
 
 import java.net.MalformedURLException;
@@ -38,10 +37,15 @@ import java.util.TimeZone;
 public class HypixelAPI {
 
 	Gson gson = new Gson();
+	private String key;
 
-	public PlayerData getData(String player) throws MalformedURLException {
+	public HypixelAPI(String key) {
+		this.key = key;
+	}
+
+	public PlayerData getPlayerData(String player) throws MalformedURLException {
 		String baseHypixelUrl = "https://api.hypixel.net/player?uuid=";
-		String hypixelURL = baseHypixelUrl + getMojangUUID(player) + "&key=" + Config.HYPIXEL_API_KEY;
+		String hypixelURL = baseHypixelUrl + getMojangUUID(player) + "&key=" + key;
 
 		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelURL)).getAsJsonObject();
 
@@ -50,7 +54,7 @@ public class HypixelAPI {
 
 	public RecentGames getRecentGames(String player) throws MalformedURLException {
 		String baseHypixelUrl = "https://api.hypixel.net/recentgames?uuid=";
-		String hypixelURL = baseHypixelUrl + getMojangUUID(player) + "&key=" + Config.HYPIXEL_API_KEY;
+		String hypixelURL = baseHypixelUrl + getMojangUUID(player) + "&key=" + key;
 
 		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelURL)).getAsJsonObject();
 
@@ -59,7 +63,7 @@ public class HypixelAPI {
 
 	public Status getStatus(String player) throws MalformedURLException {
 		String baseHypixelUrl = "https://api.hypixel.net/status?uuid=";
-		String hypixelUrl = baseHypixelUrl + getMojangUUID(player) + "&key=" + Config.HYPIXEL_API_KEY;
+		String hypixelUrl = baseHypixelUrl + getMojangUUID(player) + "&key=" + key;
 
 		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelUrl)).getAsJsonObject();
 
@@ -68,7 +72,7 @@ public class HypixelAPI {
 
 	public GuildStats getGuildStats(String player) throws MalformedURLException {
 		String baseHypixelUrl = "https://api.hypixel.net/guild?player=";
-		String hypixelUrl = baseHypixelUrl + getMojangUUID(player) + "&key=" + Config.HYPIXEL_API_KEY;
+		String hypixelUrl = baseHypixelUrl + getMojangUUID(player) + "&key=" + key;
 
 		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelUrl)).getAsJsonObject();
 
@@ -76,7 +80,7 @@ public class HypixelAPI {
 	}
 
 	public PlayerCount getPlayerCount() throws MalformedURLException {
-		String hypixelUrl = "https://api.hypixel.net/counts?key=" + Config.HYPIXEL_API_KEY;
+		String hypixelUrl = "https://api.hypixel.net/counts?key=" + key;
 
 		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelUrl)).getAsJsonObject();
 
@@ -84,7 +88,7 @@ public class HypixelAPI {
 	}
 
 	public Bans getBans() throws MalformedURLException {
-		String hypixelUrl = "https://api.hypixel.net/punishmentstats?key=" + Config.HYPIXEL_API_KEY;
+		String hypixelUrl = "https://api.hypixel.net/punishmentstats?key=" + key;
 
 		JsonObject hypixelObject = JsonUtilities.readJson(new URL(hypixelUrl)).getAsJsonObject();
 

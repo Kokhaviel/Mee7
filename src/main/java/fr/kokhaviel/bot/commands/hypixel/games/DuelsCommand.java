@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.Duels;
@@ -77,9 +78,13 @@ public class DuelsCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -103,6 +108,7 @@ public class DuelsCommand extends ListenerAdapter {
 			channel.sendMessage(getPotionDuelStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
 			channel.sendMessage(getMegaWallsDuelStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
 			channel.sendMessage(getBlitzDuelStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
+			channel.sendMessage(getDuelsQuests(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
 		}
 	}
 
@@ -393,6 +399,21 @@ public class DuelsCommand extends ListenerAdapter {
 		duelsEmbed.addField("Blitz Health Regenerated : ", String.valueOf(duels.getBlitzHealthRegenerated()), true);
 		duelsEmbed.addField("Blitz Damage Dealt : ", String.valueOf(duels.getBlitzDamageDealt()), true);
 		duelsEmbed.addField("Blitz Blocks Placed : ", String.valueOf(duels.getBlitzBlocksPlaced()), true);
+
+		return duelsEmbed;
+	}
+
+	private EmbedBuilder getDuelsQuests(Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
+		EmbedBuilder duelsEmbed = new EmbedBuilder();
+		duelsEmbed.setAuthor(format("Hypixel Duels %s", hypixelObject.get("quests").getAsString()), null, Config.HYPIXEL_ICON);
+		duelsEmbed.setColor(new Color(137, 103, 39));
+		duelsEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("quests").getAsString()));
+		duelsEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+
+		duelsEmbed.addField("Feed The Void Challenge : ", String.valueOf(challenges.getDuelsFeedTheVoid()), false);
+		duelsEmbed.addField("Teams Challenge : ", String.valueOf(challenges.getDuelsTeams()), false);
+		duelsEmbed.addField("Target Practice Challenge : ", String.valueOf(challenges.getDuelsChallengeTargetPractice()), false);
 
 		return duelsEmbed;
 	}

@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.Bedwars;
@@ -76,9 +77,13 @@ public class BedwarsCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			}  catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -132,7 +137,7 @@ public class BedwarsCommand extends ListenerAdapter {
 		Bedwars bedwars = player.getStats().getBedwars();
 		EmbedBuilder bedwarsEmbed = new EmbedBuilder();
 		bedwarsEmbed.setAuthor(format("Hypixel Bedwars %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
-		bedwarsEmbed.setColor(new Color(240, 197, 85));
+		bedwarsEmbed.setColor(new Color(190, 46, 46));
 		bedwarsEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
 		bedwarsEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
 
@@ -156,6 +161,21 @@ public class BedwarsCommand extends ListenerAdapter {
 		bedwarsEmbed.addField("Magic Final Kills : ", String.valueOf(bedwars.getMagicFinalKills()), true);
 		bedwarsEmbed.addField("Magic Deaths : ", String.valueOf(bedwars.getMagicDeaths()), true);
 		bedwarsEmbed.addField("Magic Final Deaths : ", String.valueOf(bedwars.getMagicFinalDeaths()), true);
+
+		return bedwarsEmbed;
+	}
+
+	private EmbedBuilder getBedwarsQuests(Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
+		EmbedBuilder bedwarsEmbed = new EmbedBuilder();
+		bedwarsEmbed.setAuthor(format("Hypixel Bedwars %s", hypixelObject.get("quests").getAsString()), null, Config.HYPIXEL_ICON);
+		bedwarsEmbed.setColor(new Color(190, 46, 46));
+		bedwarsEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("quests").getAsString()));
+		bedwarsEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+
+		bedwarsEmbed.addField("Defensive Challenge : ", String.valueOf(challenges.getBedwarsDefensive()), false);
+		bedwarsEmbed.addField("Support Challenge : ", String.valueOf(challenges.getBedwarsSupport()), false);
+		bedwarsEmbed.addField("Offensive Challenge : ", String.valueOf(challenges.getBedwarsOffensive()), false);
 
 		return bedwarsEmbed;
 	}

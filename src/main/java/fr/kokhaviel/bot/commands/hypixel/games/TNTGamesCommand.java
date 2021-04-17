@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.TNTGames;
@@ -76,9 +77,13 @@ public class TNTGamesCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -94,6 +99,7 @@ public class TNTGamesCommand extends ListenerAdapter {
 
 	private EmbedBuilder getTntStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
 		TNTGames tntGames = player.getStats().getTntGames();
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
 		EmbedBuilder tntEmbed = new EmbedBuilder();
 		tntEmbed.setAuthor(format("Hypixel Tnt Games %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
 		tntEmbed.setColor(new Color(210, 47, 26));
@@ -112,6 +118,12 @@ public class TNTGamesCommand extends ListenerAdapter {
 		tntEmbed.addField("Record PvPRun : ", String.valueOf(tntGames.getPvprunRecord()), true);
 		tntEmbed.addField("Potion Splashed : ", String.valueOf(tntGames.getPotionsSplashed()), true);
 		tntEmbed.addField("Tags Bowspleef : ", String.valueOf(tntGames.getBowspleefTags()), true);
+		tntEmbed.addBlankField(false);
+		tntEmbed.addField("Tnt Run Challenge : ", String.valueOf(challenges.getTntGamesTntRunChallenge()), false);
+		tntEmbed.addField("Pvp Run Challenge : ", String.valueOf(challenges.getTntGamesPvpRunChallenge()), false);
+		tntEmbed.addField("Bow Spleef Challenge : ", String.valueOf(challenges.getTntGamesBowSpleefChallenge()), false);
+		tntEmbed.addField("Tnt Tag Challenge : ", String.valueOf(challenges.getTntGamesTntTagChallenge()), false);
+		tntEmbed.addField("Tnt Wizards Challenge : ", String.valueOf(challenges.getTntGamesTntWizardsChallenge()), false);
 
 		return tntEmbed;
 	}

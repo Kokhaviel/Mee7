@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.MegaWalls;
@@ -76,9 +77,13 @@ public class MegaWallsCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -89,6 +94,7 @@ public class MegaWallsCommand extends ListenerAdapter {
 
 			Player player = data.getPlayer();
 			channel.sendMessage(getMegaWallsStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
+			channel.sendMessage(getMegaWallsQuests(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
 		}
 	}
 
@@ -107,7 +113,7 @@ public class MegaWallsCommand extends ListenerAdapter {
 		megaWallsEmbed.addField("Kills : ", String.valueOf(megaWalls.getKills()), true);
 		megaWallsEmbed.addField("Deaths : ", String.valueOf(megaWalls.getDeaths()), true);
 		megaWallsEmbed.addField("Assists : ", String.valueOf(megaWalls.getAssists()), true);
-		megaWallsEmbed.addField("Time Played : ", String.valueOf(megaWalls.getTimePlayed()), true);
+		megaWallsEmbed.addField("Time Played : ", megaWalls.getTimePlayed() + " minutes", true);
 		megaWallsEmbed.addField("Activations : ", String.valueOf(megaWalls.getActivations()), true);
 		megaWallsEmbed.addField("Heal : ", String.valueOf(megaWalls.getHeal()), true);
 		megaWallsEmbed.addField("Fallen Meters : ", String.valueOf(megaWalls.getFallen()), true);
@@ -118,6 +124,21 @@ public class MegaWallsCommand extends ListenerAdapter {
 		megaWallsEmbed.addField("Treasure Found : ", String.valueOf(megaWalls.getTreasuresFound()), true);
 		megaWallsEmbed.addField("Wood Chopped : ", String.valueOf(megaWalls.getWoodChopped()), true);
 
+		return megaWallsEmbed;
+	}
+
+	private EmbedBuilder getMegaWallsQuests(Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
+		EmbedBuilder megaWallsEmbed = new EmbedBuilder();
+		megaWallsEmbed.setAuthor(format("Hypixel Mega Walls %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
+		megaWallsEmbed.setColor(new Color(65, 48, 42));
+		megaWallsEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
+		megaWallsEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+
+		megaWallsEmbed.addField("Wither Challenge : ", String.valueOf(challenges.getMegaWallsWitherChallenge()), false);
+		megaWallsEmbed.addField("Protector Challenge : ", String.valueOf(challenges.getMegaWallsProtectorChallenge()), false);
+		megaWallsEmbed.addField("Berserk Challenge : ", String.valueOf(challenges.getMegaWallsBerserkChallenge()), false);
+		megaWallsEmbed.addField("Comeback Challenge : ", String.valueOf(challenges.getMegaWallsComebackChallenge()), false);
 
 		return megaWallsEmbed;
 	}

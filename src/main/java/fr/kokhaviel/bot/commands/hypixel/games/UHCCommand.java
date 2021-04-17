@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.UHC;
@@ -76,9 +77,13 @@ public class UHCCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -94,6 +99,7 @@ public class UHCCommand extends ListenerAdapter {
 
 	private EmbedBuilder getUHCStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
 		UHC uhc = player.getStats().getUhc();
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
 		EmbedBuilder uhcEmbed = new EmbedBuilder();
 		uhcEmbed.setAuthor(format("Hypixel UHC %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
 		uhcEmbed.setColor(new Color(237, 183, 41));
@@ -107,6 +113,11 @@ public class UHCCommand extends ListenerAdapter {
 		uhcEmbed.addField("Score : ", String.valueOf(uhc.getScore()), true);
 		uhcEmbed.addField("Heads Eaten : ", String.valueOf(uhc.getHeadsEaten()), true);
 		uhcEmbed.addField("Kit : ", uhc.getEquippedKit(), true);
+		uhcEmbed.addBlankField(false);
+		uhcEmbed.addField("Long Shot Challenge : ", String.valueOf(challenges.getUhcLongShotChallenge()), false);
+		uhcEmbed.addField("Perfect Start Challenge : ", String.valueOf(challenges.getUhcPerfectStartChallenge()), false);
+		uhcEmbed.addField("Hunter Challenge : ", String.valueOf(challenges.getUhcHunterChallenge()), false);
+		uhcEmbed.addField("Threat Challenge : ", String.valueOf(challenges.getUhcThreatChallenge()), false);
 
 		return uhcEmbed;
 	}

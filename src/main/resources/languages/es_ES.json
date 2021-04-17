@@ -254,7 +254,8 @@
     "reward_high_score": "Recompensa Puntaje alto",
     "total_daily_rewards": "Recompensas diarias totales",
     "total_rewards": "Recompensas totales",
-    "medias": "Medios"
+    "medias": "Medios",
+    "quests": "Misiones"
   },
   "giveaways": {
     "ready_setup": "Listo para configurar un nuevo sorteo",

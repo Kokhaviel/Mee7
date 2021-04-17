@@ -59,7 +59,7 @@ public class Mee7 {
 
     public static JDA jda;
 
-    public static HypixelAPI hypixelAPI = new HypixelAPI();
+    public static HypixelAPI hypixelAPI = new HypixelAPI(Config.HYPIXEL_API_KEY);
 
 
     //TODO : Don't Forget Hypixel Quests + Time played

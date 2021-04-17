@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.VampireZ;
@@ -76,9 +77,13 @@ public class VampireZCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -94,6 +99,7 @@ public class VampireZCommand extends ListenerAdapter {
 
 	private EmbedBuilder getVampireZStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
 		VampireZ vampireZ = player.getStats().getVampireZ();
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
 		EmbedBuilder vampireZEmbed = new EmbedBuilder();
 		vampireZEmbed.setAuthor(format("Hypixel VampireZ %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
 		vampireZEmbed.setColor(new Color(255, 85, 85));
@@ -108,6 +114,11 @@ public class VampireZCommand extends ListenerAdapter {
 		vampireZEmbed.addField("Most Vampire Kills : ", String.valueOf(vampireZ.getMostVampireKills()), true);
 		vampireZEmbed.addField("Human Deaths : ", String.valueOf(vampireZ.getHumanDeaths()), true);
 		vampireZEmbed.addField("Vampire Deaths : ", String.valueOf(vampireZ.getVampireDeaths()), true);
+		vampireZEmbed.addBlankField(false);
+		vampireZEmbed.addField("Fang Challenge : ", String.valueOf(challenges.getVampireZFangChallenge()), false);
+		vampireZEmbed.addField("Gold Challenge : ", String.valueOf(challenges.getVampireZGoldChallenge()), false);
+		vampireZEmbed.addField("Purify Challenge : ", String.valueOf(challenges.getVampireZPurifyingChallenge()), false);
+		vampireZEmbed.addField("Last Stand Challenge : ", String.valueOf(challenges.getVampireZLastStandChallenge()), false);
 
 		return vampireZEmbed;
 	}

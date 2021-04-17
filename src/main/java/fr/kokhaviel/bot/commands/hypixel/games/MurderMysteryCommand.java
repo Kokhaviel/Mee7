@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.MurderMystery;
@@ -76,9 +77,13 @@ public class MurderMysteryCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -94,6 +99,7 @@ public class MurderMysteryCommand extends ListenerAdapter {
 
 	private EmbedBuilder getMurderMysteryStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
 		MurderMystery murderMystery = player.getStats().getMurderMystery();
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
 		EmbedBuilder mmEmbed = new EmbedBuilder();
 		mmEmbed.setAuthor(format("Hypixel Murder Mystery %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
 		mmEmbed.setColor(new Color(137, 103, 39));
@@ -116,6 +122,11 @@ public class MurderMysteryCommand extends ListenerAdapter {
 		mmEmbed.addField("Murderer Chance : ", String.valueOf(murderMystery.getMurderChance()), true);
 		mmEmbed.addField("Knife Kills : ", String.valueOf(murderMystery.getKnifeKills()), true);
 		mmEmbed.addField("Thrown Knife Kills : ", String.valueOf(murderMystery.getThrownKnifeKills()), true);
+		mmEmbed.addBlankField(false);
+		mmEmbed.addField("Murder Spree Challenge : ", String.valueOf(challenges.getmMMurderSpree()), false);
+		mmEmbed.addField("Sherlock Challenge : ", String.valueOf(challenges.getmMSherlock()), false);
+		mmEmbed.addField("Hero Challenge : ", String.valueOf(challenges.getmMHero()), false);
+		mmEmbed.addField("Serial Killer Challenge : ", String.valueOf(challenges.getmMSerialKiller()), false);
 
 		return mmEmbed;
 	}

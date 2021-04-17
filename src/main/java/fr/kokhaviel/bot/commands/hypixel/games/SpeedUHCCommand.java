@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.SpeedUHC;
@@ -76,9 +77,13 @@ public class SpeedUHCCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -116,6 +121,22 @@ public class SpeedUHCCommand extends ListenerAdapter {
 		speedUhcEmbed.addField("Blocks Broken : ", String.valueOf(speedUHC.getBlocksBroken()), true);
 		speedUhcEmbed.addField("Survived Players : ", String.valueOf(speedUHC.getSurvivedPlayers()), true);
 		speedUhcEmbed.addField("Items Enchanted : ", String.valueOf(speedUHC.getEnchantedItems()), true);
+
+		return speedUhcEmbed;
+	}
+
+	private EmbedBuilder getSpeedUHCQuests(Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
+		EmbedBuilder speedUhcEmbed = new EmbedBuilder();
+		speedUhcEmbed.setAuthor(format("Hypixel Speed UHC %s", hypixelObject.get("quests").getAsString()), null, Config.HYPIXEL_ICON);
+		speedUhcEmbed.setColor(new Color(255, 255, 0));
+		speedUhcEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("quests").getAsString()));
+		speedUhcEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+
+		speedUhcEmbed.addField("Alchemist Challenge : ", String.valueOf(challenges.getSpeedUHCAlchemistChallenge()), false);
+		speedUhcEmbed.addField("Wizard Challenge : ", String.valueOf(challenges.getSpeedUHCWizardChallenge()), false);
+		speedUhcEmbed.addField("Marksman Challenge : ", String.valueOf(challenges.getSpeedUHCMarksmanChallenge()), false);
+		speedUhcEmbed.addField("Nether Challenge : ", String.valueOf(challenges.getSpeedUHCNetherChallenge()), false);
 
 		return speedUhcEmbed;
 	}

@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.BattleGround;
@@ -77,9 +78,13 @@ public class WarlordCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -119,6 +124,22 @@ public class WarlordCommand extends ListenerAdapter {
 		warlordEmbed.addField("Void Shards : ", String.valueOf(battleGround.getVoidShards()), true);
 		warlordEmbed.addField("Crafted : ", String.valueOf(battleGround.getCrafted()), true);
 		warlordEmbed.addField("Repaired : ", String.valueOf(battleGround.getRepaired()), true);
+
+		return warlordEmbed;
+	}
+
+	private EmbedBuilder getWarlordsQuests(Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
+		EmbedBuilder warlordEmbed = new EmbedBuilder();
+		warlordEmbed.setAuthor(format("Hypixel Warlord %s", hypixelObject.get("quests").getAsString()), null, Config.HYPIXEL_ICON);
+		warlordEmbed.setColor(new Color(152, 133, 193));
+		warlordEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("quests").getAsString()));
+		warlordEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+
+		warlordEmbed.addField("Support Challenge : ", String.valueOf(challenges.getWarlordsSupportChallenge()), false);
+		warlordEmbed.addField("Brute Challenge : ", String.valueOf(challenges.getWarlordsBruteChallenge()), false);
+		warlordEmbed.addField("Capture Challenge : ", String.valueOf(challenges.getWarlordsCaptureChallenge()), false);
+		warlordEmbed.addField("Carry Challenge : ", String.valueOf(challenges.getWarlordsCarryChallenge()), false);
 
 		return warlordEmbed;
 	}

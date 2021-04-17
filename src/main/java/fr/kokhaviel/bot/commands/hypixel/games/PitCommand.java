@@ -61,7 +61,7 @@ public class PitCommand extends ListenerAdapter {
 
 		if(args[0].equalsIgnoreCase(prefix + "pit")) {
 			if(args.length < 2) {
-				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "player <Player>").queue(
+				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "pit <Player>").queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
@@ -76,9 +76,13 @@ public class PitCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -117,7 +121,7 @@ public class PitCommand extends ListenerAdapter {
 		pitEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
 
 		pitEmbed.addField("Joins : ", String.valueOf(pitStats.getJoins()), true);
-		pitEmbed.addField("Playtime : ", String.valueOf(pitStats.getPlayedTime()), true);
+		pitEmbed.addField("Played Time : ", pitStats.getPlayedTime() + " minutes", true);
 		pitEmbed.addField("Kills : ", String.valueOf(pitStats.getKills()), true);
 		pitEmbed.addField("Deaths : ", String.valueOf(pitStats.getDeaths()), true);
 		pitEmbed.addField("Assists : ", String.valueOf(pitStats.getAssists()), true);

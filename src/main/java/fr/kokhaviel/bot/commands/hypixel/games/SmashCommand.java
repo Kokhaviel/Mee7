@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.Smash;
@@ -76,9 +77,13 @@ public class SmashCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -94,6 +99,7 @@ public class SmashCommand extends ListenerAdapter {
 
 	private EmbedBuilder getSmashStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
 		Smash smash = player.getStats().getSmash();
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
 		EmbedBuilder smashEmbed = new EmbedBuilder();
 		smashEmbed.setAuthor(format("Hypixel Smash %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
 		smashEmbed.setColor(new Color(196, 37, 26));
@@ -113,6 +119,11 @@ public class SmashCommand extends ListenerAdapter {
 		smashEmbed.addField("Smasher : ", String.valueOf(smash.getSmasher()), true);
 		smashEmbed.addField("Smashed : ", String.valueOf(smash.getSmashed()), true);
 		smashEmbed.addField("Smash Level : ", String.valueOf(smash.getSmashLevel()), true);
+		smashEmbed.addBlankField(false);
+		smashEmbed.addField("Leaderboard Challenge : ", String.valueOf(challenges.getSmashLeaderboardChallenge()), false);
+		smashEmbed.addField("Crystal Challenge : ", String.valueOf(challenges.getSmashCrystalChallenge()), false);
+		smashEmbed.addField("Flawless Challenge : ", String.valueOf(challenges.getSmashFlawlessChallenge()), false);
+		smashEmbed.addField("Smash Challenge : ", String.valueOf(challenges.getSmashSmashChallenge()), false);
 
 		return smashEmbed;
 	}

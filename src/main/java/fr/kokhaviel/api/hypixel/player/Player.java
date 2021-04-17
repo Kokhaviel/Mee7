@@ -78,6 +78,9 @@ public class Player {
 	@SerializedName("stats")
 	Stats stats = new Stats();
 
+	@SerializedName("challenges")
+	Challenges challenges = new Challenges();
+
 	@SerializedName("achievements")
 	Achievements achievements = new Achievements();
 
@@ -162,6 +165,10 @@ public class Player {
 
 	public Stats getStats() {
 		return stats;
+	}
+
+	public Challenges getChallenges() {
+		return challenges;
 	}
 
 	public Achievements getAchievements() {

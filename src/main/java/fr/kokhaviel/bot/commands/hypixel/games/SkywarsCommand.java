@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.Skywars;
@@ -76,9 +77,13 @@ public class SkywarsCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -275,6 +280,22 @@ public class SkywarsCommand extends ListenerAdapter {
 		skywarsEmbed.addField("Heads Yucky : ", String.valueOf(skywars.getHeadsYucky()), true);
 		skywarsEmbed.addField("Heads Divine : ", String.valueOf(skywars.getHeadsDivine()), true);
 		skywarsEmbed.addField("Heads Heavenly : ", String.valueOf(skywars.getHeadsHeavenly()), true);
+
+		return skywarsEmbed;
+	}
+
+	private EmbedBuilder getSkywarsQuests(Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
+		EmbedBuilder skywarsEmbed = new EmbedBuilder();
+		skywarsEmbed.setAuthor(format("Hypixel Skywars %s", hypixelObject.get("quests").getAsString()), null, Config.HYPIXEL_ICON);
+		skywarsEmbed.setColor(new Color(130, 201, 100));
+		skywarsEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("quests").getAsString()));
+		skywarsEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+
+		skywarsEmbed.addField("Feeding The Void Challenge : ", String.valueOf(challenges.getSkywarsFeedingTheVoidChallenge()), false);
+		skywarsEmbed.addField("Rush Challenge : ", String.valueOf(challenges.getSkywarsRushChallenge()), false);
+		skywarsEmbed.addField("Ranked Challenge : ", String.valueOf(challenges.getSkywarsRankedChallenge()), false);
+		skywarsEmbed.addField("Enderman Challenge : ", String.valueOf(challenges.getSkywarsEndermanChallenge()), false);
 
 		return skywarsEmbed;
 	}

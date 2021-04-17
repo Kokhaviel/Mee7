@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.Quake;
@@ -77,9 +78,13 @@ public class QuakeCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -95,6 +100,7 @@ public class QuakeCommand extends ListenerAdapter {
 
 	private EmbedBuilder getQuakeStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
 		Quake quake = player.getStats().getQuake();
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
 		EmbedBuilder quakeEmbed = new EmbedBuilder();
 		quakeEmbed.setAuthor(format("Hypixel Quake %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
 		quakeEmbed.setColor(new Color(255, 85, 255));
@@ -116,6 +122,11 @@ public class QuakeCommand extends ListenerAdapter {
 		quakeEmbed.addField("Muzzle : ", quake.getMuzzle(), true);
 		quakeEmbed.addField("Beam : ", quake.getBeam(), true);
 		quakeEmbed.addField("Dash : ", quake.getDash(), true);
+		quakeEmbed.addBlankField(false);
+		quakeEmbed.addField("Power Up Challenge : ", String.valueOf(challenges.getQuakePowerupChallenge()), false);
+		quakeEmbed.addField("Killing Streak Challenge : ", String.valueOf(challenges.getQuakeKillingStreakChallenge()), false);
+		quakeEmbed.addField("Don't Blink Challenge : ", String.valueOf(challenges.getQuakeDontBlinkChallenge()), false);
+		quakeEmbed.addField("Combo Challenge : ", String.valueOf(challenges.getQuakeComboChallenge()), false);
 
 		return quakeEmbed;
 	}

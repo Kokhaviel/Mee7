@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.Arena;
@@ -76,9 +77,13 @@ public class ArenaCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -94,6 +99,7 @@ public class ArenaCommand extends ListenerAdapter {
 
 	private EmbedBuilder getArenaStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
 		Arena arena = player.getStats().getArena();
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
 		EmbedBuilder arenaEmbed = new EmbedBuilder();
 		arenaEmbed.setAuthor(format("Hypixel Arena %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
 		arenaEmbed.setColor(new Color(255, 170, 0));
@@ -116,6 +122,11 @@ public class ArenaCommand extends ListenerAdapter {
 		arenaEmbed.addField("Health Level : ", String.valueOf(arena.getLevelHealth()), true);
 		arenaEmbed.addField("Energy Level : ", String.valueOf(arena.getLevelEnergy()), true);
 		arenaEmbed.addField("Cooldown Level : ", String.valueOf(arena.getLevelCooldown()), true);
+		arenaEmbed.addBlankField(false);
+		arenaEmbed.addField("Where is it ? Challenge : ", String.valueOf(challenges.getArenaWhereIsItChallenge()), false);
+		arenaEmbed.addField("Triple Kill Challenge : ", String.valueOf(challenges.getArenaTripleKillChallenge()), false);
+		arenaEmbed.addField("No Ultimate Challenge : ", String.valueOf(challenges.getArenaNoUltimateChallenge()), false);
+		arenaEmbed.addField("Cooperation Challenge : ", String.valueOf(challenges.getArenaCooperationChallenge()), false);
 
 		return arenaEmbed;
 	}

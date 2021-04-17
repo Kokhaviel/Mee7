@@ -18,6 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.games;
 
 import com.google.gson.JsonObject;
+import fr.kokhaviel.api.hypixel.player.Challenges;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.api.hypixel.player.stats.Paintball;
@@ -76,9 +77,13 @@ public class PaintballCommand extends ListenerAdapter {
 
 			PlayerData data = null;
 			try {
-				data = hypixelAPI.getData(args[1]);
+				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
+			} catch(IllegalStateException e) {
+				channel.sendMessage("This Username Doesn't Exists !").queue(
+						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
+				);
 			}
 
 			assert data != null;
@@ -94,6 +99,7 @@ public class PaintballCommand extends ListenerAdapter {
 
 	private EmbedBuilder getPaintballStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
 		Paintball paintball = player.getStats().getPaintball();
+		Challenges.ChallengesAllTime challenges = player.getChallenges().getChallengesAllTime();
 		EmbedBuilder paintballEmbed = new EmbedBuilder();
 		paintballEmbed.setAuthor(format("Hypixel Paintball %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
 		paintballEmbed.setColor(new Color(85, 85, 255));
@@ -106,7 +112,6 @@ public class PaintballCommand extends ListenerAdapter {
 		paintballEmbed.addField("Deaths : ", String.valueOf(paintball.getDeaths()), true);
 		paintballEmbed.addField("Shots Fired : ", String.valueOf(paintball.getShotsFired()), true);
 		paintballEmbed.addField("Killstreak : ", String.valueOf(paintball.getKillstreak()), true);
-		paintballEmbed.addField("Killstreak : ", String.valueOf(paintball.getKillstreak()), true);
 		paintballEmbed.addBlankField(false);
 		paintballEmbed.addField("Hat : ", paintball.getHat(), true);
 		paintballEmbed.addField("Fortune : ", String.valueOf(paintball.getFortune()), true);
@@ -116,6 +121,11 @@ public class PaintballCommand extends ListenerAdapter {
 		paintballEmbed.addField("God Father : ", String.valueOf(paintball.getGodFather()), true);
 		paintballEmbed.addField("Transfusion : ", String.valueOf(paintball.getTransfusion()), true);
 		paintballEmbed.addField("Adrenaline : ", String.valueOf(paintball.getAdrenaline()), true);
+		paintballEmbed.addBlankField(false);
+		paintballEmbed.addField("Kill Streak Challenge : ", String.valueOf(challenges.getPaintballKillStreakChallenge()), false);
+		paintballEmbed.addField("Killing Spree Challenge : ", String.valueOf(challenges.getPaintballKillingSpreeChallenge()), false);
+		paintballEmbed.addField("Nuke Challenge : ", String.valueOf(challenges.getPaintballNukeChallenge()), false);
+		paintballEmbed.addField("Finish Challenge : ", String.valueOf(challenges.getPaintballFinishChallenge()), false);
 
 		return paintballEmbed;
 	}
