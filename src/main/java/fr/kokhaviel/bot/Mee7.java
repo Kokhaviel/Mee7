@@ -26,8 +26,13 @@ import fr.kokhaviel.bot.commands.giveaways.GiveawayCommands;
 import fr.kokhaviel.bot.commands.guild.LanguageCommand;
 import fr.kokhaviel.bot.commands.guild.PrefixCommand;
 import fr.kokhaviel.bot.commands.hypixel.games.*;
+import fr.kokhaviel.bot.commands.hypixel.guild.GuildCommand;
 import fr.kokhaviel.bot.commands.hypixel.player.MediasCommand;
 import fr.kokhaviel.bot.commands.hypixel.player.OutfitCommand;
+import fr.kokhaviel.bot.commands.hypixel.player.StatusCommand;
+import fr.kokhaviel.bot.commands.hypixel.recentgames.RecentGamesCommand;
+import fr.kokhaviel.bot.commands.hypixel.server.BansCommand;
+import fr.kokhaviel.bot.commands.hypixel.server.PlayerCountCommand;
 import fr.kokhaviel.bot.commands.minecraft.AchievementCommand;
 import fr.kokhaviel.bot.commands.minecraft.ServerStatsCommand;
 import fr.kokhaviel.bot.commands.minecraft.SkinCommand;
@@ -99,6 +104,7 @@ public class Mee7 {
                     .addEventListeners(new AvatarCommand())
                     .addEventListeners(new BackwardCommand())
                     .addEventListeners(new BanCommand())
+                    .addEventListeners(new BansCommand())
                     .addEventListeners(new BedwarsCommand())
                     .addEventListeners(new BlitzCommand())
                     .addEventListeners(new BuildBattleCommand())
@@ -111,6 +117,7 @@ public class Mee7 {
                     .addEventListeners(new DuelsCommand())
                     .addEventListeners(new EightBallCommand())
                     .addEventListeners(new ForwardCommand())
+                    .addEventListeners(new GuildCommand())
                     .addEventListeners(new HelpCommand())
                     .addEventListeners(new HikabrainStatsCommand())
                     .addEventListeners(new InfectedStatsCommand())
@@ -138,6 +145,7 @@ public class Mee7 {
                     .addEventListeners(new PingCommand())
                     .addEventListeners(new PitCommand())
                     .addEventListeners(new PlayCommand())
+                    .addEventListeners(new PlayerCountCommand())
                     .addEventListeners(new fr.kokhaviel.bot.commands.funcraft.PlayerStatsCommand())
                     .addEventListeners(new fr.kokhaviel.bot.commands.hypixel.player.PlayerStatsCommand())
                     .addEventListeners(new PracticeCommand())
@@ -146,6 +154,7 @@ public class Mee7 {
                     .addEventListeners(new QueueCommand())
                     .addEventListeners(new RandomCommand())
                     .addEventListeners(new RebootCommand())
+                    .addEventListeners(new RecentGamesCommand())
                     .addEventListeners(new RepeatCommand())
                     .addEventListeners(new RepoCommand())
                     .addEventListeners(new ReverseCommand())
@@ -164,6 +173,7 @@ public class Mee7 {
                     .addEventListeners(new fr.kokhaviel.bot.commands.hypixel.games.SkywarsCommand())
                     .addEventListeners(new SmashCommand())
                     .addEventListeners(new SpeedUHCCommand())
+                    .addEventListeners(new StatusCommand())
                     .addEventListeners(new StopCommand())
                     .addEventListeners(new SurvivalStatsCommand())
                     .addEventListeners(new TNTGamesCommand())

@@ -15,12 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.kokhaviel.bot.commands.hypixel.games;
+package fr.kokhaviel.bot.commands.hypixel.recentgames;
 
 import com.google.gson.JsonObject;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
-import fr.kokhaviel.api.hypixel.player.stats.SkyClash;
+import fr.kokhaviel.api.hypixel.recent.Games;
+import fr.kokhaviel.api.hypixel.recent.RecentGames;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
 import fr.kokhaviel.bot.Settings;
@@ -34,12 +35,13 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static fr.kokhaviel.bot.Mee7.hypixelAPI;
 import static java.lang.String.format;
 
-public class SkyClashCommand extends ListenerAdapter {
+public class RecentGamesCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -59,9 +61,9 @@ public class SkyClashCommand extends ListenerAdapter {
 		final MessageChannel channel = event.getChannel();
 		final String[] args = message.getContentRaw().split("\\s+");
 
-		if(args[0].equalsIgnoreCase(prefix + "skyclash")) {
+		if(args[0].equalsIgnoreCase(prefix + "recent")) {
 			if(args.length < 2) {
-				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "skyclash <Player>").queue(
+				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "player <Player>").queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
@@ -74,8 +76,10 @@ public class SkyClashCommand extends ListenerAdapter {
 
 			message.delete().queue();
 
+			RecentGames recentGames = null;
 			PlayerData data = null;
 			try {
+				recentGames = hypixelAPI.getRecentGames(args[1]);
 				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
@@ -85,41 +89,26 @@ public class SkyClashCommand extends ListenerAdapter {
 				);
 			}
 
+			assert recentGames != null;
 			assert data != null;
-			if(!data.isSuccess()) {
-				channel.sendMessage(data.getCause()).queue();
-				return;
-			}
-
 			Player player = data.getPlayer();
-			channel.sendMessage(getSkyclashStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
+			channel.sendMessage(getRecentGames(recentGames, player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
 		}
 	}
 
-	private EmbedBuilder getSkyclashStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
-		SkyClash skyClash = player.getStats().getSkyClash();
-		EmbedBuilder skyclashEmbed = new EmbedBuilder();
-		skyclashEmbed.setAuthor(format("Hypixel Skyclash %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
-		skyclashEmbed.setColor(new Color(240, 197, 85));
-		skyclashEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
-		skyclashEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+	private EmbedBuilder getRecentGames(RecentGames games, Player player, JsonObject generalObject, JsonObject hypixelObject) {
+		final List<Games> recentGames = games.getRecentGames();
+		EmbedBuilder recentGamesEmbed = new EmbedBuilder();
+		recentGamesEmbed.setAuthor(format("Hypixel Player %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
+		recentGamesEmbed.setColor(new Color(240, 197, 85));
+		recentGamesEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
+		recentGamesEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
 
-		skyclashEmbed.addField("Coins : ", String.valueOf(skyClash.getCoins()), true);
-		skyclashEmbed.addField("Wins : ", String.valueOf(skyClash.getWins()), true);
-		skyclashEmbed.addField("Winstreak : ", String.valueOf(skyClash.getWinstreak()), true);
-		skyclashEmbed.addField("Losses : ", String.valueOf(skyClash.getLosses()), true);
-		skyclashEmbed.addField("Kills : ", String.valueOf(skyClash.getKills()), true);
-		skyclashEmbed.addField("Void Kills : ", String.valueOf(skyClash.getVoidKills()), true);
-		skyclashEmbed.addField("Most Kills / Game : ", String.valueOf(skyClash.getMostKillsGame()), true);
-		skyclashEmbed.addField("Kills Streak : ", String.valueOf(skyClash.getKillstreak()), true);
-		skyclashEmbed.addField("Deaths : ", String.valueOf(skyClash.getDeaths()), true);
-		skyclashEmbed.addField("Assists : ", String.valueOf(skyClash.getDeaths()), true);
-		skyclashEmbed.addField("Quits : ", String.valueOf(skyClash.getQuits()), true);
-		skyclashEmbed.addField("Games Played : ", String.valueOf(skyClash.getGamesPlayed()), true);
-		skyclashEmbed.addField("Longest Bow Shot : ", String.valueOf(skyClash.getLongestBowShot()), true);
-		skyclashEmbed.addField("Melee Hits : ", String.valueOf(skyClash.getMeleeHits()), true);
-		skyclashEmbed.addField("Bow Kills : ", String.valueOf(skyClash.getBowKills()), true);
+		for(int i = 0; i < 5; i++) {
+			Games game = recentGames.get(i);
+			recentGamesEmbed.addField("Game : " + game.getGame(), "Mode : " + game.getMode() + "\nMap : " + game.getMap(), false);
+		}
 
-		return skyclashEmbed;
+		return recentGamesEmbed;
 	}
 }

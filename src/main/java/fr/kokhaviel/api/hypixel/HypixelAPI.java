@@ -37,7 +37,7 @@ import java.util.TimeZone;
 public class HypixelAPI {
 
 	Gson gson = new Gson();
-	private String key;
+	private final String key;
 
 	public HypixelAPI(String key) {
 		this.key = key;

@@ -48,6 +48,9 @@ public class Guild {
 	@SerializedName("tagColor")
 	String tagColor = "";
 
+	@SerializedName("members")
+	List<GuildMembers> members = new ArrayList<>();
+
 	@SerializedName("ranks")
 	List<Ranks> ranks = new ArrayList<>();
 
@@ -85,6 +88,10 @@ public class Guild {
 
 	public String getTagColor() {
 		return tagColor;
+	}
+
+	public List<GuildMembers> getMembers() {
+		return members;
 	}
 
 	public List<Ranks> getRanks() {

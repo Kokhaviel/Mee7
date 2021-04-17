@@ -15,12 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.kokhaviel.bot.commands.hypixel.games;
+package fr.kokhaviel.bot.commands.hypixel.player;
 
 import com.google.gson.JsonObject;
 import fr.kokhaviel.api.hypixel.player.Player;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
-import fr.kokhaviel.api.hypixel.player.stats.SkyClash;
+import fr.kokhaviel.api.hypixel.status.Session;
+import fr.kokhaviel.api.hypixel.status.Status;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
 import fr.kokhaviel.bot.Settings;
@@ -39,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 import static fr.kokhaviel.bot.Mee7.hypixelAPI;
 import static java.lang.String.format;
 
-public class SkyClashCommand extends ListenerAdapter {
+public class StatusCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -59,9 +60,9 @@ public class SkyClashCommand extends ListenerAdapter {
 		final MessageChannel channel = event.getChannel();
 		final String[] args = message.getContentRaw().split("\\s+");
 
-		if(args[0].equalsIgnoreCase(prefix + "skyclash")) {
+		if(args[0].equalsIgnoreCase(prefix + "status")) {
 			if(args.length < 2) {
-				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "skyclash <Player>").queue(
+				channel.sendMessage(format("%s : ", HYPIXEL_OBJECT.get("no_username").getAsString()) + prefix + "player <Player>").queue(
 						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS));
 				return;
 			}
@@ -73,16 +74,19 @@ public class SkyClashCommand extends ListenerAdapter {
 			}
 
 			message.delete().queue();
-
+			Status status = null;
 			PlayerData data = null;
 			try {
+				status = hypixelAPI.getStatus(args[1]);
 				data = hypixelAPI.getPlayerData(args[1]);
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
-			} catch(IllegalStateException e) {
-				channel.sendMessage("This Username Doesn't Exists !").queue(
-						delete -> delete.delete().queueAfter(5, TimeUnit.SECONDS)
-				);
+			}
+
+			assert status != null;
+			if(!status.isSuccess()) {
+				channel.sendMessage(status.getCause()).queue();
+				return;
 			}
 
 			assert data != null;
@@ -91,35 +95,26 @@ public class SkyClashCommand extends ListenerAdapter {
 				return;
 			}
 
+			Session session = status.getSession();
 			Player player = data.getPlayer();
-			channel.sendMessage(getSkyclashStats(player, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
+			channel.sendMessage(getPlayerStatus(player, session, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
 		}
 	}
 
-	private EmbedBuilder getSkyclashStats(Player player, JsonObject generalObject, JsonObject hypixelObject) {
-		SkyClash skyClash = player.getStats().getSkyClash();
-		EmbedBuilder skyclashEmbed = new EmbedBuilder();
-		skyclashEmbed.setAuthor(format("Hypixel Skyclash %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
-		skyclashEmbed.setColor(new Color(240, 197, 85));
-		skyclashEmbed.setTitle(format("[%s] %s %s", player.getServerRank(), player.getDisplayName(), hypixelObject.get("stats").getAsString()));
-		skyclashEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+	private EmbedBuilder getPlayerStatus(Player player, Session session, JsonObject generalObject, JsonObject hypixelObject) {
+		EmbedBuilder statusEmbed = new EmbedBuilder();
+		statusEmbed.setAuthor("Hypixel Player Status", null, Config.HYPIXEL_ICON);
+		statusEmbed.setColor(new Color(240, 197, 85));
+		statusEmbed.setTitle(format("[%s] %s Status", player.getServerRank(), player.getDisplayName()));
+		statusEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
 
-		skyclashEmbed.addField("Coins : ", String.valueOf(skyClash.getCoins()), true);
-		skyclashEmbed.addField("Wins : ", String.valueOf(skyClash.getWins()), true);
-		skyclashEmbed.addField("Winstreak : ", String.valueOf(skyClash.getWinstreak()), true);
-		skyclashEmbed.addField("Losses : ", String.valueOf(skyClash.getLosses()), true);
-		skyclashEmbed.addField("Kills : ", String.valueOf(skyClash.getKills()), true);
-		skyclashEmbed.addField("Void Kills : ", String.valueOf(skyClash.getVoidKills()), true);
-		skyclashEmbed.addField("Most Kills / Game : ", String.valueOf(skyClash.getMostKillsGame()), true);
-		skyclashEmbed.addField("Kills Streak : ", String.valueOf(skyClash.getKillstreak()), true);
-		skyclashEmbed.addField("Deaths : ", String.valueOf(skyClash.getDeaths()), true);
-		skyclashEmbed.addField("Assists : ", String.valueOf(skyClash.getDeaths()), true);
-		skyclashEmbed.addField("Quits : ", String.valueOf(skyClash.getQuits()), true);
-		skyclashEmbed.addField("Games Played : ", String.valueOf(skyClash.getGamesPlayed()), true);
-		skyclashEmbed.addField("Longest Bow Shot : ", String.valueOf(skyClash.getLongestBowShot()), true);
-		skyclashEmbed.addField("Melee Hits : ", String.valueOf(skyClash.getMeleeHits()), true);
-		skyclashEmbed.addField("Bow Kills : ", String.valueOf(skyClash.getBowKills()), true);
+		statusEmbed.addField("Online : ", session.isOnline() ? "Yes": "No", false);
+		if(session.isOnline()) {
+			statusEmbed.addField("Game : ", session.getGameType(), false);
+			statusEmbed.addField("Mode : ", session.getMode(), false);
+			statusEmbed.addField("Map : ", session.getMap(), false);
+		}
 
-		return skyclashEmbed;
+		return statusEmbed;
 	}
 }
