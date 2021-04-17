@@ -66,9 +66,6 @@ public class Mee7 {
 
     public static HypixelAPI hypixelAPI = new HypixelAPI(Config.HYPIXEL_API_KEY);
 
-
-    //TODO : Don't Forget Hypixel Quests + Time played
-
 	public static Gson gson = new Gson();
 
 	private static final Set<Long> currentGiveaways = new HashSet<>();
