@@ -76,7 +76,7 @@ public class PlayerManager {
             public void trackLoaded(AudioTrack track) {
                 musicManager.scheduler.queue(track);
 
-                channel.sendMessage(MUSIC_OBJECT.get("single_music_added").getAsString())
+                channel.sendMessage(MUSIC_OBJECT.get("adding_queue").getAsString())
                         .append(track.getInfo().title)
                         .append(MUSIC_OBJECT.get("single_music_added_author").getAsString())
                         .append(track.getInfo().author)
@@ -89,7 +89,7 @@ public class PlayerManager {
             public void playlistLoaded(AudioPlaylist playlist) {
                 final List<AudioTrack> tracks = playlist.getTracks();
 
-                channel.sendMessage(MUSIC_OBJECT.get("playlist_music_added").getAsString())
+                channel.sendMessage(MUSIC_OBJECT.get("adding_queue").getAsString())
                         .append(String.valueOf(tracks.size()))
                         .append(MUSIC_OBJECT.get("playlist_music_from").getAsString())
                         .append(playlist.getName())

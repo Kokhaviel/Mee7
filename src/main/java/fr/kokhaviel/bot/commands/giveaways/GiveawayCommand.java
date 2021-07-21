@@ -37,7 +37,7 @@ import static fr.kokhaviel.bot.Mee7.getCurrentGiveaways;
 import static java.lang.String.format;
 
 
-public class GiveawayCommands extends ListenerAdapter {
+public class GiveawayCommand extends ListenerAdapter {
 
 	Giveaways giveaway;
 	User giveawayUserCreate;
