@@ -25,6 +25,14 @@ import fr.kokhaviel.bot.commands.fun.*;
 import fr.kokhaviel.bot.commands.giveaways.GiveawayCommand;
 import fr.kokhaviel.bot.commands.guild.LanguageCommand;
 import fr.kokhaviel.bot.commands.guild.PrefixCommand;
+import fr.kokhaviel.bot.commands.hypixel.guild.GuildCommand;
+import fr.kokhaviel.bot.commands.hypixel.player.MediasCommand;
+import fr.kokhaviel.bot.commands.hypixel.player.PlayerCommand;
+import fr.kokhaviel.bot.commands.hypixel.player.RecentGamesCommand;
+import fr.kokhaviel.bot.commands.hypixel.player.StatusCommand;
+import fr.kokhaviel.bot.commands.hypixel.server.BansCommand;
+import fr.kokhaviel.bot.commands.hypixel.skyblock.SkyblockCommand;
+import fr.kokhaviel.bot.commands.hypixel.stats.*;
 import fr.kokhaviel.bot.commands.minecraft.AchievementCommand;
 import fr.kokhaviel.bot.commands.minecraft.ServerStatsCommand;
 import fr.kokhaviel.bot.commands.minecraft.SkinCommand;
@@ -57,19 +65,20 @@ public class Mee7 {
 	private static final Set<Long> currentGiveaways = new HashSet<>();
 	private static final Set<Long> currentAchievements = new HashSet<>();
 	public static List<String> afkIDs = new ArrayList<>();
-	public static HypixelAPI hypixelAPI = new HypixelAPI(Config.HYPIXEL_API_KEY);
-	public static Gson gson = new Gson();
+	public static final HypixelAPI HYPIXEL_API = new HypixelAPI(Config.HYPIXEL_API_KEY);
+	public static final Gson GSON = new Gson();
 
 
-	//TODO : Add Funcraft & Hypixel Commands
 	//Commands
 	private final ListenerAdapter[] COVID = new ListenerAdapter[] {new CovidCommand()};
 	private final ListenerAdapter[] FUN = new ListenerAdapter[] {new EightBallCommand(), new JokeCommand(),
 			new LoveCommand(), new MemeCommand(), new RandomCommand(), new ReverseCommand(), new SayCommand()/*, new ThatPersonDoesNotExistCommand()*/};
-	private final ListenerAdapter[] FUNCRAFT = new ListenerAdapter[] {};
 	private final ListenerAdapter[] GIVEAWAYS = new ListenerAdapter[] {new GiveawayCommand()};
 	private final ListenerAdapter[] GUILD = new ListenerAdapter[] {new LanguageCommand(), new PrefixCommand()};
-	private final ListenerAdapter[] HYPIXEL = new ListenerAdapter[] {};
+	private final ListenerAdapter[] HYPIXEL = new ListenerAdapter[] {new PlayerCommand(), new MediasCommand(), new ArcadeCommand(),
+			new BedwarsCommand(), new BuildBattleCommand(), new DuelsCommand(), new MCGOCommand(), new MurderMysteryCommand(), new PitCommand(),
+			new SkywarsCommand(), new SpeedUHCCommand(), new UHCCommand(), new RecentGamesCommand(), new StatusCommand(), new GuildCommand(),
+			new SkyblockCommand(), new BansCommand()};
 	private final ListenerAdapter[] MINECRAFT = new ListenerAdapter[] {new AchievementCommand(), new ServerStatsCommand(), new SkinCommand()};
 	private final ListenerAdapter[] MODERATION = new ListenerAdapter[] {new BanCommand(), new ClearCommand(), new KickCommand(),
 			new MassBanCommand(), new MassKickCommand(), new MuteCommand(), new UnbanCommand(), new UnmuteCommand()};
@@ -129,11 +138,6 @@ public class Mee7 {
 
 	public Mee7 addFunCommands() {
 		jdaBuilder.addEventListeners((Object[]) FUN);
-		return this;
-	}
-
-	public Mee7 addFuncraftCommands() {
-		jdaBuilder.addEventListeners((Object[]) FUNCRAFT);
 		return this;
 	}
 
@@ -212,8 +216,7 @@ public class Mee7 {
 	}
 
 	public Mee7 addAllCommandAndEvents() {
-		this.addCovidCommands().addFunCommands()
-				.addFuncraftCommands().addGiveawaysCommands()
+		this.addCovidCommands().addFunCommands().addGiveawaysCommands()
 				.addGuildCommands().addHypixelCommands()
 				.addMinecraftCommands().addModerationCommands()
 				.addMusicCommands().addServerCommands()

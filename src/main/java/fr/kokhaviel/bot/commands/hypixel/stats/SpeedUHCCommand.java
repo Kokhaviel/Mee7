@@ -15,10 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.kokhaviel.bot.commands.hypixel.player;
+package fr.kokhaviel.bot.commands.hypixel.stats;
 
 import com.google.gson.JsonObject;
-import fr.kokhaviel.api.hypixel.player.Medias;
+import fr.kokhaviel.api.hypixel.games.SpeedUHC;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 import static fr.kokhaviel.bot.Mee7.HYPIXEL_API;
 import static java.lang.String.format;
 
-public class MediasCommand extends ListenerAdapter {
+public class SpeedUHCCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -58,8 +58,7 @@ public class MediasCommand extends ListenerAdapter {
 		final TextChannel channel = (TextChannel) event.getChannel();
 
 
-		if(args[0].equalsIgnoreCase(prefix + "medias")) {
-
+		if(args[0].equalsIgnoreCase(prefix + "speeduhc")) {
 			message.delete().queue();
 
 			if(args.length < 2) {
@@ -83,33 +82,36 @@ public class MediasCommand extends ListenerAdapter {
 
 			try {
 				player = HYPIXEL_API.getPlayerData(args[1]).getPlayer();
-				channel.sendMessageEmbeds(getMediasStats(player, GENERAL_OBJECT).build()).queue();
+				channel.sendMessageEmbeds(getSpeedUHCStats(player, GENERAL_OBJECT).build()).queue();
 			} catch(MalformedURLException e) {
 				channel.sendMessage("Player " + args[1] + " not found").queue();
 			}
 
-
 		}
 	}
 
-	public EmbedBuilder getMediasStats(PlayerData.Player player, JsonObject generalObject) {
+	public EmbedBuilder getSpeedUHCStats(PlayerData.Player player, JsonObject generalObject) {
 		EmbedBuilder hypixelEmbed = new EmbedBuilder();
 
-		Medias.Links medias = player.getMedias().getLinks();
+		SpeedUHC speedUHC = player.getStats().getSpeedUHC();
 
-		hypixelEmbed.setAuthor("Hypixel Player Medias Stats", null, Config.HYPIXEL_ICON);
-		hypixelEmbed.setColor(Color.BLUE);
+		hypixelEmbed.setAuthor("Hypixel Player Speed UHC Stats", null, Config.HYPIXEL_ICON);
+		hypixelEmbed.setColor(Color.YELLOW);
 		hypixelEmbed.setTitle(format("[%s] %s Stats",
 				player.getRank(), player.getDisplayName()));
 		hypixelEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG
 				+ "\nHypixel API by Kokhaviel (https://github.com/Kokhaviel/HypixelAPI/)", Config.DEVELOPER_AVATAR);
 
-		hypixelEmbed.addField("Twitter : ", medias.getTwitter(), false);
-		hypixelEmbed.addField("Youtube : ", medias.getYoutube(), false);
-		hypixelEmbed.addField("Instagram : ", medias.getInstagram(), false);
-		hypixelEmbed.addField("Twitch : ", medias.getTwitch(), false);
-		hypixelEmbed.addField("Discord : ", medias.getDiscord(), false);
-		hypixelEmbed.addField("Hypixel Forums : ", medias.getHypixel(), false);
+		hypixelEmbed.addField("Coins", String.valueOf(speedUHC.getCoins()), true);
+		hypixelEmbed.addField("Score", String.valueOf(speedUHC.getScore()), true);
+		hypixelEmbed.addField("Wins", String.valueOf(speedUHC.getWins()), true);
+		hypixelEmbed.addField("WinStreak", String.valueOf(speedUHC.getWinstreak()), true);
+		hypixelEmbed.addField("Games Played", String.valueOf(speedUHC.getGamesPlayed()), true);
+		hypixelEmbed.addField("Kills", String.valueOf(speedUHC.getKills()), true);
+		hypixelEmbed.addField("Assists", String.valueOf(speedUHC.getAssists()), true);
+		hypixelEmbed.addField("Deaths", String.valueOf(speedUHC.getDeaths()), true);
+		hypixelEmbed.addField("Losses", String.valueOf(speedUHC.getLosses()), true);
+		hypixelEmbed.addField("Quits", String.valueOf(speedUHC.getQuits()), true);
 
 		return hypixelEmbed;
 	}

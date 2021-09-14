@@ -15,10 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.kokhaviel.bot.commands.hypixel.player;
+package fr.kokhaviel.bot.commands.hypixel.stats;
 
 import com.google.gson.JsonObject;
-import fr.kokhaviel.api.hypixel.player.Medias;
+import fr.kokhaviel.api.hypixel.games.Arcade;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 import static fr.kokhaviel.bot.Mee7.HYPIXEL_API;
 import static java.lang.String.format;
 
-public class MediasCommand extends ListenerAdapter {
+public class ArcadeCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -58,7 +58,7 @@ public class MediasCommand extends ListenerAdapter {
 		final TextChannel channel = (TextChannel) event.getChannel();
 
 
-		if(args[0].equalsIgnoreCase(prefix + "medias")) {
+		if(args[0].equalsIgnoreCase(prefix + "arcade")) {
 
 			message.delete().queue();
 
@@ -83,33 +83,43 @@ public class MediasCommand extends ListenerAdapter {
 
 			try {
 				player = HYPIXEL_API.getPlayerData(args[1]).getPlayer();
-				channel.sendMessageEmbeds(getMediasStats(player, GENERAL_OBJECT).build()).queue();
+				channel.sendMessageEmbeds(getArcadeStats(player, GENERAL_OBJECT).build()).queue();
 			} catch(MalformedURLException e) {
 				channel.sendMessage("Player " + args[1] + " not found").queue();
 			}
 
-
 		}
+
 	}
 
-	public EmbedBuilder getMediasStats(PlayerData.Player player, JsonObject generalObject) {
+	public EmbedBuilder getArcadeStats(PlayerData.Player player, JsonObject generalObject) {
 		EmbedBuilder hypixelEmbed = new EmbedBuilder();
 
-		Medias.Links medias = player.getMedias().getLinks();
+		Arcade arcade = player.getStats().getArcade();
 
-		hypixelEmbed.setAuthor("Hypixel Player Medias Stats", null, Config.HYPIXEL_ICON);
-		hypixelEmbed.setColor(Color.BLUE);
+		hypixelEmbed.setAuthor("Hypixel Player Arcade Stats", null, Config.HYPIXEL_ICON);
+		hypixelEmbed.setColor(Color.GREEN);
 		hypixelEmbed.setTitle(format("[%s] %s Stats",
 				player.getRank(), player.getDisplayName()));
 		hypixelEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG
 				+ "\nHypixel API by Kokhaviel (https://github.com/Kokhaviel/HypixelAPI/)", Config.DEVELOPER_AVATAR);
 
-		hypixelEmbed.addField("Twitter : ", medias.getTwitter(), false);
-		hypixelEmbed.addField("Youtube : ", medias.getYoutube(), false);
-		hypixelEmbed.addField("Instagram : ", medias.getInstagram(), false);
-		hypixelEmbed.addField("Twitch : ", medias.getTwitch(), false);
-		hypixelEmbed.addField("Discord : ", medias.getDiscord(), false);
-		hypixelEmbed.addField("Hypixel Forums : ", medias.getHypixel(), false);
+		hypixelEmbed.addField("Coins : ", String.valueOf(arcade.getCoins()), true);
+		hypixelEmbed.addField("Dayone Wins : ", String.valueOf(arcade.getDayOneWins()), true);
+		hypixelEmbed.addField("Mini Walls Wins : ", String.valueOf(arcade.getMiniWallsWins()), true);
+		hypixelEmbed.addField("Soccer Wins : ", String.valueOf(arcade.getSoccerWins()), true);
+		hypixelEmbed.addField("Farm Hunt Wins : ", String.valueOf(arcade.getFarmHuntWins()), true);
+		hypixelEmbed.addField("Hide and Seek Wins : ", String.valueOf(arcade.getHideAndSeekHiderWins()
+																			+ arcade.getHideAndSeekSeekerWins()), true);
+		hypixelEmbed.addField("Zombies Wins : ", String.valueOf(arcade.getZombiesWins()), true);
+		hypixelEmbed.addField("Party Games Wins : ", String.valueOf(arcade.getPartyGamesWins()), true);
+		hypixelEmbed.addField("Hole in the Wall Wins : ", String.valueOf(arcade.getHoleInTheWallWins()), true);
+		hypixelEmbed.addField("Simon Says Wins : ", String.valueOf(arcade.getHoleInTheWallWins()), true);
+		hypixelEmbed.addField("One in the Quiver Wins : ", String.valueOf(arcade.getHoleInTheWallWins()), true);
+		hypixelEmbed.addField("Ender Spleef Wins : ", String.valueOf(arcade.getEnderSpleefWins()), true);
+		hypixelEmbed.addField("Dragon Wars Wins : ", String.valueOf(arcade.getDragonWarsWins()), true);
+		hypixelEmbed.addField("Pixel Painters Wins : ", String.valueOf(arcade.getPixelPaintersWins()), true);
+		hypixelEmbed.addField("Throw Out Wins : ", String.valueOf(arcade.getThrownOutWins()), true);
 
 		return hypixelEmbed;
 	}

@@ -18,13 +18,13 @@
 package fr.kokhaviel.bot.commands.hypixel.server;
 
 import com.google.gson.JsonObject;
-import fr.kokhaviel.api.hypixel.server.bans.Bans;
+import fr.kokhaviel.api.hypixel.server.Bans;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
 import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -33,64 +33,55 @@ import java.awt.*;
 import java.io.File;
 import java.net.MalformedURLException;
 
-import static fr.kokhaviel.bot.Mee7.hypixelAPI;
-import static java.lang.String.format;
+import static fr.kokhaviel.bot.Mee7.HYPIXEL_API;
 
 public class BansCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
-				.getAsJsonObject().get(event.getGuild().getId())
-				.getAsJsonObject().get("hypixel_prefix").getAsString();
+		String prefix = Settings.getGuildPrefix(event.getGuild().getId(), "hypixel_prefix");
 
 		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
 		assert LANG_FILE != null;
 		final JsonObject LANG_OBJECT = JsonUtilities.readJson(LANG_FILE).getAsJsonObject();
 		final JsonObject GENERAL_OBJECT = LANG_OBJECT.get("general").getAsJsonObject();
+		final JsonObject COMMANDS_OBJECT = LANG_OBJECT.get("commands").getAsJsonObject();
 		final JsonObject HYPIXEL_OBJECT = LANG_OBJECT.get("hypixel").getAsJsonObject();
 
 
 		final Message message = event.getMessage();
-		final MessageChannel channel = event.getChannel();
 		final String[] args = message.getContentRaw().split("\\s+");
+		final TextChannel channel = (TextChannel) event.getChannel();
 
 		if(args[0].equalsIgnoreCase(prefix + "bans")) {
-
 			message.delete().queue();
 
-			Bans bans = null;
+			Bans bans;
+
 			try {
-				bans = hypixelAPI.getBans();
+				bans = HYPIXEL_API.getBansData();
+				channel.sendMessageEmbeds(getBansData(bans, GENERAL_OBJECT).build()).queue();
 			} catch(MalformedURLException e) {
 				e.printStackTrace();
 			}
-
-			assert bans != null;
-			if(!bans.isSuccess()) {
-				channel.sendMessage(bans.getCause()).queue();
-				return;
-			}
-
-			channel.sendMessage(getBansStats(bans, GENERAL_OBJECT, HYPIXEL_OBJECT).build()).queue();
 		}
 	}
 
-	private EmbedBuilder getBansStats(Bans bans, JsonObject generalObject, JsonObject hypixelObject) {
-		EmbedBuilder bansEmbed = new EmbedBuilder();
-		bansEmbed.setAuthor(format("Hypixel %s", hypixelObject.get("stats").getAsString()), null, Config.HYPIXEL_ICON);
-		bansEmbed.setColor(new Color(187, 40, 40));
-		bansEmbed.setTitle(format("Hypixel Bans %s", hypixelObject.get("stats").getAsString()));
-		bansEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG, Config.DEVELOPER_AVATAR);
+	public EmbedBuilder getBansData(Bans bans, JsonObject generalObject) {
+		EmbedBuilder hypixelEmbed = new EmbedBuilder();
 
-		bansEmbed.addField("Staff Daily : ", String.valueOf(bans.getStaffDaily()), false);
-		bansEmbed.addField("Staff Total : ", String.valueOf(bans.getStaffTotal()), false);
-		bansEmbed.addBlankField(false);
-		bansEmbed.addField("Watchdog Last Minute : ", String.valueOf(bans.getWdLastMinute()), false);
-		bansEmbed.addField("Watchdog Daily : ", String.valueOf(bans.getWdDaily()), false);
-		bansEmbed.addField("Watchdog Total : ", String.valueOf(bans.getWdTotal()), false);
+		hypixelEmbed.setAuthor("Hypixel Player Stats", null, Config.HYPIXEL_ICON);
+		hypixelEmbed.setColor(Color.RED);
+		hypixelEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG
+				+ "\nHypixel API by Kokhaviel (https://github.com/Kokhaviel/HypixelAPI/)", Config.DEVELOPER_AVATAR);
 
-		return bansEmbed;
+		hypixelEmbed.addField("Total Watchdog Bans : ", String.valueOf(bans.getWatchdogTotal()), true);
+		hypixelEmbed.addField("Staff Total Bans : ", String.valueOf(bans.getStaffTotal()), true);
+		hypixelEmbed.addField("Watchdog Daily Bans : ", String.valueOf(bans.getWatchdogDaily()), true);
+		hypixelEmbed.addField("Staff Daily Bans : ", String.valueOf(bans.getStaffDaily()), true);
+		hypixelEmbed.addField("Last Minute Watchdog Bans : ", String.valueOf(bans.getWatchdogLastMinute()), true);
+
+		return hypixelEmbed;
 	}
 }

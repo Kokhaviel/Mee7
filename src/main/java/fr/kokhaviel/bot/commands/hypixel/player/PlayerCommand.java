@@ -18,7 +18,7 @@
 package fr.kokhaviel.bot.commands.hypixel.player;
 
 import com.google.gson.JsonObject;
-import fr.kokhaviel.api.hypixel.player.Medias;
+import fr.kokhaviel.api.hypixel.HypixelAPI;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
@@ -33,16 +33,16 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 import static fr.kokhaviel.bot.Mee7.HYPIXEL_API;
 import static java.lang.String.format;
 
-public class MediasCommand extends ListenerAdapter {
+public class PlayerCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-
 		String prefix = Settings.getGuildPrefix(event.getGuild().getId(), "hypixel_prefix");
 
 		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
@@ -57,8 +57,7 @@ public class MediasCommand extends ListenerAdapter {
 		final String[] args = message.getContentRaw().split("\\s+");
 		final TextChannel channel = (TextChannel) event.getChannel();
 
-
-		if(args[0].equalsIgnoreCase(prefix + "medias")) {
+		if(args[0].equalsIgnoreCase(prefix + "player")) {
 
 			message.delete().queue();
 
@@ -83,33 +82,41 @@ public class MediasCommand extends ListenerAdapter {
 
 			try {
 				player = HYPIXEL_API.getPlayerData(args[1]).getPlayer();
-				channel.sendMessageEmbeds(getMediasStats(player, GENERAL_OBJECT).build()).queue();
+				channel.sendMessageEmbeds(getPlayerStats(player, GENERAL_OBJECT).build()).queue();
 			} catch(MalformedURLException e) {
 				channel.sendMessage("Player " + args[1] + " not found").queue();
 			}
 
-
 		}
+
+
 	}
 
-	public EmbedBuilder getMediasStats(PlayerData.Player player, JsonObject generalObject) {
+	public EmbedBuilder getPlayerStats(PlayerData.Player player, JsonObject generalObject) throws MalformedURLException {
 		EmbedBuilder hypixelEmbed = new EmbedBuilder();
 
-		Medias.Links medias = player.getMedias().getLinks();
-
-		hypixelEmbed.setAuthor("Hypixel Player Medias Stats", null, Config.HYPIXEL_ICON);
-		hypixelEmbed.setColor(Color.BLUE);
-		hypixelEmbed.setTitle(format("[%s] %s Stats",
-				player.getRank(), player.getDisplayName()));
+		hypixelEmbed.setAuthor("Hypixel Player Stats", null, Config.HYPIXEL_ICON);
+		hypixelEmbed.setColor(Color.YELLOW);
+		hypixelEmbed.setTitle(format("[%s] [%s] %s Stats",
+				player.getRank(), player.getServerRank().equals("NONE") ? "NO RANK" : player.getServerRank(), player.getDisplayName()));
 		hypixelEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG
 				+ "\nHypixel API by Kokhaviel (https://github.com/Kokhaviel/HypixelAPI/)", Config.DEVELOPER_AVATAR);
 
-		hypixelEmbed.addField("Twitter : ", medias.getTwitter(), false);
-		hypixelEmbed.addField("Youtube : ", medias.getYoutube(), false);
-		hypixelEmbed.addField("Instagram : ", medias.getInstagram(), false);
-		hypixelEmbed.addField("Twitch : ", medias.getTwitch(), false);
-		hypixelEmbed.addField("Discord : ", medias.getDiscord(), false);
-		hypixelEmbed.addField("Hypixel Forums : ", medias.getHypixel(), false);
+		LocalDateTime firstLogin = HypixelAPI.convertTimestampToDateTime(player.getFirstLogin());
+		LocalDateTime lastLogin = HypixelAPI.convertTimestampToDateTime(player.getLastLogin());
+
+		hypixelEmbed.addField("First Login : ",
+				firstLogin.getYear() + "/" + firstLogin.getMonthValue() + "/" + firstLogin.getDayOfMonth(), false);
+		hypixelEmbed.addField("Last Login : ",
+				lastLogin.getYear() + "/" + firstLogin.getMonthValue() + "/" + lastLogin.getDayOfMonth(), false);
+		hypixelEmbed.addField("Achievement Points : ", String.valueOf(player.getAchievementPoints()), false);
+		hypixelEmbed.addField("Network Experience : ", String.valueOf(player.getNetworkExperience()), false);
+		hypixelEmbed.addField("Network Level : ", String.valueOf(HYPIXEL_API.getLevel(player.getDisplayName()).getNetworkLevel()), false);
+		hypixelEmbed.addField("Karma : ", String.valueOf(player.getKarma()), false);
+		hypixelEmbed.addField("Minecraft Version : ", player.getLastMcVersion(), false);
+		hypixelEmbed.addField("Language : ", player.getLanguage(), false);
+		hypixelEmbed.addField("Gadget : ", player.getGadget(), false);
+		hypixelEmbed.addField("Pet : ", player.getPet(), false);
 
 		return hypixelEmbed;
 	}

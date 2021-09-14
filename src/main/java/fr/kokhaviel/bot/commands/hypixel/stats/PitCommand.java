@@ -15,10 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.kokhaviel.bot.commands.hypixel.player;
+package fr.kokhaviel.bot.commands.hypixel.stats;
 
 import com.google.gson.JsonObject;
-import fr.kokhaviel.api.hypixel.player.Medias;
+import fr.kokhaviel.api.hypixel.games.Pit;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 import static fr.kokhaviel.bot.Mee7.HYPIXEL_API;
 import static java.lang.String.format;
 
-public class MediasCommand extends ListenerAdapter {
+public class PitCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -58,8 +58,7 @@ public class MediasCommand extends ListenerAdapter {
 		final TextChannel channel = (TextChannel) event.getChannel();
 
 
-		if(args[0].equalsIgnoreCase(prefix + "medias")) {
-
+		if(args[0].equalsIgnoreCase(prefix + "pit")) {
 			message.delete().queue();
 
 			if(args.length < 2) {
@@ -83,33 +82,44 @@ public class MediasCommand extends ListenerAdapter {
 
 			try {
 				player = HYPIXEL_API.getPlayerData(args[1]).getPlayer();
-				channel.sendMessageEmbeds(getMediasStats(player, GENERAL_OBJECT).build()).queue();
+				channel.sendMessageEmbeds(getPitStats(player, GENERAL_OBJECT).build()).queue();
 			} catch(MalformedURLException e) {
 				channel.sendMessage("Player " + args[1] + " not found").queue();
 			}
-
-
 		}
 	}
 
-	public EmbedBuilder getMediasStats(PlayerData.Player player, JsonObject generalObject) {
+	public EmbedBuilder getPitStats(PlayerData.Player player, JsonObject generalObject) {
 		EmbedBuilder hypixelEmbed = new EmbedBuilder();
 
-		Medias.Links medias = player.getMedias().getLinks();
+		Pit pit = player.getStats().getPit();
+		Pit.Profile profile = pit.getProfile();
+		Pit.Stats stats = pit.getStats();
 
-		hypixelEmbed.setAuthor("Hypixel Player Medias Stats", null, Config.HYPIXEL_ICON);
-		hypixelEmbed.setColor(Color.BLUE);
+		hypixelEmbed.setAuthor("Hypixel Player Arcade Stats", null, Config.HYPIXEL_ICON);
+		hypixelEmbed.setColor(new Color(160,82,45));
 		hypixelEmbed.setTitle(format("[%s] %s Stats",
 				player.getRank(), player.getDisplayName()));
 		hypixelEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG
 				+ "\nHypixel API by Kokhaviel (https://github.com/Kokhaviel/HypixelAPI/)", Config.DEVELOPER_AVATAR);
 
-		hypixelEmbed.addField("Twitter : ", medias.getTwitter(), false);
-		hypixelEmbed.addField("Youtube : ", medias.getYoutube(), false);
-		hypixelEmbed.addField("Instagram : ", medias.getInstagram(), false);
-		hypixelEmbed.addField("Twitch : ", medias.getTwitch(), false);
-		hypixelEmbed.addField("Discord : ", medias.getDiscord(), false);
-		hypixelEmbed.addField("Hypixel Forums : ", medias.getHypixel(), false);
+		hypixelEmbed.addField("Coins : ", String.valueOf(profile.getCash()), true);
+		hypixelEmbed.addField("Perk 1 : ", profile.getFirstPerk().replace("_", " "), true);
+		hypixelEmbed.addField("Perk 2 : ", profile.getSecondPerk().replace("_", " "), true);
+		hypixelEmbed.addField("Perk 3 : ", profile.getThirdPerk().replace("_", " "), true);
+		hypixelEmbed.addField("Xp : ", String.valueOf(profile.getXp()), true);
+
+		hypixelEmbed.addBlankField(false);
+
+		hypixelEmbed.addField("Arrows Hit : ", String.valueOf(stats.getArrowsHit()), true);
+		hypixelEmbed.addField("Assists : ", String.valueOf(stats.getAssists()), true);
+		hypixelEmbed.addField("Cash Earned : ", String.valueOf(stats.getCashEarned()), true);
+		hypixelEmbed.addField("Damage Dealt : ", String.valueOf(stats.getDamageDealt()), true);
+		hypixelEmbed.addField("Deaths : ", String.valueOf(stats.getDeaths()), true);
+		hypixelEmbed.addField("Played Time : ", stats.getPlaytime() + " minutes", true);
+		hypixelEmbed.addField("Sword Hits : ", String.valueOf(stats.getSwordHits()), true);
+		hypixelEmbed.addField("GApple Eaten : ", String.valueOf(stats.getGappleEaten()), true);
+		hypixelEmbed.addField("GHead Eaten : ", String.valueOf(stats.getGheadEaten()), true);
 
 		return hypixelEmbed;
 	}

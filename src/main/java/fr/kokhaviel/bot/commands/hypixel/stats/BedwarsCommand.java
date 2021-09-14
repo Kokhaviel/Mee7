@@ -15,10 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.kokhaviel.bot.commands.hypixel.player;
+package fr.kokhaviel.bot.commands.hypixel.stats;
 
 import com.google.gson.JsonObject;
-import fr.kokhaviel.api.hypixel.player.Medias;
+import fr.kokhaviel.api.hypixel.games.Bedwars;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 import static fr.kokhaviel.bot.Mee7.HYPIXEL_API;
 import static java.lang.String.format;
 
-public class MediasCommand extends ListenerAdapter {
+public class BedwarsCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -58,7 +58,7 @@ public class MediasCommand extends ListenerAdapter {
 		final TextChannel channel = (TextChannel) event.getChannel();
 
 
-		if(args[0].equalsIgnoreCase(prefix + "medias")) {
+		if(args[0].equalsIgnoreCase(prefix + "bedwars")) {
 
 			message.delete().queue();
 
@@ -78,38 +78,44 @@ public class MediasCommand extends ListenerAdapter {
 				return;
 			}
 
-
 			PlayerData.Player player;
 
 			try {
 				player = HYPIXEL_API.getPlayerData(args[1]).getPlayer();
-				channel.sendMessageEmbeds(getMediasStats(player, GENERAL_OBJECT).build()).queue();
+				channel.sendMessageEmbeds(getBedwarsStats(player, GENERAL_OBJECT).build()).queue();
 			} catch(MalformedURLException e) {
 				channel.sendMessage("Player " + args[1] + " not found").queue();
 			}
-
-
 		}
 	}
 
-	public EmbedBuilder getMediasStats(PlayerData.Player player, JsonObject generalObject) {
+	public EmbedBuilder getBedwarsStats(PlayerData.Player player, JsonObject generalObject) {
 		EmbedBuilder hypixelEmbed = new EmbedBuilder();
 
-		Medias.Links medias = player.getMedias().getLinks();
+		Bedwars bedwars = player.getStats().getBedwars();
 
-		hypixelEmbed.setAuthor("Hypixel Player Medias Stats", null, Config.HYPIXEL_ICON);
-		hypixelEmbed.setColor(Color.BLUE);
+		hypixelEmbed.setAuthor("Hypixel Player Bedwars Stats", null, Config.HYPIXEL_ICON);
+		hypixelEmbed.setColor(Color.RED);
 		hypixelEmbed.setTitle(format("[%s] %s Stats",
 				player.getRank(), player.getDisplayName()));
 		hypixelEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG
 				+ "\nHypixel API by Kokhaviel (https://github.com/Kokhaviel/HypixelAPI/)", Config.DEVELOPER_AVATAR);
 
-		hypixelEmbed.addField("Twitter : ", medias.getTwitter(), false);
-		hypixelEmbed.addField("Youtube : ", medias.getYoutube(), false);
-		hypixelEmbed.addField("Instagram : ", medias.getInstagram(), false);
-		hypixelEmbed.addField("Twitch : ", medias.getTwitch(), false);
-		hypixelEmbed.addField("Discord : ", medias.getDiscord(), false);
-		hypixelEmbed.addField("Hypixel Forums : ", medias.getHypixel(), false);
+		hypixelEmbed.addField("Coins : ", String.valueOf(bedwars.getCoins()), true);
+		hypixelEmbed.addField("Experience : ", String.valueOf(bedwars.getExperience()), true);
+		hypixelEmbed.addField("Wins : ", String.valueOf(bedwars.getWins()), true);
+		hypixelEmbed.addField("Kills : ", String.valueOf(bedwars.getKills()), true);
+		hypixelEmbed.addField("Deaths : ", String.valueOf(bedwars.getDeaths()), true);
+		hypixelEmbed.addField("Losses : ", String.valueOf(bedwars.getLosses()), true);
+		hypixelEmbed.addField("Games Played : ", String.valueOf(bedwars.getGamesPlayed()), true);
+		hypixelEmbed.addField("Beds Lost : ", String.valueOf(bedwars.getBedsLost()), true);
+		hypixelEmbed.addField("Beds Broken : ", String.valueOf(bedwars.getBedsBroken()), true);
+		hypixelEmbed.addField("Kill Effect : ", bedwars.getKillEffect().replace("_", " "), true);
+		hypixelEmbed.addField("Victory Dance : ", bedwars.getVictoryDance().replace("_", " "), true);
+		hypixelEmbed.addField("Death Cry : ", bedwars.getDeathCry().replace("_", " "), true);
+		hypixelEmbed.addField("Projectile Trail : ", bedwars.getProjectileTrail().replace("_", " "), true);
+		hypixelEmbed.addField("Spray : ", bedwars.getSprays().replace("_", " "), true);
+		hypixelEmbed.addField("Glyph : ", bedwars.getGlyph().replace("_", " "), true);
 
 		return hypixelEmbed;
 	}

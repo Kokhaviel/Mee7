@@ -15,10 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.kokhaviel.bot.commands.hypixel.player;
+package fr.kokhaviel.bot.commands.hypixel.stats;
 
 import com.google.gson.JsonObject;
-import fr.kokhaviel.api.hypixel.player.Medias;
+import fr.kokhaviel.api.hypixel.games.MCGO;
 import fr.kokhaviel.api.hypixel.player.PlayerData;
 import fr.kokhaviel.bot.Config;
 import fr.kokhaviel.bot.JsonUtilities;
@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 import static fr.kokhaviel.bot.Mee7.HYPIXEL_API;
 import static java.lang.String.format;
 
-public class MediasCommand extends ListenerAdapter {
+public class MCGOCommand extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -58,8 +58,7 @@ public class MediasCommand extends ListenerAdapter {
 		final TextChannel channel = (TextChannel) event.getChannel();
 
 
-		if(args[0].equalsIgnoreCase(prefix + "medias")) {
-
+		if(args[0].equalsIgnoreCase(prefix + "mcgo")) {
 			message.delete().queue();
 
 			if(args.length < 2) {
@@ -83,33 +82,36 @@ public class MediasCommand extends ListenerAdapter {
 
 			try {
 				player = HYPIXEL_API.getPlayerData(args[1]).getPlayer();
-				channel.sendMessageEmbeds(getMediasStats(player, GENERAL_OBJECT).build()).queue();
+				channel.sendMessageEmbeds(getMCGOStats(player, GENERAL_OBJECT).build()).queue();
 			} catch(MalformedURLException e) {
 				channel.sendMessage("Player " + args[1] + " not found").queue();
 			}
-
-
 		}
 	}
 
-	public EmbedBuilder getMediasStats(PlayerData.Player player, JsonObject generalObject) {
+	public EmbedBuilder getMCGOStats(PlayerData.Player player, JsonObject generalObject) {
 		EmbedBuilder hypixelEmbed = new EmbedBuilder();
 
-		Medias.Links medias = player.getMedias().getLinks();
+		MCGO mcgo = player.getStats().getMcgo();
 
-		hypixelEmbed.setAuthor("Hypixel Player Medias Stats", null, Config.HYPIXEL_ICON);
-		hypixelEmbed.setColor(Color.BLUE);
+		hypixelEmbed.setAuthor("Hypixel Player MCGO Stats", null, Config.HYPIXEL_ICON);
+		hypixelEmbed.setColor(new Color(150, 255, 127));
 		hypixelEmbed.setTitle(format("[%s] %s Stats",
 				player.getRank(), player.getDisplayName()));
 		hypixelEmbed.setFooter(generalObject.get("developed_by").getAsString() + Config.DEVELOPER_TAG
 				+ "\nHypixel API by Kokhaviel (https://github.com/Kokhaviel/HypixelAPI/)", Config.DEVELOPER_AVATAR);
 
-		hypixelEmbed.addField("Twitter : ", medias.getTwitter(), false);
-		hypixelEmbed.addField("Youtube : ", medias.getYoutube(), false);
-		hypixelEmbed.addField("Instagram : ", medias.getInstagram(), false);
-		hypixelEmbed.addField("Twitch : ", medias.getTwitch(), false);
-		hypixelEmbed.addField("Discord : ", medias.getDiscord(), false);
-		hypixelEmbed.addField("Hypixel Forums : ", medias.getHypixel(), false);
+		hypixelEmbed.addField("Coins : ", String.valueOf(mcgo.getCoins()), true);
+		hypixelEmbed.addField("Wins : ", String.valueOf(mcgo.getWins()), true);
+		hypixelEmbed.addField("Kills : ", String.valueOf(mcgo.getKills()), true);
+		hypixelEmbed.addField("Headshots : ", String.valueOf(mcgo.getHeadshots()), true);
+		hypixelEmbed.addField("Cop Kills : ", String.valueOf(mcgo.getCopKills()), true);
+		hypixelEmbed.addField("Criminal Kills : ", String.valueOf(mcgo.getCriminalKills()), true);
+		hypixelEmbed.addField("Assists : ", String.valueOf(mcgo.getAssists()), true);
+		hypixelEmbed.addField("Bombs Planted : ", String.valueOf(mcgo.getBombsPlanted()), true);
+		hypixelEmbed.addField("Bombs Defused : ", String.valueOf(mcgo.getBombsDefused()), true);
+		hypixelEmbed.addField("Shots Fired : ", String.valueOf(mcgo.getShotsFired()), true);
+		hypixelEmbed.addField("Deaths : ", String.valueOf(mcgo.getDeaths()), true);
 
 		return hypixelEmbed;
 	}
