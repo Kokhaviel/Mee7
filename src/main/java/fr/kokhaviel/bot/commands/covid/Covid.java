@@ -73,7 +73,7 @@ public class Covid {
 			globalEmbed.addField(format("%s : ", COVID_OBJECT.get("total_deaths").getAsString()), GLOBAL_OBJECT.get("TotalDeaths").getAsString(), false);
 			globalEmbed.addField(format("%s : ", COVID_OBJECT.get("total_recovered").getAsString()), GLOBAL_OBJECT.get("TotalRecovered").getAsString(), false);
 
-			event.getChannel().sendMessage(globalEmbed.build()).queue();
+			event.getChannel().sendMessageEmbeds(globalEmbed.build()).queue();
 
 		}
 
@@ -89,9 +89,9 @@ public class Covid {
 				}
 
 				assert COUNTRY != null;
-				CountryStats stats = Mee7.gson.fromJson(COUNTRY, CountryStats.class);
+				CountryStats stats = Mee7.GSON.fromJson(COUNTRY, CountryStats.class);
 				try {
-					event.getChannel().sendMessage(getStats(stats, GENERAL_OBJECT, COVID_OBJECT).build()).queue();
+					event.getChannel().sendMessageEmbeds(getStats(stats, GENERAL_OBJECT, COVID_OBJECT).build()).queue();
 				} catch(ArrayIndexOutOfBoundsException e) {
 					event.getChannel().sendMessageFormat("%s ...", COVID_OBJECT.get("country_doesnt_exist").getAsString()).queue();
 				}

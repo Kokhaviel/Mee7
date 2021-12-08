@@ -17,13 +17,12 @@
 
 package fr.kokhaviel.bot.commands.covid;
 
-import fr.kokhaviel.bot.JsonUtilities;
+import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
 
 public class CovidCommand extends ListenerAdapter {
@@ -31,9 +30,7 @@ public class CovidCommand extends ListenerAdapter {
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
-				.getAsJsonObject().get(event.getGuild().getId())
-				.getAsJsonObject().get("covid_prefix").getAsString();
+		String prefix = Settings.getGuildPrefix(event.getGuild().getId(), "giveaways_prefix");
 
 		final Message message = event.getMessage();
 		final String[] args = message.getContentRaw().split("\\s+");

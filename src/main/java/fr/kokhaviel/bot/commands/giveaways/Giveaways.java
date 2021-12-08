@@ -28,10 +28,12 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.Button;
 
 import java.awt.*;
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -380,9 +382,12 @@ public class Giveaways extends ListenerAdapter {
 		MessageEmbed giveawayMessageEmbed = giveawayEmbed.build();
 		giveaway.setGiveawayStarted(true);
 
-		event.getChannel().sendMessage(giveawayMessageEmbed).queue(message -> {
+		event.getChannel().sendMessageEmbeds(giveawayMessageEmbed).setActionRow(
+				Button.primary("participate", "Participate"),//.withEmoji(Emoji.fromMarkdown("<:tada:867314302166630440>")),
+				Button.danger("giveup", "Give Up")//.withEmoji(Emoji.fromMarkdown("<:confused:867314916444602428>"))
+		).queue(message -> {
 			giveaway.setGiveawayMessage(message);
-			message.addReaction("\uD83C\uDF89").queue();
+			//message.addReaction("\uD83C\uDF89").queue();
 			for(int i = timeLeft; i > -1; i--) {
 				timeLeft = i;
 				try {
@@ -404,7 +409,7 @@ public class Giveaways extends ListenerAdapter {
 							.addField(format("%s : ", GIVEAWAYS_OBJECT.get("winners").getAsString()),
 									String.valueOf(giveaway.getWinners()), false)
 							.addField(endField);
-					message.editMessage(giveawayEmbed.build()).queue();
+					message.editMessageEmbeds(giveawayEmbed.build()).queue();
 				}
 				if(timeLeft == 0) {
 					message.delete().queue();
@@ -469,7 +474,7 @@ public class Giveaways extends ListenerAdapter {
 		}
 
 		giveaway.getAlreadyDrawn().clear();
-		event.getChannel().sendMessage(endEmbed.build()).queue();
+		event.getChannel().sendMessageEmbeds(endEmbed.build()).queue();
 		giveaway.setGiveawayEnd(true);
 	}
 
@@ -539,9 +544,9 @@ public class Giveaways extends ListenerAdapter {
 		BigDecimal var3600 = new BigDecimal("3600");
 		BigDecimal var60 = new BigDecimal("60");
 
-		hours = roundThreeCalc.divide(var3600, BigDecimal.ROUND_FLOOR);
+		hours = roundThreeCalc.divide(var3600, RoundingMode.FLOOR);
 		remainder = roundThreeCalc.remainder(var3600);
-		minutes = remainder.divide(var60, BigDecimal.ROUND_FLOOR);
+		minutes = remainder.divide(var60, RoundingMode.FLOOR);
 		seconds = remainder.remainder(var60);
 
 		return format("%dh : %dm : %ds", hours.intValue(), minutes.intValue(), seconds.intValue());

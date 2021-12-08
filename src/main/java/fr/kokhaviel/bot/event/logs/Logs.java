@@ -18,9 +18,7 @@
 package fr.kokhaviel.bot.event.logs;
 
 import com.google.gson.JsonObject;
-import fr.kokhaviel.bot.Config;
-import fr.kokhaviel.bot.JsonUtilities;
-import fr.kokhaviel.bot.Settings;
+import fr.kokhaviel.bot.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.*;
@@ -31,7 +29,7 @@ import net.dv8tion.jda.api.events.channel.text.update.*;
 import net.dv8tion.jda.api.events.channel.voice.*;
 import net.dv8tion.jda.api.events.channel.voice.update.*;
 import net.dv8tion.jda.api.events.emote.*;
-import net.dv8tion.jda.api.events.emote.update.*;
+import net.dv8tion.jda.api.events.emote.update.EmoteUpdateNameEvent;
 import net.dv8tion.jda.api.events.guild.*;
 import net.dv8tion.jda.api.events.guild.invite.*;
 import net.dv8tion.jda.api.events.guild.member.*;
@@ -41,7 +39,6 @@ import net.dv8tion.jda.api.events.guild.voice.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageUpdateEvent;
 import net.dv8tion.jda.api.events.role.*;
 import net.dv8tion.jda.api.events.role.update.*;
-import net.dv8tion.jda.api.events.user.*;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,7 +46,6 @@ import java.awt.*;
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
 
@@ -94,7 +90,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("category_created").getAsString(), event.getCategory().getName() + "\nID : " + event.getId(), true);
 
-        logsChannel.sendMessage(catCreEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(catCreEmbed.build()).queue();
     }
 
     @Override
@@ -119,7 +115,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("category_deleted").getAsString(), event.getCategory().getName() + "\nID : " + event.getId(), false);
 
-        logsChannel.sendMessage(catDelEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(catDelEmbed.build()).queue();
     }
 
     @Override
@@ -144,7 +140,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("category_name_updated").getAsString(), event.getOldName() + " -> " + event.getNewName() + "\nID : " + event.getCategory().getId(), false);
 
-        logsChannel.sendMessage(catNameUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(catNameUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -169,7 +165,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("emote_added").getAsString(), event.getEmote().getName() + "\n(ID : " + event.getEmote().getId() + ")", false);
 
-        logsChannel.sendMessage(emoteAddEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(emoteAddEmbed.build()).queue();
     }
 
     @Override
@@ -194,7 +190,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("emote_removed").getAsString(), event.getEmote().getName() + "\n(ID : " + event.getEmote().getId() + ")", false);
 
-        logsChannel.sendMessage(emoteRmEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(emoteRmEmbed.build()).queue();
     }
 
     @Override
@@ -219,7 +215,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("emote_name_updated").getAsString(), event.getOldName() + " -> " + event.getNewName() + "\n(ID : " + event.getEmote().getId(), false);
 
-        logsChannel.sendMessage(emoteUpdateNameEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(emoteUpdateNameEmbed.build()).queue();
     }
 
    /* @Override
@@ -244,7 +240,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("emote_roles_updated").getAsString(), event.getOldRoles() + " -> " + event.getNewRoles(), false);
 
-        logsChannel.sendMessage(emoteRolesEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(emoteRolesEmbed.build()).queue();
     }*/
 
     @Override
@@ -269,7 +265,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("user_banned").getAsString(), event.getUser().getAsTag() + "\n(Member ID : " + event.getUser().getId() + ")", false);
 
-        logsChannel.sendMessage(banEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(banEmbed.build()).queue();
     }
 
     @Override
@@ -294,7 +290,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("invite_created").getAsString(), event.getUrl(), false);
 
-        logsChannel.sendMessage(inviteCreEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(inviteCreEmbed.build()).queue();
     }
 
     @Override
@@ -319,7 +315,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("invite_deleted").getAsString(), event.getUrl(), false);
 
-        logsChannel.sendMessage(inviteDelEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(inviteDelEmbed.build()).queue();
     }
 
     @Override
@@ -344,7 +340,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("member_joined").getAsString(), event.getUser().getAsTag() + "\n(Member ID : " + event.getUser().getId() + ")", false);
 
-        logsChannel.sendMessage(joinEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(joinEmbed.build()).queue();
     }
 
     @Override
@@ -369,7 +365,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("member_left").getAsString(), event.getUser().getAsTag() + "\n(Member ID : " + event.getUser().getId() + ")", false);
 
-        logsChannel.sendMessage(leaveEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(leaveEmbed.build()).queue();
     }
 
     @Override
@@ -394,7 +390,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("role_added").getAsString(), event.getRoles() + "\n" + GENERAL_OBJECT.get("to").getAsString() + event.getUser().getAsTag(), false);
 
-        logsChannel.sendMessage(roleAddEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(roleAddEmbed.build()).queue();
     }
 
     @Override
@@ -419,7 +415,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("role_removed").getAsString(), event.getRoles() + "\n" + GENERAL_OBJECT.get("to").getAsString() + event.getUser().getAsTag(), false);
 
-        logsChannel.sendMessage(roleRemEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(roleRemEmbed.build()).queue();
     }
 
     @Override
@@ -444,7 +440,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("boost_time_update").getAsString(), event.getOldTimeBoosted() + " -> " + event.getNewTimeBoosted() + "\n" + GENERAL_OBJECT.get("by").getAsString() + event.getUser().getAsTag(), false);
 
-        logsChannel.sendMessage(boostTimeUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(boostTimeUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -469,7 +465,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("nickname_updated").getAsString(), event.getUser().getAsTag() + "\n" + event.getOldNickname() + " -> " + event.getNewNickname(), false);
 
-        logsChannel.sendMessage(nicknameUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(nicknameUpdateEmbed.build()).queue();
     }
 
 /*
@@ -527,7 +523,7 @@ public class Logs extends ListenerAdapter {
 
                     .addField(LOGS_OBJECT.get("message_updated").getAsString(), event.getMessage().getId() + GENERAL_OBJECT.get("by").getAsString() + event.getMember().getUser().getAsTag(), false);
 
-            logsChannel.sendMessage(messageUpdateEmbed.build()).queue();
+            logsChannel.sendMessageEmbeds(messageUpdateEmbed.build()).queue();
         }
     }
 
@@ -553,7 +549,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("member_unbanned").getAsString(), event.getUser().getAsTag(), false);
 
-        logsChannel.sendMessage(unbanEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(unbanEmbed.build()).queue();
     }
 
     @Override
@@ -578,7 +574,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("afk_channel_updated").getAsString(), event.getOldAfkChannel().getName() + " -> " + event.getNewAfkChannel().getName(), false);
 
-        logsChannel.sendMessage(afkUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(afkUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -603,7 +599,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("afk_timeout_updated").getAsString(), event.getOldAfkTimeout() + " -> " + event.getNewAfkTimeout(), false);
 
-        logsChannel.sendMessage(afkTOUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(afkTOUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -628,7 +624,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("banner_updated").getAsString(), format("[%s](%s) -> [%s](%s)", GENERAL_OBJECT.get("before").getAsString(),event.getOldBannerUrl(), GENERAL_OBJECT.get("after").getAsString(), event.getNewBannerUrl()), false);
 
-        logsChannel.sendMessage(bannerUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(bannerUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -653,7 +649,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("server_has_now").getAsString(), event.getNewBoostCount() + LOGS_OBJECT.get("boosts").getAsString(), false);
 
-        logsChannel.sendMessage(boostCount.build()).queue();
+        logsChannel.sendMessageEmbeds(boostCount.build()).queue();
     }
 
     @Override
@@ -678,7 +674,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("boost_tier").getAsString(), event.getOldBoostTier() + " -> " + event.getNewBoostTier(), false);
 
-        logsChannel.sendMessage(boostTierUpdate.build()).queue();
+        logsChannel.sendMessageEmbeds(boostTierUpdate.build()).queue();
     }
 
     @Override
@@ -703,7 +699,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("description_updated").getAsString(), event.getOldDescription() + " -> " + event.getNewDescription(), false);
 
-        logsChannel.sendMessage(descriptionUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(descriptionUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -728,7 +724,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("icon_updated").getAsString(), format("[%s](%s) -> [%s](%s)", GENERAL_OBJECT.get("before").getAsString(), event.getOldIconUrl(), GENERAL_OBJECT.get("after").getAsString(), event.getNewIconUrl()), false);
 
-        logsChannel.sendMessage(iconUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(iconUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -753,7 +749,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("server_name_updated").getAsString(), event.getOldName() + " -> " + event.getNewName(), false);
 
-        logsChannel.sendMessage(nameUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(nameUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -778,7 +774,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("owner_update").getAsString(), event.getOldOwner().getUser().getAsMention() + " -> " + event.getNewOwner().getUser().getAsMention(), false);
 
-        logsChannel.sendMessage(ownerUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(ownerUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -803,7 +799,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("system_channel_updated").getAsString(), event.getOldSystemChannel().getAsMention() + " -> " + event.getNewSystemChannel().getAsMention(), false);
 
-        logsChannel.sendMessage(sysChannelEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(sysChannelEmbed.build()).queue();
     }
 
     @Override
@@ -836,8 +832,8 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("user_undeafened").getAsString(), event.getMember().getUser().getAsTag() + GENERAL_OBJECT.get("in").getAsString() + event.getVoiceState().getChannel().getName(), false);
 
-        if (event.isGuildDeafened()) logsChannel.sendMessage(deafenEmbed.build()).queue();
-        if (!event.isGuildDeafened()) logsChannel.sendMessage(undeafenEmbed.build()).queue();
+        if (event.isGuildDeafened()) logsChannel.sendMessageEmbeds(deafenEmbed.build()).queue();
+        if (!event.isGuildDeafened()) logsChannel.sendMessageEmbeds(undeafenEmbed.build()).queue();
     }
 
     @Override
@@ -870,8 +866,8 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("user_unmuted").getAsString(), event.getMember().getUser().getAsTag() + GENERAL_OBJECT.get("in").getAsString() + event.getVoiceState().getChannel().getName(), false);
 
-        if (event.isGuildMuted()) logsChannel.sendMessage(muteEmbed.build()).queue();
-        if (!event.isGuildMuted()) logsChannel.sendMessage(unmuteEmbed.build()).queue();
+        if (event.isGuildMuted()) logsChannel.sendMessageEmbeds(muteEmbed.build()).queue();
+        if (!event.isGuildMuted()) logsChannel.sendMessageEmbeds(unmuteEmbed.build()).queue();
     }
 
     @Override
@@ -896,7 +892,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("user_moved").getAsString(), event.getMember().getUser().getAsTag() + "\n" + event.getChannelLeft() + " -> " + event.getChannelJoined(), false);
 
-        logsChannel.sendMessage(moveEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(moveEmbed.build()).queue();
     }
 
     @Override
@@ -929,8 +925,8 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("stream_ended").getAsString(), GENERAL_OBJECT.get("by").getAsString() + event.getMember().getUser().getAsTag() + "\n" + GENERAL_OBJECT.get("in").getAsString() + event.getVoiceState().getChannel().getName(), false);
 
-        if (event.isStream()) logsChannel.sendMessage(streamEmbed.build()).queue();
-        if (!event.isStream()) logsChannel.sendMessage(streamEndEmbed.build()).queue();
+        if (event.isStream()) logsChannel.sendMessageEmbeds(streamEmbed.build()).queue();
+        if (!event.isStream()) logsChannel.sendMessageEmbeds(streamEndEmbed.build()).queue();
     }
 
     @Override
@@ -953,7 +949,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("role_created").getAsString(), event.getRole().getName(), false);
 
-        logsChannel.sendMessage(roleCreateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(roleCreateEmbed.build()).queue();
 
         System.out.println("Role Created : " + event.getRole().getName());
     }
@@ -980,7 +976,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("role_deleted").getAsString(), event.getRole().getName(), false);
 
-        logsChannel.sendMessage(roleDelEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(roleDelEmbed.build()).queue();
     }
 
     @Override
@@ -1005,7 +1001,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("role_updated").getAsString(), event.getRole().getName() + "\n" + event.getOldColor() + " -> " + event.getNewColor(), false);
 
-        logsChannel.sendMessage(roleColorEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(roleColorEmbed.build()).queue();
     }
 
     @Override
@@ -1028,9 +1024,10 @@ public class Logs extends ListenerAdapter {
                 .setThumbnail(event.getGuild().getIconUrl())
                 .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField(LOGS_OBJECT.get("role_updated").getAsString(), event.getRole().getName() + "\n" + (event.getOldValue() ? GENERAL_OBJECT.get("yes").getAsString() : GENERAL_OBJECT.get("no").getAsString()) + " -> " + (event.getNewValue() ? GENERAL_OBJECT.get("yes").getAsString() : LOGS_OBJECT.get("no").getAsString()), false);
+                .addField(LOGS_OBJECT.get("role_updated").getAsString(), event.getRole().getName() + "\n" + (event.getOldValue() ? GENERAL_OBJECT.get("yes").getAsString() : GENERAL_OBJECT.get("no").getAsString()) + " -> " +
+                        (event.getNewValue() ? GENERAL_OBJECT.get("yes").getAsString() : LOGS_OBJECT.get("no").getAsString()), false);
 
-        logsChannel.sendMessage(roleHoistedEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(roleHoistedEmbed.build()).queue();
     }
 
     @Override
@@ -1053,9 +1050,10 @@ public class Logs extends ListenerAdapter {
                 .setThumbnail(event.getGuild().getIconUrl())
                 .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField(LOGS_OBJECT.get("role_updated").getAsString(), event.getRole().getName() + "\n" + (event.getOldValue() ? GENERAL_OBJECT.get("yes").getAsString() : GENERAL_OBJECT.get("no").getAsString()) + " -> " + (event.getNewValue() ? GENERAL_OBJECT.get("yes").getAsString() : GENERAL_OBJECT.get("no").getAsString()), false);
+                .addField(LOGS_OBJECT.get("role_updated").getAsString(), event.getRole().getName() + "\n" + (event.getOldValue() ? GENERAL_OBJECT.get("yes").getAsString() : GENERAL_OBJECT.get("no").getAsString()) + " -> " +
+                        (event.getNewValue() ? GENERAL_OBJECT.get("yes").getAsString() : GENERAL_OBJECT.get("no").getAsString()), false);
 
-        logsChannel.sendMessage(roleMentionEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(roleMentionEmbed.build()).queue();
     }
 
     @Override
@@ -1080,7 +1078,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("role_updated").getAsString(), event.getRole().getName() + "\n" + event.getOldName() + " -> " + event.getNewName(), false);
 
-        logsChannel.sendMessage(roleNameUpdate.build()).queue();
+        logsChannel.sendMessageEmbeds(roleNameUpdate.build()).queue();
     }
 
     @Override
@@ -1105,7 +1103,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("text_channel_created").getAsString(), event.getChannel().getName() + "\n(ID : " + event.getChannel().getId() + ")", false);
 
-        logsChannel.sendMessage(textCreEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(textCreEmbed.build()).queue();
     }
 
     @Override
@@ -1130,7 +1128,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("text_channel_deleted").getAsString(), event.getChannel().getName() + "\n(ID : " + event.getChannel().getId() + ")", false);
 
-        logsChannel.sendMessage(textDelEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(textDelEmbed.build()).queue();
     }
 
     @Override
@@ -1155,7 +1153,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getAsMention() + "\n" + event.getOldName() + " -> " + event.getNewName(), false);
 
-        logsChannel.sendMessage(textNameUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(textNameUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -1180,7 +1178,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getName() + "\n" + event.getOldValue() + " -> " + event.getNewValue(), false);
 
-        logsChannel.sendMessage(textNewsUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(textNewsUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -1201,11 +1199,15 @@ public class Logs extends ListenerAdapter {
         textNSFWUpdateEmbed.setTitle(LOGS_OBJECT.get("text_channel_nsfw_update").getAsString())
                 .setColor(Color.ORANGE)
                 .setThumbnail(event.getGuild().getIconUrl())
-                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" + GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
+                .setFooter(GENERAL_OBJECT.get("developed_by").getAsString() + Config.DEVELOPER_TAG + "\n" +
+                        GENERAL_OBJECT.get("action_generated_on").getAsString() + event.getGuild().getName(), Config.DEVELOPER_AVATAR)
 
-                .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getName() + "\n" + (event.getOldValue() ? GENERAL_OBJECT.get("yes").getAsString() : GENERAL_OBJECT.get("no").getAsString()) + " -> " + (event.getNewValue() ? GENERAL_OBJECT.get("yes").getAsString() : GENERAL_OBJECT.get("no").getAsString()), false);
+                .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getName() + "\n" +
+                        (Boolean.TRUE.equals(event.getOldValue()) ? GENERAL_OBJECT.get("yes").getAsString() : GENERAL_OBJECT.get("no").getAsString()) +
+                        " -> " + (Boolean.TRUE.equals(event.getNewValue()) ? GENERAL_OBJECT.get("yes").getAsString() : GENERAL_OBJECT.get("no").getAsString()),
+                        false);
 
-        logsChannel.sendMessage(textNSFWUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(textNSFWUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -1230,7 +1232,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getName() + "\n" + event.getOldSlowmode() + " s -> " + event.getNewSlowmode() + "s", false);
 
-        logsChannel.sendMessage(textSMUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(textSMUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -1255,10 +1257,10 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getName() + "\n" + event.getOldTopic() + " -> " + event.getNewTopic(), false);
 
-        logsChannel.sendMessage(textTopicUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(textTopicUpdateEmbed.build()).queue();
     }
 
-    @Override
+    /*@Override
     public void onUserActivityStart(UserActivityStartEvent event) {
         System.out.println("Activity Started : " + event.getUser().getAsTag() + " : " + event.getNewActivity().getName());
 
@@ -1316,7 +1318,7 @@ public class Logs extends ListenerAdapter {
 
             logsChannel.sendMessage(activityEndEmbed.build()).queue();
         }
-    }
+    }*/
 
     @Override
     public void onVoiceChannelCreate(VoiceChannelCreateEvent event) {
@@ -1340,7 +1342,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("voice_channel_created").getAsString(), event.getChannel().getName() + "(ID : " + event.getChannel().getId() + ")", false);
 
-        logsChannel.sendMessage(voiceCreEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(voiceCreEmbed.build()).queue();
     }
 
     @Override
@@ -1365,7 +1367,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("voice_channel_deleted").getAsString(), event.getChannel().getName() + "(ID : " + event.getChannel().getId() + ")", false);
 
-        logsChannel.sendMessage(voiceDelEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(voiceDelEmbed.build()).queue();
     }
 
     @Override
@@ -1390,7 +1392,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getName() + "\n" + event.getOldBitrate() + " bps -> " + event.getNewBitrate() + " bps", false);
 
-        logsChannel.sendMessage(voiceBitRateUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(voiceBitRateUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -1415,7 +1417,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getName() + "\n" + event.getOldName() + " -> " + event.getNewName(), false);
 
-        logsChannel.sendMessage(voiceNameUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(voiceNameUpdateEmbed.build()).queue();
     }
 
     @Override
@@ -1440,7 +1442,7 @@ public class Logs extends ListenerAdapter {
 
                 .addField(LOGS_OBJECT.get("channel_updated").getAsString(), event.getChannel().getName() + "\n" + event.getOldUserLimit() + GENERAL_OBJECT.get("user").getAsString() + "  -> " + event.getNewUserLimit() + GENERAL_OBJECT.get("user").getAsString(), false);
 
-        logsChannel.sendMessage(voiceUserLimitUpdateEmbed.build()).queue();
+        logsChannel.sendMessageEmbeds(voiceUserLimitUpdateEmbed.build()).queue();
     }
 
 }

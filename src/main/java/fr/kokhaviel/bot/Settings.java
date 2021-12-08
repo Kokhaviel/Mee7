@@ -57,7 +57,7 @@ public class Settings extends ListenerAdapter {
 		JsonObject fileContent = JsonUtilities.readJson(file).getAsJsonObject();
 		FileWriter fw = new FileWriter(file, false);
 		if(fileContent.has(event.getGuild().getId())) return;
-		JsonElement tree = Mee7.gson.toJsonTree(fileContent);
+		JsonElement tree = Mee7.GSON.toJsonTree(fileContent);
 		JsonObject guildObject = new JsonObject();
 		guildObject.addProperty("language", "us");
 		guildObject.addProperty("prefix", "!");
@@ -74,6 +74,12 @@ public class Settings extends ListenerAdapter {
 		fw.write(String.valueOf(tree));
 		fw.close();
 
+	}
+
+	public static String getGuildPrefix(String guildId, String prefix) {
+		return JsonUtilities.readJson(new File("guild_settings.json"))
+				.getAsJsonObject().get(guildId)
+				.getAsJsonObject().get(prefix).getAsString();
 	}
 
 	public static File getLanguageFile(String guildID, ClassLoader classLoader) {

@@ -23,9 +23,8 @@ import fr.kokhaviel.bot.Settings;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
-import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -132,6 +131,17 @@ public class GiveawayCommand extends ListenerAdapter {
 	}
 
 	@Override
+	public void onButtonClick(@NotNull ButtonClickEvent event) {
+		if(event.getComponentId().equals("participate")) {
+			giveaway.getParticipants().add(event.getUser());
+
+		} else if(event.getComponentId().equals("giveup")) {
+			giveaway.getParticipants().remove(event.getUser());
+
+		}
+	}
+
+	/*@Override
 	public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
 
 		if(!getCurrentGiveaways().contains(event.getGuild().getIdLong())) return;
@@ -149,5 +159,5 @@ public class GiveawayCommand extends ListenerAdapter {
 		if(event.getMessageId().equals(giveaway.getGiveawayMessage().getId())) {
 			giveaway.getParticipants().remove(event.getUser());
 		}
-	}
+	}*/
 }

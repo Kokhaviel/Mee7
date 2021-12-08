@@ -46,6 +46,7 @@ import fr.kokhaviel.bot.commands.user.afk.AfkCommand;
 import fr.kokhaviel.bot.commands.util.*;
 import fr.kokhaviel.bot.commands.wikipedia.WikipediaSearchCommand;
 import fr.kokhaviel.bot.event.afk.AfkVerify;
+import fr.kokhaviel.bot.event.logs.JoinEvent;
 import fr.kokhaviel.bot.event.logs.Logs;
 import fr.kokhaviel.bot.event.moderation.AutoModerator;
 import net.dv8tion.jda.api.JDABuilder;
@@ -94,7 +95,7 @@ public class Mee7 {
 
 	//Events
 	private final ListenerAdapter[] AFK = new ListenerAdapter[] {new AfkVerify()};
-	private final ListenerAdapter[] LOGS = new ListenerAdapter[] {new Logs()};
+	private final ListenerAdapter[] LOGS = new ListenerAdapter[] {new Logs(), new JoinEvent()};
 	private final ListenerAdapter[] MODERATOR = new ListenerAdapter[] {new AutoModerator()};
 	private JDABuilder jdaBuilder;
 

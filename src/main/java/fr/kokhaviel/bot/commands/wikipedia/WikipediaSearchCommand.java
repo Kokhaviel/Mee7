@@ -80,9 +80,9 @@ public class WikipediaSearchCommand extends ListenerAdapter {
 					finalResearch.append(s).append("_");
 				}
 				final String URL = "https://en.wikipedia.org/api/rest_v1/page/summary/" + finalResearch;
-				WikipediaContent content = Mee7.gson.fromJson(JsonUtilities.readJson(new URL(URL)), WikipediaContent.class);
+				WikipediaContent content = Mee7.GSON.fromJson(JsonUtilities.readJson(new URL(URL)), WikipediaContent.class);
 
-				channel.sendMessage(getContentPage(content, GENERAL_OBJECT, COMMANDS_OBJECT, WIKIPEDIA_OBJECT).build()).queue();
+				channel.sendMessageEmbeds(getContentPage(content, GENERAL_OBJECT, COMMANDS_OBJECT, WIKIPEDIA_OBJECT).build()).queue();
 
 			} catch(MalformedURLException e) {
 				e.printStackTrace();

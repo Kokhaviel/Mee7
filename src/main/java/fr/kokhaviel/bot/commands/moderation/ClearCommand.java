@@ -89,6 +89,10 @@ public class ClearCommand extends ListenerAdapter {
 			}
 
 			int numToDelete = Integer.parseInt(args[1]);
+			if(numToDelete <= 1 || numToDelete >= 100) {
+				channel.sendMessage("You Must Clear Between 2 & 100 Messages").queue();
+				return;
+			}
 			List<Message> toDelete = channel.getHistory().retrievePast(numToDelete).complete();
 			textChannel.deleteMessages(toDelete).queue(
 					success -> channel.sendMessage(format("%s %d %s",

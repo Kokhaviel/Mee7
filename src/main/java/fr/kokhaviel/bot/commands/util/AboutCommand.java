@@ -39,9 +39,7 @@ public class AboutCommand extends ListenerAdapter {
 
     public void onMessageReceived(MessageReceivedEvent event) {
 
-        String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
-                .getAsJsonObject().get(event.getGuild().getId())
-                .getAsJsonObject().get("prefix").getAsString();
+        String prefix = Settings.getGuildPrefix(event.getGuild().getId(), "prefix");
 
         final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
         assert LANG_FILE != null;
@@ -61,7 +59,7 @@ public class AboutCommand extends ListenerAdapter {
             User user = member.getUser();
             channel.sendMessage(author.getAsMention() + ABOUT_OBJECT.get("success_guild_message").getAsString()).queue();
             if (!user.hasPrivateChannel()) user.openPrivateChannel().complete();
-            ((UserImpl) user).getPrivateChannel().sendMessage(getAbout(jda, prefix, ABOUT_OBJECT).build()).queue();
+            ((UserImpl) user).getPrivateChannel().sendMessageEmbeds(getAbout(jda, prefix, ABOUT_OBJECT).build()).queue();
         }
     }
 
@@ -79,7 +77,9 @@ public class AboutCommand extends ListenerAdapter {
                 .addField("Prefix : ", prefix, false)
                 .addField("Help : ", prefix + "help", false)
                 .addField(format("%s : ", aboutObject.get("license").getAsString()), "[GPLv3](https://fsf.org/)", false)
-                .addField(format("%s : ", aboutObject.get("libraries")), "[JDA](https://github.com/DV8FromTheWorld/JDA), [LavaPlayer](https://github.com/sedmelluq/lavaplayer), [Slothpixel](https://docs.slothpixel.me/) ", false);
+                .addField(format("%s : ", aboutObject.get("libraries")), "[JDA](https://github.com/DV8FromTheWorld/JDA)," +
+                        " [LavaPlayer](https://github.com/sedmelluq/lavaplayer), [HypixelAPI](https://github.com/Kokhaviel/HypixelAPI/)," +
+                        " [FuncraftAPI](https://github.com/Kokhaviel/FuncraftAPI/) ", false);
 
         return aboutEmbed;
     }

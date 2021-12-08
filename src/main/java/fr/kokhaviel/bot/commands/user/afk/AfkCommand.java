@@ -35,9 +35,7 @@ public class AfkCommand extends ListenerAdapter {
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {
 
-		String prefix = JsonUtilities.readJson(new File("guild_settings.json"))
-				.getAsJsonObject().get(event.getGuild().getId())
-				.getAsJsonObject().get("prefix").getAsString();
+		String prefix = Settings.getGuildPrefix(event.getGuild().getId(), "prefix");
 
 		final File LANG_FILE = Settings.getLanguageFile(event.getGuild().getId(), this.getClass().getClassLoader());
 		assert LANG_FILE != null;
